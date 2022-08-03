@@ -1,0 +1,27 @@
+.sidebar {
+  grid-area: nav;
+  background-color: green;
+}
+
+.menu{
+  padding: 10px 10px 0 10px;
+  font-size: 40px;
+  font-weight: 700;
+  color: white;
+}
+
+.item{
+  margin-bottom: 10px;
+}
+
+.item a{
+  color: inherit;
+}
+
+.item a:hover{
+  text-decoration: underline;
+}
+
+.item:last-child{
+  margin-top: 60px;
+}

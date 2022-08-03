@@ -99,45 +99,6 @@ body{
     gap: 10px;
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  grid-area: header; 
-  background-color: green;
-}
-.header img{
-  margin-left: 10px;
-  border-radius: 50%;
-}
-
-.sidebar {
-  grid-area: nav;
-  background-color: green;
-}
-
-.menu{
-  padding: 10px 10px 0 10px;
-  font-size: 40px;
-  font-weight: 700;
-  color: white;
-}
-
-.menu__item{
-  margin-bottom: 10px;
-}
-
-.menu__item a{
-  color: inherit;
-}
-
-.menu__item a:hover{
-  text-decoration: underline;
-}
-
-.menu__item:last-child{
-  margin-top: 60px;
-}
-
 .content {
   background-color: red;
   grid-area: content;

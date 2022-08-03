@@ -1,0 +1,41 @@
+.form{
+  max-width: 1110px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+.title{
+  font-size: 50px;
+  color: gray;
+  margin-bottom: 20px;
+}
+
+.textarea{
+  width: 100%;
+  padding: 10px 0 40px 20px;
+  background-color: gray;
+  resize: none;
+  opacity: 0.8;
+  margin-bottom: 20px;
+  font-size: 30px;
+}
+.textarea::placeholder{
+  font-size: 30px;
+  color: black;
+  font-weight: 700;
+}
+
+.btn{
+  display: inline-block;
+  margin-left: auto;
+  font-size: 25px;
+  width: 200px;
+  padding: 5px 0;
+  background-color: green;
+  font-family: inherit;
+}
+
+.posts{
+
+}
