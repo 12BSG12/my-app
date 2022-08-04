@@ -5,12 +5,12 @@ import style from './Profile.module.css';
 
 const Content = () => {
   return (
-    <main className={style.content}>
+    <main>
       <Header />
       <User />
       <Mypost />
     </main>
   );
-} 
+}
 
 export default Content;

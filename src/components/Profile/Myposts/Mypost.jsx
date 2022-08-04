@@ -10,7 +10,8 @@ const Mypost = () => {
           <button className={style.btn} type="Send">Send</button>
       </form>
       <div className={style.posts}>
-        <Post />
+        <Post message='Hey, why nobdy love me?'/>
+        <Post message='It`s our new program! Hey!'/>
       </div>
     </div>
   );
