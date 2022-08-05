@@ -1,14 +1,13 @@
 import Mypost from './Myposts/Mypost';
 import User from './User/User';
-import Header from './Header/Header';
-import style from './Profile.module.css';
+import Header from './Header/Header'
 
-const Content = () => {
+const Content = (props) => {
   return (
     <main>
       <Header />
       <User />
-      <Mypost />
+      <Mypost {...props}/>
     </main>
   );
 }
