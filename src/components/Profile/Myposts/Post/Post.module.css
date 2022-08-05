@@ -1,5 +1,6 @@
 .item{
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 40px;
 }
@@ -17,4 +18,9 @@
 
 .item:last-child{
   margin-bottom: 0;
+}
+
+.likes{
+  padding: 10px 0 0 10px;
+  width: 100%;
 }

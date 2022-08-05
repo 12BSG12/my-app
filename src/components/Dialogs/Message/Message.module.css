@@ -1,0 +1,9 @@
+.item:not(:last-child){
+  margin-bottom: 40px;
+}
+
+.message{
+  font-size: 25px;
+  font-weight: 700;
+  color: black;
+}

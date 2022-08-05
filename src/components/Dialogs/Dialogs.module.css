@@ -1,0 +1,20 @@
+.title{
+  font-size: 50px;
+  margin-bottom: 20px;
+  color: darkgray;
+  font-weight: 700;
+}
+
+.container{
+  max-width: 500px;
+  display: grid;
+  grid-template-columns: 2fr 10fr;
+}
+.dialog{
+  border-right: 1px solid black;
+  padding-right: 50px;
+}
+
+.userdialog{
+  padding-left: 50px;
+}

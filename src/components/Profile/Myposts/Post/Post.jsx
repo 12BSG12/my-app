@@ -5,6 +5,7 @@ const Post = (props) => {
     <div className={style.item}>
       <img className={style.avatar} src="https://via.placeholder.com/50"/>
       <div className={style.text}>{props.message}</div>
+      <div className={style.likes}>like {props.likesCount}</div>
     </div>
   );
 } 

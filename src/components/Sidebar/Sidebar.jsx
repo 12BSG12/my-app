@@ -10,7 +10,7 @@ const Sidebar = () => {
           <NavLink className={setActive} to="/profile">profile</NavLink>
         </li>
         <li className={style.item}>
-          <NavLink className={setActive} to="/messages">Messages</NavLink>
+          <NavLink className={setActive} to="/dialogs">Messages</NavLink>
         </li>
         <li className={style.item}>
           <NavLink className={setActive} to="/news">News</NavLink>
