@@ -1,9 +1,65 @@
-.item:not(:last-child){
-  margin-bottom: 40px;
+.container{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 60px;
+  grid-row-gap: 15px;
 }
-
+.item{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  grid-row-gap: 10px;
+}
+.interviewer{
+  display: flex;
+  align-items:flex-start;
+  grid-area: 1 / 1 / 2 / 2;
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 0 20px 20px 20px;
+}
+.my{
+  border: 1px solid black;
+  padding: 10px;
+  border-radius: 20px 20px 0 20px;
+  grid-area: 2 / 2 / 3 / 3;
+}
+.img{
+  border-radius: 50%;
+  margin-right: 10px;
+}
+.interviewerName{
+  font-size: 18px;
+  color: black;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
 .message{
-  font-size: 25px;
+  font-size: 18px;
   font-weight: 700;
   color: black;
+}
+.textarea{
+  width: 100%;
+  border-radius: 20px;
+  padding: 10px 20px;
+  background-color: rgb(12, 121, 148);
+  resize: none;
+  font-size: 16px;
+}
+.body{
+  position: sticky;
+  bottom: 0;
+}
+.textarea::placeholder{
+  color: black;
+}
+.btn{
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  font-size: 16px;
+  border-radius: 20px;
+  padding: 5px;
 }

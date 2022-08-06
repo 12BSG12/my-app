@@ -11,8 +11,7 @@ let state = {
       {id:2, name:'Andrew'},
     ],
     messagesData: [
-      {id:1, message:'shhhsgh'},
-      {id:2, message:'121'},
+      {id:1, message:'shhhsgh shh'},
     ]
   },
   sidebar:{
