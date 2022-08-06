@@ -15,6 +15,13 @@ let state = {
       {id:2, message:'121'},
     ]
   },
+  sidebar:{
+    friendsData: [
+      {id: 1, name: 'Egor'},
+      {id: 2, name: 'Alex'},
+      {id: 3, name: 'Andrew'},
+    ]
+  }
 }
 
 export default state;

@@ -7,6 +7,7 @@
   padding: 10px 10px 0 10px;
   font-size: 40px;
   font-weight: 700;
+  margin-bottom: 130px;
 }
 
 .item{
@@ -27,4 +28,18 @@ a.active {
 
 .link:hover{
   text-decoration: underline;
+}
+
+.title{
+  padding-left: 10px;
+  font-size: 50px;
+  color: aliceblue;
+  margin-bottom: 20px;
+}
+
+.friends{
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  gap: 20px;
+  margin-bottom: 20px;
 }
