@@ -2,7 +2,7 @@ import Post from './Post/Post';
 import style from './Mypost.module.css';
 
 const Mypost = (props) => {
-  const getPost = props.post.map(post => <Post message={post.message} likesCount={post.likesCount}/>);
+  const getPost = props.postData.map(post => <Post message={post.message} likesCount={post.likesCount}/>);
 
   return (
     <div>
