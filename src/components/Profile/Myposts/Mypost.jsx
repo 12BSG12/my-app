@@ -10,7 +10,7 @@ const Mypost = (props) => {
   };
   const addPost = () => {
     if(message !== '')
-      alert(message)
+      props.addPost(message);
     else
       alert('Введите текст поста')
   };
