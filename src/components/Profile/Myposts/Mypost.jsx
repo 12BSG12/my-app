@@ -1,17 +1,18 @@
 import React from 'react';
 import Post from './Post/Post';
 import style from './Mypost.module.css';
+import {upadatePostTextActionCreator, addPostActionCreator} from './../../../redux/state';
 
 const Mypost = (props) => {
   const getPost = props.postData.map(post => <Post message={post.message} likesCount={post.likesCount}/>); 
   const message = React.createRef();
   const handleMessageChange = () => {
     let text = message.current.value;
-    props.dispatch({type:'UPADTE-POST-TEXT', text: text});
+    props.dispatch(upadatePostTextActionCreator(text));
   };
   const addPost = () => {
     if(props.newPostText !== ''){
-      props.dispatch({type:'ADD-POST'});
+      props.dispatch(addPostActionCreator());
     }
     else
       alert('Введите текст поста')
