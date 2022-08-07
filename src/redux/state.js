@@ -1,9 +1,10 @@
-export let state = {
+export const state = {
   profilePage: {
     postData: [
       {id: 1, message:'Hey, why nobdy love me?', likesCount: 12},
       {id: 2, message:'It`s our new program! Hey!', likesCount: 24},
     ],
+    newPostText: ''
   },
   dialogsPage: {
     dialogsData: [
@@ -23,6 +24,17 @@ export let state = {
   }
 }
 
-export let addPost = (data) => {
-  state.profilePage.postData.push({id: 3, message: data, likesCount: 24});
+let renderEntirTree;
+
+export const addPost = () => {
+  state.profilePage.postData.push({id: 3, message: state.profilePage.newPostText, likesCount: 24});
+  state.profilePage.newPostText = '';
+  renderEntirTree();
 }
+
+export const upadtePostText = (text) => {
+  state.profilePage.newPostText = text;
+  renderEntirTree();
+}
+
+export const subscribe = (observer) => renderEntirTree = observer;
