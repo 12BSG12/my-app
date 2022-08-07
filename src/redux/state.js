@@ -24,17 +24,29 @@ let store = {
       ]
     },
   },
-  getState(){return this._state},
   _callsubscriber(){},
-  addPost() {
+  getState(){return this._state},
+  subscribe(observer) { this._callsubscriber = observer },
+  _addPost() {
     this._state.profilePage.postData.push({id: 3, message: this._state.profilePage.newPostText, likesCount: 24});
     this._state.profilePage.newPostText = '';
-    this._callsubscriber(this._state);
+    this._callsubscriber();
   },
-  upadtePostText(text) {
+  _upadtePostText(text) {
     this._state.profilePage.newPostText = text;
-    this._callsubscriber(this._state);
+    this._callsubscriber();
   },
-  subscribe(observer) { this._callsubscriber = observer }
+  dispatch(action){
+    switch (action.type) {
+      case 'ADD-POST':
+        this._addPost();
+        break;
+      case 'UPADTE-POST-TEXT':
+        this._upadtePostText(action.text)
+        break;
+      default:
+        break;
+    }
+  },
 }
 export default store;

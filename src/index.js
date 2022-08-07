@@ -8,7 +8,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 let renderEntirTree = () => {
   root.render(
     <React.StrictMode>
-      <App {...store.getState()} addPost={store.addPost.bind(store)} upadtePostText={store.upadtePostText.bind(store)}/>
+      <App {...store.getState()} dispatch={store.dispatch.bind(store)}/>
     </React.StrictMode>
   );
 }

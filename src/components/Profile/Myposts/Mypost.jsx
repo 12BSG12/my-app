@@ -7,11 +7,11 @@ const Mypost = (props) => {
   const message = React.createRef();
   const handleMessageChange = () => {
     let text = message.current.value;
-    props.upadtePostText(text);
+    props.dispatch({type:'UPADTE-POST-TEXT', text: text});
   };
   const addPost = () => {
     if(props.newPostText !== ''){
-      props.addPost();
+      props.dispatch({type:'ADD-POST'});
     }
     else
       alert('Введите текст поста')
