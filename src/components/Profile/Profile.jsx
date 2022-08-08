@@ -1,13 +1,13 @@
-import Mypost from './Myposts/Mypost';
 import User from './User/User';
 import Header from './Header/Header'
+import MyPostContainer from './Myposts/MyPostContainer';
 
 const Content = (props) => {
   return (
     <main>
       <Header />
       <User />
-      <Mypost {...props}/>
+      <MyPostContainer store={props.store}/>
     </main>
   );
 }

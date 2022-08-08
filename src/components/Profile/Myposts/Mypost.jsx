@@ -1,18 +1,17 @@
 import React from 'react';
 import Post from './Post/Post';
 import style from './Mypost.module.css';
-import {upadatePostTextActionCreator, addPostActionCreator} from './../../../redux/profile-reducer';
 
 const Mypost = (props) => {
   const getPost = props.postData.map(post => <Post message={post.message} likesCount={post.likesCount}/>); 
   const message = React.createRef();
-  const handleMessageChange = () => {
+  const onPostChange = () => {
     let text = message.current.value;
-    props.dispatch(upadatePostTextActionCreator(text));
+    props.updateNewPostText(text)
   };
-  const addPost = () => {
+  const onAddPost = () => {
     if(props.newPostText !== ''){
-      props.dispatch(addPostActionCreator());
+      props.addPost();
     }
     else
       alert('Введите текст поста')
@@ -21,12 +20,11 @@ const Mypost = (props) => {
     <div>
       <div className={style.form}>
           <label className={style.title}>My posts</label>
-          <textarea className={style.textarea} ref={message} onChange={handleMessageChange} value={props.newPostText} placeholder="your news..."/>
-          <button className={style.btn} onClick={addPost} type="Send">Send</button> 
+          <textarea className={style.textarea} ref={message} onChange={onPostChange} value={props.newPostText} placeholder="your news..."/>
+          <button className={style.btn} onClick={onAddPost} type="Send">Send</button> 
       </div>
-      <div className={style.posts}>{
-        getPost
-      }
+      <div className={style.posts}>
+        {getPost}
       </div>
     </div>
   );

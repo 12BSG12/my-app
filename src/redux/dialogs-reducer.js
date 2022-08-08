@@ -1,7 +1,18 @@
 const SEND_MESSAGE = 'SEND-MESSAGE';
 const UPDATE_MESSAGE = 'UPDATE-MESSAGE';
 
-const dialogsReducer = (state, action) => {
+let initialState = {
+  dialogsData: [
+    {id:1, name:'Vadim'},
+    {id:2, name:'Andrew'},
+  ],
+  messagesData: [
+    {id:1, message:'shhhsgh shh'},
+  ],
+  newMessageText: '',
+};
+
+const dialogsReducer = (state = initialState, action) => {
   const sendMessage = () => {
     state.messagesData.push({id: 3, message: state.newMessageText});
     state.newMessageText = '';
@@ -21,7 +32,7 @@ const dialogsReducer = (state, action) => {
   }
 };
 
-export const upadteMessageActionCreator = (text) => ({
+export const updateMessageActionCreator = (text) => ({
   type: UPDATE_MESSAGE, 
   text: text
 }); 
