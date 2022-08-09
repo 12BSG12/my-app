@@ -1,6 +1,6 @@
 import Dialogs from './Dialogs';
 import {updateMessageActionCreator, sendMessageActionCreator} from '../../redux/dialogs-reducer';
-import { useDispatch, useSelector, connect} from 'react-redux'
+import {connect} from 'react-redux'
 
 const mapStateToProps = (state) =>({
   dialogsData: state.dialogsPage.dialogsData,

@@ -1,5 +1,5 @@
 import Sidebar from './Sidebar';
-import { useSelector, connect } from 'react-redux'
+import { connect } from 'react-redux'
 
 const mapStateToProps = (state) =>({
   friendsData: state.sidebar.friendsData,

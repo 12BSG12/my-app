@@ -17,7 +17,7 @@ const dialogsReducer = (state = initialState, action) => {
     case SEND_MESSAGE:
       return {
         ...state, 
-        messagesData: [...state.messagesData.concat({id: 3, message: state.newMessageText})], 
+        messagesData: [...state.messagesData, {id: 3, message: state.newMessageText}], 
         newMessageText: ''
       };
     case UPDATE_MESSAGE:
