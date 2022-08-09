@@ -1,12 +1,10 @@
-import React from 'react';
 import Post from './Post/Post';
 import style from './Mypost.module.css';
 
 const Mypost = (props) => {
   const getPost = props.postData.map(post => <Post message={post.message} likesCount={post.likesCount}/>); 
-  const message = React.createRef();
-  const onPostChange = () => {
-    let text = message.current.value;
+  const onPostChange = (e) => {
+    let text = e.target.value;
     props.updateNewPostText(text)
   };
   const onAddPost = () => {
@@ -20,7 +18,7 @@ const Mypost = (props) => {
     <div>
       <div className={style.form}>
           <label className={style.title}>My posts</label>
-          <textarea className={style.textarea} ref={message} onChange={onPostChange} value={props.newPostText} placeholder="your news..."/>
+          <textarea className={style.textarea} onChange={onPostChange} value={props.newPostText} placeholder="your news..."/>
           <button className={style.btn} onClick={onAddPost} type="Send">Send</button> 
       </div>
       <div className={style.posts}>

@@ -7,7 +7,7 @@ const Content = (props) => {
     <main>
       <Header />
       <User />
-      <MyPostContainer store={props.store}/>
+      <MyPostContainer />
     </main>
   );
 }

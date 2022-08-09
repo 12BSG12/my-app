@@ -1,17 +1,20 @@
 import {upadatePostTextActionCreator, addPostActionCreator} from '../../../redux/profile-reducer';
 import Mypost from './Mypost';
+import { useDispatch, useSelector } from 'react-redux'
 
 const MyPostContainer = (props) => {
-  let state = props.store.getState();
+  const dispatch = useDispatch();
+  const postData = useSelector(state => state.profilePage.postData);  
+  const newPostText = useSelector(state => state.profilePage.newPostText);  
   const handleMessageChange = (text) => {
-    props.store.dispatch(upadatePostTextActionCreator(text));
+    dispatch(upadatePostTextActionCreator(text));
   };
   const addPost = () => {
-    props.store.dispatch(addPostActionCreator());
+    dispatch(addPostActionCreator());
   };
   return (<Mypost updateNewPostText={handleMessageChange} 
-    addPost={addPost} postData={state.profilePage.postData} 
-    newPostText={state.profilePage.newPostText}/>);
+    addPost={addPost} postData={postData} 
+    newPostText={newPostText}/>);
 } 
 
 export default MyPostContainer;

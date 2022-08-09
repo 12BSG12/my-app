@@ -1,7 +1,7 @@
 import Sidebar from './Sidebar';
-
+import { useSelector } from 'react-redux'
 const SidebarContainer = (props) => {
-  let state = props.store.getState().sidebar;
+  const state = useSelector(state => state.sidebar);
   return (
     <Sidebar {...state}/>
   );
