@@ -9,7 +9,7 @@ const Sidebar = (props) => {
     <div className= {style.sidebar}>
       <ul className= {style.menu}>
         <li className={style.item}>
-          <NavLink className={setActive} to="/profile">profile</NavLink>
+          <NavLink className={setActive} to="/profile">Profile</NavLink>
         </li>
         <li className={style.item}>
           <NavLink className={setActive} to="/dialogs">Messages</NavLink>
@@ -19,6 +19,9 @@ const Sidebar = (props) => {
         </li>
         <li className={style.item}>
           <NavLink className={setActive} to="/music">Music</NavLink>
+        </li>
+        <li className={style.item}>
+          <NavLink className={setActive} to="/users">Find users</NavLink>
         </li>
         <li className={style.item}>
           <NavLink className={setActive} to="/settings">Settings</NavLink>
