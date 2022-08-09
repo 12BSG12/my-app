@@ -3,7 +3,7 @@ import Friends from "./Friends/Friends";
 import style from './Sidebar.module.css';
 
 const Sidebar = (props) => {
-  const getFriends = props.friendsData.map(friend => <Friends name={friend.name}/>);
+  const getFriends = props.friendsData.map(friend => <Friends name={friend.name} key={friend.id}/>);
   const setActive = ({isActive}) => isActive ? style.active : style.link;
   return (
     <div className= {style.sidebar}>

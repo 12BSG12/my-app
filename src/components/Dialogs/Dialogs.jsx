@@ -3,8 +3,8 @@ import style from './Dialogs.module.css';
 import Message from './Message/Message';
 
 const Dialogs = (props) => {
-  const getDialogs = props.dialogsData.map(dialog => <User username={dialog.name} id={dialog.id}/>);
-  const getMassage = props.messagesData.map(message => <Message message={message.message} id={message.id}/>);
+  const getDialogs = props.dialogsData.map(dialog => <User username={dialog.name} key={dialog.id} id={dialog.id}/>);
+  const getMassage = props.messagesData.map(message => <Message message={message.message} id={message.id} key={message.id}/>);
   const handleMessageChange = (e) => {
     let text = e.target.value;
     props.updateMessageText(text);
