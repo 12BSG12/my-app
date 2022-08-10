@@ -52,6 +52,7 @@
 .img{
   border-radius: 50%;
   margin-bottom: 5px;
+  width: 50px;
 }
 .btn{
   border-radius: 5px;

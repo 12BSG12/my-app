@@ -7,7 +7,7 @@ const User = (props) => {
   return (
     <div className={style.item}>
         <div className={style.left}>
-          <img className={style.img} src={props.photo} alt="" />
+          <img className={style.img} src={props.photos} alt="" />
           {btn()}
         </div>
         <div className={style.right}>
