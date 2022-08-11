@@ -8,10 +8,14 @@ import { followActionCreator,
   setPageSizeActionCreator, 
   setTotalCountActionCreator,
   setCurrentPageActionCreator } from '../../redux/users-reducer';
+import {toggleFetchingActionCreator} from '../../redux/preloader-reducer'
+import Preloader from '../common/Preloader/Preloader';
 
 class UsersContainer extends Component { 
   componentDidMount(){
+    this.props.toggleFetchingPage(true);
     axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response =>{
+      this.props.toggleFetchingPage(false);
       this.props.setUsers(response.data.items)
       this.props.setTotalCount(response.data.totalCount)
     });
@@ -19,7 +23,9 @@ class UsersContainer extends Component {
 
   changePage = (page) => {
     this.props.setCurrentPage(page);
+    this.props.toggleFetchingPage(true);
     axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`).then(response =>{
+      this.props.toggleFetchingPage(false);
       this.props.setUsers(response.data.items)
     });
   }
@@ -37,14 +43,19 @@ class UsersContainer extends Component {
     let curPL = curP + 4;
     let slicedPages = pagesArray.slice( curPF, curPL);
 
-    return <Users  
-      usersData={this.props.usersData}
-      follow={this.props.follow}
-      unFollow={this.props.unFollow}
-      slicedPages={slicedPages}
-      changePage={this.changePage}
-      currentPage={this.props.currentPage}
-    />
+    return(
+      <>
+        {this.props.isFetching ? <Preloader /> : <Users  
+        usersData={this.props.usersData}
+        follow={this.props.follow}
+        unFollow={this.props.unFollow}
+        slicedPages={slicedPages}
+        changePage={this.changePage}
+        currentPage={this.props.currentPage}
+        isFetching={this.props.isFetching}
+        />}
+      </>
+    );
   }
 } 
 
@@ -52,7 +63,8 @@ const mapStateToProps = (state) =>({
   usersData: state.usersPage.usersData,
   pageSize: state.usersPage.pageSize,
   totalCount: state.usersPage.totalCount,
-  currentPage: state.usersPage.currentPage
+  currentPage: state.usersPage.currentPage,
+  isFetching: state.preloader.isFetching,
 });
 
 const mapDispatchToProps = (dispatch) =>({
@@ -61,7 +73,8 @@ const mapDispatchToProps = (dispatch) =>({
   setUsers: (users) => {dispatch(setUsersActionCreator(users));},
   setPageSize: (count) => {dispatch(setPageSizeActionCreator(count));},
   setTotalCount: (count) => {dispatch(setTotalCountActionCreator(count));},
-  setCurrentPage: (count) => {dispatch(setCurrentPageActionCreator(count));}
+  setCurrentPage: (count) => {dispatch(setCurrentPageActionCreator(count));},
+  toggleFetchingPage: (boolean) => {dispatch(toggleFetchingActionCreator(boolean));},
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
