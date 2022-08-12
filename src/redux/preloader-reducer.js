@@ -16,7 +16,7 @@ const preloaderReducer = (state = initialState, action) => {
   }
 };
 
-export const toggleFetchingActionCreator = (boolean) => ({
+export const toggleFetchingPage = (boolean) => ({
   type: TOGGLE_FETCHING,
   boolean
 });

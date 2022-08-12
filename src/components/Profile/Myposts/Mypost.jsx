@@ -5,7 +5,7 @@ const Mypost = (props) => {
   const getPost = props.postData.map(post => <Post message={post.message} key={post.id} likesCount={post.likesCount}/>); 
   const onPostChange = (e) => {
     let text = e.target.value;
-    props.updateNewPostText(text)
+    props.upadatePostText(text)
   };
   const onAddPost = () => {
     if(props.newPostText !== ''){

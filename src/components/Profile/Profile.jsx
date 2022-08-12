@@ -1,15 +1,14 @@
-import User from './User/User';
-import Header from './Header/Header'
-import MyPostContainer from './Myposts/MyPostContainer';
+import Mypost from "./Myposts/Mypost";
+import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
-const Content = (props) => {
-  return (
-    <main>
-      <Header />
-      <User />
-      <MyPostContainer />
-    </main>
+const Profile = (props) => {
+  return(
+    <>
+      <ProfileInfo {...props.userProfileData}/>
+      <Mypost postData = {props.postData} newPostText ={props.newPostText} 
+      upadatePostText={props.upadatePostText} addPost={props.addPost}/>
+    </>
   );
 }
 
-export default Content;
+export default Profile;

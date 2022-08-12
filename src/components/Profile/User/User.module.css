@@ -18,3 +18,9 @@
 .name{
   margin-bottom: 20px;
 }
+.contacts{
+}
+.links{
+  display: flex;
+  flex-direction: column;
+}

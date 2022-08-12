@@ -50,27 +50,27 @@ const usersReducer = (state = initialState, action) => {
 };
 
 
-export const followActionCreator = (userID) => ({
+export const follow = (userID) => ({
   type: FOLLOW,
   userID
 }); 
-export const unFollowActionCreator = (userID) => ({
+export const unFollow = (userID) => ({
   type: UNFOLLOW,
   userID
 });
-export const setUsersActionCreator = (users) => ({
+export const setUsers = (users) => ({
   type: SET_USERS,
   users
 });
-export const setPageSizeActionCreator = (count) => ({
+export const setPageSize = (count) => ({
   type: SET_PAGE_SIZE,
   count
 });
-export const setTotalCountActionCreator = (count) => ({
+export const setTotalCount = (count) => ({
   type: SET_TOTAL_COUNT,
   count
 });
-export const setCurrentPageActionCreator = (count) => ({
+export const setCurrentPage = (count) => ({
   type: SET_CURRENT_PAGE,
   count
 });

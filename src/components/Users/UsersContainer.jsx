@@ -2,13 +2,13 @@ import * as axios from 'axios';
 import Users from './Users';
 import {Component} from 'react';
 import { connect } from 'react-redux'
-import { followActionCreator, 
-  unFollowActionCreator, 
-  setUsersActionCreator,
-  setPageSizeActionCreator, 
-  setTotalCountActionCreator,
-  setCurrentPageActionCreator } from '../../redux/users-reducer';
-import {toggleFetchingActionCreator} from '../../redux/preloader-reducer'
+import { follow, 
+  unFollow, 
+  setUsers,
+  setPageSize, 
+  setTotalCount,
+  setCurrentPage } from '../../redux/users-reducer';
+import {toggleFetchingPage} from '../../redux/preloader-reducer'
 import Preloader from '../common/Preloader/Preloader';
 
 class UsersContainer extends Component { 
@@ -67,14 +67,14 @@ const mapStateToProps = (state) =>({
   isFetching: state.preloader.isFetching,
 });
 
-const mapDispatchToProps = (dispatch) =>({
-  follow: (id) => {dispatch(followActionCreator(id));},
-  unFollow: (id) => {dispatch(unFollowActionCreator(id));},
-  setUsers: (users) => {dispatch(setUsersActionCreator(users));},
-  setPageSize: (count) => {dispatch(setPageSizeActionCreator(count));},
-  setTotalCount: (count) => {dispatch(setTotalCountActionCreator(count));},
-  setCurrentPage: (count) => {dispatch(setCurrentPageActionCreator(count));},
-  toggleFetchingPage: (boolean) => {dispatch(toggleFetchingActionCreator(boolean));},
-});
+// const mapDispatchToProps = (dispatch) =>({
+//   follow: (id) => {dispatch(followActionCreator(id));},
+//   unFollow: (id) => {dispatch(unFollowActionCreator(id));},
+//   setUsers: (users) => {dispatch(setUsersActionCreator(users));},
+//   setPageSize: (count) => {dispatch(setPageSizeActionCreator(count));},
+//   setTotalCount: (count) => {dispatch(setTotalCountActionCreator(count));},
+//   setCurrentPage: (count) => {dispatch(setCurrentPageActionCreator(count));},
+//   toggleFetchingPage: (boolean) => {dispatch(toggleFetchingActionCreator(boolean));},
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer);
+export default connect(mapStateToProps, { follow, unFollow, setUsers, setPageSize, setTotalCount, setCurrentPage, toggleFetchingPage })(UsersContainer);
