@@ -5,11 +5,18 @@ import { connect } from 'react-redux'
 import {toggleFetchingPage} from '../../redux/preloader-reducer'
 import Preloader from '../common/Preloader/Preloader';
 import { upadatePostText, addPost, setUserProfile } from '../../redux/profile-reducer';
+import { useParams } from 'react-router-dom';
 
+const withRouter = (WrappedComponent) => (props) => {
+  const params = useParams();
+  return <WrappedComponent {...props} params={params} />;
+};
 class ProfileContainer extends Component {
   componentDidMount(){
     this.props.toggleFetchingPage(true);
-    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/2`).then(response =>{
+    let userID = this.props.params.userId;
+    if (!userID) userID = 2;
+    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userID}`).then(response =>{
       this.props.toggleFetchingPage(false);
       this.props.setUserProfile(response.data)
     });
@@ -32,4 +39,4 @@ const mapStateToProps = (state) =>({
   newPostText: state.profilePage.newPostText
 });
 
-export default connect(mapStateToProps, {setUserProfile, toggleFetchingPage, upadatePostText, addPost})(ProfileContainer);
+export default connect(mapStateToProps, {setUserProfile, toggleFetchingPage, upadatePostText, addPost})(withRouter(ProfileContainer));

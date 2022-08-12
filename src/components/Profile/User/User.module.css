@@ -2,6 +2,12 @@
   display: flex;
 }
 
+.avatar{
+  width: 150px;
+}
+.avatar__img{
+  width: 100%;
+}
 .body{
   margin-left: 50px;
   font-weight: 700;
