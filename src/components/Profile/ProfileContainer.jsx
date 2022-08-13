@@ -1,11 +1,11 @@
 import { Component } from 'react';
-import * as axios from 'axios';
 import Profile from './Profile';
 import { connect } from 'react-redux'
 import {toggleFetchingPage} from '../../redux/preloader-reducer'
 import Preloader from '../common/Preloader/Preloader';
 import { upadatePostText, addPost, setUserProfile } from '../../redux/profile-reducer';
 import { useParams } from 'react-router-dom';
+import { usersAPI } from '../../api/api';
 
 const withRouter = (WrappedComponent) => (props) => {
   const params = useParams();
@@ -16,9 +16,9 @@ class ProfileContainer extends Component {
     this.props.toggleFetchingPage(true);
     let userID = this.props.params.userId;
     if (!userID) userID = this.props.defualutID;
-    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userID}`, {headers: {"API-KEY": "b70a55a4-db73-443c-bf0e-a8fca4d11491"}}).then(response =>{
+    usersAPI.getProfile(userID).then(data => {
       this.props.toggleFetchingPage(false);
-      this.props.setUserProfile(response.data)
+      this.props.setUserProfile(data);
     });
   }
   render(){

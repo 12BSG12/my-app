@@ -1,4 +1,3 @@
-import * as axios from 'axios';
 import Users from './Users';
 import {Component} from 'react';
 import { connect } from 'react-redux'
@@ -10,35 +9,38 @@ import { follow,
   setCurrentPage } from '../../redux/users-reducer';
 import {toggleFetchingPage} from '../../redux/preloader-reducer'
 import Preloader from '../common/Preloader/Preloader';
+import { usersAPI } from '../../api/api';
 
 class UsersContainer extends Component { 
   componentDidMount(){
     this.props.toggleFetchingPage(true);
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {withCredentials: true}).then(response =>{
+    usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
       this.props.toggleFetchingPage(false);
-      this.props.setUsers(response.data.items)
-      this.props.setTotalCount(response.data.totalCount)
+      this.props.setUsers(data.items)
+      this.props.setTotalCount(data.totalCount)
     });
   };
 
   changePage = (page) => {
     this.props.setCurrentPage(page);
     this.props.toggleFetchingPage(true);
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`, {withCredentials: true}).then(response =>{
+    usersAPI.getUsers(page, this.props.pageSize).then(data => {
       this.props.toggleFetchingPage(false);
-      this.props.setUsers(response.data.items)
+      this.props.setUsers(data.items)
     });
   }
+
   unFollow = (id) => {
-    axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${id}`,{withCredentials: true, headers: {"API-KEY": "b70a55a4-db73-443c-bf0e-a8fca4d11491"}},).then(response =>{
-      if(response.data.resultCode === 0){
+    usersAPI.deleteFollow(id).then(data => {
+      if(data.resultCode === 0){
         this.props.unFollow(id)
       }
     });
   }
+
   follow = (id) => {
-    axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${id}`,{},{withCredentials: true, headers: {"API-KEY": "b70a55a4-db73-443c-bf0e-a8fca4d11491"}},).then(response =>{
-      if(response.data.resultCode === 0){
+    usersAPI.postFollow(id).then(data => {
+      if(data.resultCode === 0){
         this.props.follow(id)
       }
     });
