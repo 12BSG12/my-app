@@ -1,10 +1,27 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   grid-area: header; 
   background-color: green;
 }
-.header img{
-  margin-left: 10px;
+.logo{
   border-radius: 50%;
+  margin-left: 10px;
+}
+.link:hover{
+  text-decoration: underline;
+}
+.loginBlock{
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  color: white;
+  font-weight: 700;
+}
+.userPhoto{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin: 0 10px;
 }

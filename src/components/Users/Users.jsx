@@ -8,8 +8,6 @@ const Users = (props) => {
     photos={user.photos.small??defaultAvatar}
     name={user.name} 
     key={user.id} 
-    //counrty={user.location.counrty}
-    //city={user.location.city}
     status={user.status}
     followed ={user.followed}
     follow={props.follow}

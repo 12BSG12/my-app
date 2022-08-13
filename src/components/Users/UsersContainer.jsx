@@ -14,7 +14,7 @@ import Preloader from '../common/Preloader/Preloader';
 class UsersContainer extends Component { 
   componentDidMount(){
     this.props.toggleFetchingPage(true);
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`).then(response =>{
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`, {withCredentials: true}).then(response =>{
       this.props.toggleFetchingPage(false);
       this.props.setUsers(response.data.items)
       this.props.setTotalCount(response.data.totalCount)
@@ -24,12 +24,26 @@ class UsersContainer extends Component {
   changePage = (page) => {
     this.props.setCurrentPage(page);
     this.props.toggleFetchingPage(true);
-    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`).then(response =>{
+    axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`, {withCredentials: true}).then(response =>{
       this.props.toggleFetchingPage(false);
       this.props.setUsers(response.data.items)
     });
   }
-
+  unFollow = (id) => {
+    axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${id}`,{withCredentials: true, headers: {"API-KEY": "b70a55a4-db73-443c-bf0e-a8fca4d11491"}},).then(response =>{
+      if(response.data.resultCode === 0){
+        this.props.unFollow(id)
+      }
+    });
+  }
+  follow = (id) => {
+    axios.post(`https://social-network.samuraijs.com/api/1.0/follow/${id}`,{},{withCredentials: true, headers: {"API-KEY": "b70a55a4-db73-443c-bf0e-a8fca4d11491"}},).then(response =>{
+      if(response.data.resultCode === 0){
+        this.props.follow(id)
+      }
+    });
+  }
+  
   render(){
     let pagesCount = Math.ceil(this.props.totalCount / this.props.pageSize);
     let pagesArray = [];
@@ -47,8 +61,8 @@ class UsersContainer extends Component {
       <>
         {this.props.isFetching ? <Preloader /> : <Users  
         usersData={this.props.usersData}
-        follow={this.props.follow}
-        unFollow={this.props.unFollow}
+        follow={this.follow}
+        unFollow={this.unFollow}
         slicedPages={slicedPages}
         changePage={this.changePage}
         currentPage={this.props.currentPage}

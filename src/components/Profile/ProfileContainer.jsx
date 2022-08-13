@@ -15,8 +15,8 @@ class ProfileContainer extends Component {
   componentDidMount(){
     this.props.toggleFetchingPage(true);
     let userID = this.props.params.userId;
-    if (!userID) userID = 2;
-    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userID}`).then(response =>{
+    if (!userID) userID = this.props.defualutID;
+    axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${userID}`, {headers: {"API-KEY": "b70a55a4-db73-443c-bf0e-a8fca4d11491"}}).then(response =>{
       this.props.toggleFetchingPage(false);
       this.props.setUserProfile(response.data)
     });
@@ -36,7 +36,8 @@ const mapStateToProps = (state) =>({
   userProfileData: state.profilePage.userProfileData,
   isFetching: state.preloader.isFetching,
   postData: state.profilePage.postData,
-  newPostText: state.profilePage.newPostText
+  newPostText: state.profilePage.newPostText,
+  defualutID: state.auth.id
 });
 
 export default connect(mapStateToProps, {setUserProfile, toggleFetchingPage, upadatePostText, addPost})(withRouter(ProfileContainer));
