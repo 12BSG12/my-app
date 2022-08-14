@@ -7,10 +7,10 @@ import { usersAPI } from '../../api/api';
 
 class HeaderContainer extends Component{
   componentDidMount(){
-    usersAPI.getAuth().then(data =>{
+    usersAPI.auth.getAuth().then(data => {
       if(data.resultCode === 0){
         let {id, email, login} = data.data;
-        usersAPI.getProfile(id).then(data =>{
+        usersAPI.profile.getProfile(id).then(data =>  {
           let photo = data.photos.small ?? defaultAvatar;
           this.props.setUserData(id, email, login, photo)
         });

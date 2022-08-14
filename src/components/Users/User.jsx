@@ -2,14 +2,14 @@ import style from './Users.module.css';
 import { NavLink } from "react-router-dom";
 
 const User = (props) => {
-  const btn = () => props.followed 
-  ? <button className={style.btn} onClick={()=> props.unFollow(props.id)}>UnFollow</button>
-  : <button className={style.btn} onClick={()=> props.follow(props.id)}>Follow</button>;
+  const btn = props.followed 
+  ? <button className={style.btn} disabled={props.followindInProgress.some(id => id === props.id)} onClick={()=> props.unFollow(props.id)}>UnFollow</button>
+  : <button className={style.btn} disabled={props.followindInProgress.some(id => id === props.id)} onClick={()=> props.follow(props.id)}>Follow</button>;
   return (
     <div className={style.item}>
         <div className={style.left}>          
           <NavLink to={"/profile/" + props.id}><img className={style.img} src={props.photos} alt="" /></NavLink>
-          {btn()}
+          {btn}
         </div>
         <div className={style.right}>
           <div className={style.info}>

@@ -12,6 +12,7 @@ const Users = (props) => {
     followed ={user.followed}
     follow={props.follow}
     unFollow={props.unFollow}
+    followindInProgress={props.followindInProgress}
   />);
   return(
     <div className={style.body}>

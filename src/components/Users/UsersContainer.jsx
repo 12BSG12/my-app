@@ -6,7 +6,8 @@ import { follow,
   setUsers,
   setPageSize, 
   setTotalCount,
-  setCurrentPage } from '../../redux/users-reducer';
+  setCurrentPage,
+  togglefollowindProgress } from '../../redux/users-reducer';
 import {toggleFetchingPage} from '../../redux/preloader-reducer'
 import Preloader from '../common/Preloader/Preloader';
 import { usersAPI } from '../../api/api';
@@ -14,7 +15,7 @@ import { usersAPI } from '../../api/api';
 class UsersContainer extends Component { 
   componentDidMount(){
     this.props.toggleFetchingPage(true);
-    usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+    usersAPI.users.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
       this.props.toggleFetchingPage(false);
       this.props.setUsers(data.items)
       this.props.setTotalCount(data.totalCount)
@@ -24,25 +25,29 @@ class UsersContainer extends Component {
   changePage = (page) => {
     this.props.setCurrentPage(page);
     this.props.toggleFetchingPage(true);
-    usersAPI.getUsers(page, this.props.pageSize).then(data => {
+    usersAPI.users.getUsers(page, this.props.pageSize).then(data => {
       this.props.toggleFetchingPage(false);
       this.props.setUsers(data.items)
     });
   }
 
   unFollow = (id) => {
-    usersAPI.deleteFollow(id).then(data => {
+    this.props.togglefollowindProgress(id, true);
+    usersAPI.follow.deleteFollow(id).then(data => {
       if(data.resultCode === 0){
         this.props.unFollow(id)
       }
+      this.props.togglefollowindProgress(id, false);
     });
   }
 
   follow = (id) => {
-    usersAPI.postFollow(id).then(data => {
+    this.props.togglefollowindProgress(id, true);
+    usersAPI.follow.postFollow(id).then(data => {
       if(data.resultCode === 0){
         this.props.follow(id)
       }
+      this.props.togglefollowindProgress(id, false);
     });
   }
   
@@ -58,17 +63,15 @@ class UsersContainer extends Component {
     let curPF = ((curP - 5) < 0) ?  0  : curP - 5;
     let curPL = curP + 4;
     let slicedPages = pagesArray.slice( curPF, curPL);
-
+    const {usersData, currentPage, isFetching, followindInProgress} = this.props
     return(
       <>
         {this.props.isFetching ? <Preloader /> : <Users  
-        usersData={this.props.usersData}
         follow={this.follow}
         unFollow={this.unFollow}
         slicedPages={slicedPages}
         changePage={this.changePage}
-        currentPage={this.props.currentPage}
-        isFetching={this.props.isFetching}
+        {...{usersData, currentPage, isFetching, followindInProgress}}
         />}
       </>
     );
@@ -81,16 +84,7 @@ const mapStateToProps = (state) =>({
   totalCount: state.usersPage.totalCount,
   currentPage: state.usersPage.currentPage,
   isFetching: state.preloader.isFetching,
+  followindInProgress: state.usersPage.followindInProgress
 });
 
-// const mapDispatchToProps = (dispatch) =>({
-//   follow: (id) => {dispatch(followActionCreator(id));},
-//   unFollow: (id) => {dispatch(unFollowActionCreator(id));},
-//   setUsers: (users) => {dispatch(setUsersActionCreator(users));},
-//   setPageSize: (count) => {dispatch(setPageSizeActionCreator(count));},
-//   setTotalCount: (count) => {dispatch(setTotalCountActionCreator(count));},
-//   setCurrentPage: (count) => {dispatch(setCurrentPageActionCreator(count));},
-//   toggleFetchingPage: (boolean) => {dispatch(toggleFetchingActionCreator(boolean));},
-// });
-
-export default connect(mapStateToProps, { follow, unFollow, setUsers, setPageSize, setTotalCount, setCurrentPage, toggleFetchingPage })(UsersContainer);
+export default connect(mapStateToProps, { follow, unFollow, setUsers, setPageSize, setTotalCount, setCurrentPage, toggleFetchingPage, togglefollowindProgress })(UsersContainer);

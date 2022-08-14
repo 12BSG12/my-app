@@ -4,12 +4,14 @@ const SET_USERS = 'SET-USERS';
 const SET_PAGE_SIZE = 'SET-PAGE-SIZE';
 const SET_TOTAL_COUNT = 'SET-TOTAL-COUNT';
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE';
+const TOGGLE_FOLLOWING_IN_PROGRESS = 'TOGGLE-FOLLOWING-IN-PROGRESS'
 
 let initialState = {
   usersData: [],
   pageSize: 4,
   totalCount: 0,
-  currentPage: 1
+  currentPage: 1,
+  followindInProgress: [],
 }
 
 const usersReducer = (state = initialState, action) => {
@@ -44,6 +46,13 @@ const usersReducer = (state = initialState, action) => {
         ...state,
         currentPage: action.count
       }
+    case TOGGLE_FOLLOWING_IN_PROGRESS:
+      return {
+        ...state,
+        followindInProgress: action.boolean
+        ? [...state.followindInProgress, action.id]
+        : state.followindInProgress.filter(id => id !== action.id)
+      }
     default:
       return state;
   }
@@ -73,6 +82,12 @@ export const setTotalCount = (count) => ({
 export const setCurrentPage = (count) => ({
   type: SET_CURRENT_PAGE,
   count
+});
+
+export const togglefollowindProgress = (id, boolean) => ({
+  type: TOGGLE_FOLLOWING_IN_PROGRESS,
+  id,
+  boolean
 });
 
 export default usersReducer;

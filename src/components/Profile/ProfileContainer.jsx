@@ -16,18 +16,17 @@ class ProfileContainer extends Component {
     this.props.toggleFetchingPage(true);
     let userID = this.props.params.userId;
     if (!userID) userID = this.props.defualutID;
-    usersAPI.getProfile(userID).then(data => {
+    usersAPI.profile.getProfile(userID).then(data => {
       this.props.toggleFetchingPage(false);
       this.props.setUserProfile(data);
     });
   }
   render(){
+    const {userProfileData, postData, newPostText, upadatePostText, addPost} = this.props;
     return (
       <main>
         {!this.props.userProfileData || this.props.isFetching ? <Preloader /> 
-        : <Profile userProfileData={this.props.userProfileData}
-         postData = {this.props.postData} newPostText ={this.props.newPostText} 
-         upadatePostText={this.props.upadatePostText} addPost={this.props.addPost}/>}
+        : <Profile {...{userProfileData, postData, newPostText, upadatePostText, addPost}}/>}
       </main>
     );
   }
