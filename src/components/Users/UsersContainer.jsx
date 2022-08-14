@@ -3,6 +3,7 @@ import {Component} from 'react';
 import { connect } from 'react-redux'
 import { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator } from '../../redux/users-reducer';
 import Preloader from '../common/Preloader/Preloader';
+import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 
 class UsersContainer extends Component { 
   componentDidMount(){
@@ -51,4 +52,4 @@ const mapStateToProps = (state) =>({
   followindInProgress: state.usersPage.followindInProgress
 });
 
-export default connect(mapStateToProps, { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator })(UsersContainer);
+export default connect(mapStateToProps, { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator })(withAuthNavigate(UsersContainer));

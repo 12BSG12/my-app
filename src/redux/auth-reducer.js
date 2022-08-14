@@ -1,4 +1,5 @@
 import { usersAPI } from '../api/api';
+import defaultAvatar from '../assets/images/default_avatar.webp';
 
 const SET_USER_DATA = 'SET_USER_DATA';
 
@@ -38,7 +39,7 @@ export const setUserDataThunkCreator = () => (dispatch) =>{
     if(data.resultCode === 0){
       let {id, email, login} = data.data;
       usersAPI.profile.getProfile(id).then(data =>  {
-        let photo = data.photos.small;
+        let photo = data.photos.small??defaultAvatar;
         dispatch(setUserData(id, email, login, photo));
       });
     }

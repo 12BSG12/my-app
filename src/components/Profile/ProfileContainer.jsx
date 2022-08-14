@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Preloader from '../common/Preloader/Preloader';
 import { upadatePostText, addPost, setUserProfileThunkCreator } from '../../redux/profile-reducer';
 import { useParams } from 'react-router-dom';
+import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 
 const withRouter = (WrappedComponent) => (props) => {
   const params = useParams();
@@ -45,4 +46,4 @@ const mapStateToProps = (state) =>({
   defualutID: state.auth.id
 });
 
-export default connect(mapStateToProps, {setUserProfileThunkCreator, upadatePostText, addPost})(withRouter(ProfileContainer));
+export default connect(mapStateToProps, {setUserProfileThunkCreator, upadatePostText, addPost})(withAuthNavigate(withRouter(ProfileContainer)));

@@ -1,10 +1,9 @@
 import Dialogs from './Dialogs';
 import {updateMessage, sendMessage} from '../../redux/dialogs-reducer';
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import { Component } from 'react';
-
+import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 class DialogsContainer extends Component {
-
   handleMessageChange = (e) => {
     let text = e.target.value;
     this.props.updateMessage(text);
@@ -30,4 +29,4 @@ const mapStateToProps = (state) =>({
   newMessageText: state.dialogsPage.newMessageText
 });
 
-export default connect(mapStateToProps, {updateMessage, sendMessage})(DialogsContainer);
+export default connect(mapStateToProps, {updateMessage, sendMessage})(withAuthNavigate(DialogsContainer));

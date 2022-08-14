@@ -22,6 +22,9 @@
 .userPhoto{
   width: 32px;
   height: 32px;
-  border-radius: 50%;
   margin: 0 10px;
+}
+.userPhoto img{
+  width: 100%;
+  border-radius: 50%;
 }
