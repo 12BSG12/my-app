@@ -1,6 +1,28 @@
 import Dialogs from './Dialogs';
-import {updateMessageActionCreator, sendMessageActionCreator} from '../../redux/dialogs-reducer';
+import {updateMessage, sendMessage} from '../../redux/dialogs-reducer';
 import {connect} from 'react-redux'
+import { Component } from 'react';
+
+class DialogsContainer extends Component {
+
+  handleMessageChange = (e) => {
+    let text = e.target.value;
+    this.props.updateMessage(text);
+  };
+
+  sendMessage = () => {
+    if(this.props.newMessageText !== ''){
+      this.props.sendMessage();
+    }
+    else
+      alert('Введите текст поста')
+  };
+
+  render() {
+    const {dialogsData, messagesData, newMessageText} = this.props
+    return <Dialogs {...{dialogsData, messagesData, newMessageText}} handleMessageChange={this.handleMessageChange} sendMessage={this.sendMessage}/>;
+  }
+}
 
 const mapStateToProps = (state) =>({
   dialogsData: state.dialogsPage.dialogsData,
@@ -8,24 +30,4 @@ const mapStateToProps = (state) =>({
   newMessageText: state.dialogsPage.newMessageText
 });
 
-const mapDispatchToProps = (dispatch) =>({
-  updateMessageText: (text) => {dispatch(updateMessageActionCreator(text));},
-  sendMessage: () => {dispatch(sendMessageActionCreator());}
-});
-
-const DialogsContainer = connect(mapStateToProps,mapDispatchToProps)(Dialogs);
-export default DialogsContainer;
-
-// const DialogsContainer = (props) => {
-//   const dispatch = useDispatch();
-//   const state = useSelector(state => state.dialogsPage);
-//   const handleMessageChange = (text) => {
-//     dispatch(updateMessageActionCreator(text));
-//   };
-//   const sendMessage = () => {
-//     dispatch(sendMessageActionCreator());
-//   };
-//   return <Dialogs updateMessageText={handleMessageChange} sendMessage={sendMessage} {...state}/>
-// } 
-
-// export default DialogsContainer;
+export default connect(mapStateToProps, {updateMessage, sendMessage})(DialogsContainer);

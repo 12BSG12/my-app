@@ -1,42 +1,48 @@
 import { Component } from 'react';
 import Profile from './Profile';
 import { connect } from 'react-redux'
-import {toggleFetchingPage} from '../../redux/preloader-reducer'
 import Preloader from '../common/Preloader/Preloader';
-import { upadatePostText, addPost, setUserProfile } from '../../redux/profile-reducer';
+import { upadatePostText, addPost, setUserProfileThunkCreator } from '../../redux/profile-reducer';
 import { useParams } from 'react-router-dom';
-import { usersAPI } from '../../api/api';
 
 const withRouter = (WrappedComponent) => (props) => {
   const params = useParams();
   return <WrappedComponent {...props} params={params} />;
 };
+
 class ProfileContainer extends Component {
   componentDidMount(){
-    this.props.toggleFetchingPage(true);
     let userID = this.props.params.userId;
     if (!userID) userID = this.props.defualutID;
-    usersAPI.profile.getProfile(userID).then(data => {
-      this.props.toggleFetchingPage(false);
-      this.props.setUserProfile(data);
-    });
+    this.props.setUserProfileThunkCreator(userID);
   }
+  onPostChange = (e) => {
+    let text = e.target.value;
+    this.props.upadatePostText(text)
+  };
+  onAddPost = () => {
+    if(this.props.newPostText !== ''){
+      this.props.addPost();
+    }
+    else
+      alert('Введите текст поста')
+  };
   render(){
-    const {userProfileData, postData, newPostText, upadatePostText, addPost} = this.props;
+    const {userProfileData, postData, newPostText} = this.props;
     return (
       <main>
         {!this.props.userProfileData || this.props.isFetching ? <Preloader /> 
-        : <Profile {...{userProfileData, postData, newPostText, upadatePostText, addPost}}/>}
+        : <Profile {...{userProfileData, postData, newPostText}} onPostChange={this.onPostChange} onAddPost={this.onAddPost}/>}
       </main>
     );
   }
 }
 const mapStateToProps = (state) =>({
   userProfileData: state.profilePage.userProfileData,
-  isFetching: state.preloader.isFetching,
+  isFetching: state.profilePage.isFetching,
   postData: state.profilePage.postData,
   newPostText: state.profilePage.newPostText,
   defualutID: state.auth.id
 });
 
-export default connect(mapStateToProps, {setUserProfile, toggleFetchingPage, upadatePostText, addPost})(withRouter(ProfileContainer));
+export default connect(mapStateToProps, {setUserProfileThunkCreator, upadatePostText, addPost})(withRouter(ProfileContainer));

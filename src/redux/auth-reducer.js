@@ -1,3 +1,5 @@
+import { usersAPI } from '../api/api';
+
 const SET_USER_DATA = 'SET_USER_DATA';
 
 let initialState = {
@@ -21,7 +23,7 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
-export const setUserData = (id, email, login, photo) => ({
+const setUserData = (id, email, login, photo) => ({
   type: SET_USER_DATA,
   data: {
     id,
@@ -30,5 +32,17 @@ export const setUserData = (id, email, login, photo) => ({
     photo
   }
 });
+
+export const setUserDataThunkCreator = () => (dispatch) =>{
+  usersAPI.auth.getAuth().then(data => {
+    if(data.resultCode === 0){
+      let {id, email, login} = data.data;
+      usersAPI.profile.getProfile(id).then(data =>  {
+        let photo = data.photos.small;
+        dispatch(setUserData(id, email, login, photo));
+      });
+    }
+  });
+}
 
 export default authReducer;

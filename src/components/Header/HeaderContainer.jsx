@@ -1,25 +1,16 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import Header from "./Header";
-import { setUserData } from '../../redux/auth-reducer';
+import { setUserDataThunkCreator } from '../../redux/auth-reducer';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
-import { usersAPI } from '../../api/api';
 
 class HeaderContainer extends Component{
   componentDidMount(){
-    usersAPI.auth.getAuth().then(data => {
-      if(data.resultCode === 0){
-        let {id, email, login} = data.data;
-        usersAPI.profile.getProfile(id).then(data =>  {
-          let photo = data.photos.small ?? defaultAvatar;
-          this.props.setUserData(id, email, login, photo)
-        });
-      }
-    });
+    this.props.setUserDataThunkCreator();
   }
   render(){
     return(
-      <Header login={this.props.login} isAuth={this.props.isAuth} photo={this.props.photo}/>
+      <Header login={this.props.login} isAuth={this.props.isAuth} photo={this.props.photo??defaultAvatar}/>
     );
   }
 }
@@ -32,4 +23,4 @@ const mapStateToProps = (state) =>({
   photo: state.auth.photo
 });
 
-export default connect(mapStateToProps,{setUserData})(HeaderContainer)
+export default connect(mapStateToProps,{setUserDataThunkCreator})(HeaderContainer)

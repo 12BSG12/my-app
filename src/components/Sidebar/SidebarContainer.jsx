@@ -1,18 +1,15 @@
 import Sidebar from './Sidebar';
 import { connect } from 'react-redux'
+import { Component } from 'react';
+
+class SidebarContainer extends Component{
+  render(){
+    return <Sidebar friendsData={this.props.friendsData}/>
+  }
+}
 
 const mapStateToProps = (state) =>({
   friendsData: state.sidebar.friendsData,
 });
 
-const SidebarContainer = connect(mapStateToProps)(Sidebar);
-export default SidebarContainer;
-
-// const SidebarContainer = (props) => {
-//   const state = useSelector(state => state.sidebar);
-//   return (
-//     <Sidebar {...state}/>
-//   );
-// } 
-
-// export default SidebarContainer;
+export default connect(mapStateToProps)(SidebarContainer);

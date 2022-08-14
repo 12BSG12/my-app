@@ -1,6 +1,9 @@
+import { usersAPI } from '../api/api';
+
 const ADD_POST = 'ADD-POST';
 const UPDATE_POST_TEXT = 'UPDATE-POST-TEXT';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
+const TOGGLE_FETCHING = 'TOGGLE-FETCHING';
 
 let initialState = {
   userProfileData : null,
@@ -9,6 +12,7 @@ let initialState = {
     {id: 2, message:'It`s our new program! Hey!', likesCount: 24},
   ],
   newPostText: '',
+  isFetching: false
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -29,6 +33,11 @@ const profileReducer = (state = initialState, action) => {
         ...state, 
         userProfileData: action.profile
       }
+    case TOGGLE_FETCHING:
+      return {
+        ...state,
+        isFetching: action.boolean
+      }
     default:
       return state;
   };
@@ -41,10 +50,21 @@ export const upadatePostText = (text) => ({
 export const addPost = () => ({
   type: ADD_POST
 });
- 
-export const setUserProfile = (profile) => ({
+const setUserProfile = (profile) => ({
   type: SET_USER_PROFILE,
   profile
-}); 
+});
+const toggleFetchingPage = (boolean) => ({
+  type: TOGGLE_FETCHING,
+  boolean
+});
+
+export const setUserProfileThunkCreator = (userID) => (dispatch) => {
+  dispatch(toggleFetchingPage(true));
+  usersAPI.profile.getProfile(userID).then(data => {
+    dispatch(toggleFetchingPage(false));
+    dispatch(setUserProfile(data));
+  });
+}
 
 export default profileReducer;

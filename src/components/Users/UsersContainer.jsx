@@ -1,55 +1,19 @@
 import Users from './Users';
 import {Component} from 'react';
 import { connect } from 'react-redux'
-import { follow, 
-  unFollow, 
-  setUsers,
-  setPageSize, 
-  setTotalCount,
-  setCurrentPage,
-  togglefollowindProgress } from '../../redux/users-reducer';
-import {toggleFetchingPage} from '../../redux/preloader-reducer'
+import { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator } from '../../redux/users-reducer';
 import Preloader from '../common/Preloader/Preloader';
-import { usersAPI } from '../../api/api';
 
 class UsersContainer extends Component { 
   componentDidMount(){
-    this.props.toggleFetchingPage(true);
-    usersAPI.users.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-      this.props.toggleFetchingPage(false);
-      this.props.setUsers(data.items)
-      this.props.setTotalCount(data.totalCount)
-    });
+    this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
   };
 
-  changePage = (page) => {
-    this.props.setCurrentPage(page);
-    this.props.toggleFetchingPage(true);
-    usersAPI.users.getUsers(page, this.props.pageSize).then(data => {
-      this.props.toggleFetchingPage(false);
-      this.props.setUsers(data.items)
-    });
-  }
+  changePage = (page) => this.props.changePageThunkCreator(page, this.props.pageSize);
 
-  unFollow = (id) => {
-    this.props.togglefollowindProgress(id, true);
-    usersAPI.follow.deleteFollow(id).then(data => {
-      if(data.resultCode === 0){
-        this.props.unFollow(id)
-      }
-      this.props.togglefollowindProgress(id, false);
-    });
-  }
+  unFollow = (id) => this.props.unFollowThunkCreator(id);
 
-  follow = (id) => {
-    this.props.togglefollowindProgress(id, true);
-    usersAPI.follow.postFollow(id).then(data => {
-      if(data.resultCode === 0){
-        this.props.follow(id)
-      }
-      this.props.togglefollowindProgress(id, false);
-    });
-  }
+  follow = (id) => this.props.followThunkCreator(id);
   
   render(){
     let pagesCount = Math.ceil(this.props.totalCount / this.props.pageSize);
@@ -83,8 +47,8 @@ const mapStateToProps = (state) =>({
   pageSize: state.usersPage.pageSize,
   totalCount: state.usersPage.totalCount,
   currentPage: state.usersPage.currentPage,
-  isFetching: state.preloader.isFetching,
+  isFetching: state.usersPage.isFetching,
   followindInProgress: state.usersPage.followindInProgress
 });
 
-export default connect(mapStateToProps, { follow, unFollow, setUsers, setPageSize, setTotalCount, setCurrentPage, toggleFetchingPage, togglefollowindProgress })(UsersContainer);
+export default connect(mapStateToProps, { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator })(UsersContainer);

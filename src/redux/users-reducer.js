@@ -1,9 +1,11 @@
+import { usersAPI } from '../api/api';
+
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
 const SET_USERS = 'SET-USERS';
-const SET_PAGE_SIZE = 'SET-PAGE-SIZE';
 const SET_TOTAL_COUNT = 'SET-TOTAL-COUNT';
 const SET_CURRENT_PAGE = 'SET-CURRENT-PAGE';
+const TOGGLE_FETCHING = 'TOGGLE-FETCHING';
 const TOGGLE_FOLLOWING_IN_PROGRESS = 'TOGGLE-FOLLOWING-IN-PROGRESS'
 
 let initialState = {
@@ -12,6 +14,7 @@ let initialState = {
   totalCount: 0,
   currentPage: 1,
   followindInProgress: [],
+  isFetching: false
 }
 
 const usersReducer = (state = initialState, action) => {
@@ -31,11 +34,6 @@ const usersReducer = (state = initialState, action) => {
         ...state, 
         usersData: action.users
       }
-    case SET_PAGE_SIZE:
-      return {
-        ...state,
-        pageSize: action.count
-      }
     case SET_TOTAL_COUNT:
       return {
         ...state,
@@ -45,6 +43,11 @@ const usersReducer = (state = initialState, action) => {
       return {
         ...state,
         currentPage: action.count
+      }
+    case TOGGLE_FETCHING:
+      return {
+        ...state,
+        isFetching: action.boolean
       }
     case TOGGLE_FOLLOWING_IN_PROGRESS:
       return {
@@ -59,35 +62,72 @@ const usersReducer = (state = initialState, action) => {
 };
 
 
-export const follow = (userID) => ({
+const follow = (userID) => ({
   type: FOLLOW,
   userID
 }); 
-export const unFollow = (userID) => ({
+const unFollow = (userID) => ({
   type: UNFOLLOW,
   userID
 });
-export const setUsers = (users) => ({
+const setUsers = (users) => ({
   type: SET_USERS,
   users
 });
-export const setPageSize = (count) => ({
-  type: SET_PAGE_SIZE,
-  count
-});
-export const setTotalCount = (count) => ({
+const setTotalCount = (count) => ({
   type: SET_TOTAL_COUNT,
   count
 });
-export const setCurrentPage = (count) => ({
+const setCurrentPage = (count) => ({
   type: SET_CURRENT_PAGE,
   count
 });
-
-export const togglefollowindProgress = (id, boolean) => ({
+const toggleFetchingPage = (boolean) => ({
+  type: TOGGLE_FETCHING,
+  boolean
+});
+const togglefollowindProgress = (id, boolean) => ({
   type: TOGGLE_FOLLOWING_IN_PROGRESS,
   id,
   boolean
 });
+
+export const getUsersThunkCreator  = (currentPage, pageSize) => (dispatch) => {
+  dispatch(toggleFetchingPage(true));
+  usersAPI.users.getUsers(currentPage, pageSize).then(data => {
+    dispatch(toggleFetchingPage(false));
+    dispatch(setUsers(data.items))
+    dispatch(setTotalCount(data.totalCount))
+  });
+}
+
+export const changePageThunkCreator  = (page, pageSize) => (dispatch) => {
+  dispatch(setCurrentPage(page));
+  dispatch(toggleFetchingPage(true));
+  usersAPI.users.getUsers(page, pageSize).then(data => {
+    dispatch(toggleFetchingPage(false));
+    dispatch(setUsers(data.items))
+  });
+}
+
+export const unFollowThunkCreator  = (id) => (dispatch) => {
+  dispatch(togglefollowindProgress(id, true));
+  usersAPI.follow.deleteFollow(id).then(data => {
+    if(data.resultCode === 0){
+      dispatch(unFollow(id))
+    }
+    dispatch(togglefollowindProgress(id, false));
+  });
+}
+
+export const followThunkCreator  = (id) => (dispatch) => {
+  dispatch(togglefollowindProgress(id, true));
+  usersAPI.follow.postFollow(id).then(data => {
+    if(data.resultCode === 0){
+      dispatch(follow(id))
+    }
+    dispatch(togglefollowindProgress(id, false));
+  });
+}
 
 export default usersReducer;
