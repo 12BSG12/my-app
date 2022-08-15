@@ -26,6 +26,13 @@ class UserStatus extends Component {
     })
     this.props.updateProfileStatusThunkCreator(this.state.status);
   }
+  componentDidUpdate(prevProps){
+    if(prevProps.status !== this.props.status){
+      this.setState({
+        status: this.props.status
+      })
+    }
+  }
   render(){
     const status = !this.state.editeMode 
     ? <div onDoubleClick={this.activateEditeMode}>Status: {this.props.status || '...'}</div> 
