@@ -3,6 +3,7 @@ import {updateMessage, sendMessage} from '../../redux/dialogs-reducer';
 import { connect } from 'react-redux'
 import { Component } from 'react';
 import { withAuthNavigate } from '../../hoc/withAuthNavigate';
+import { compose } from 'redux';
 class DialogsContainer extends Component {
   handleMessageChange = (e) => {
     let text = e.target.value;
@@ -29,4 +30,5 @@ const mapStateToProps = (state) =>({
   newMessageText: state.dialogsPage.newMessageText
 });
 
-export default connect(mapStateToProps, {updateMessage, sendMessage})(withAuthNavigate(DialogsContainer));
+export default compose(connect(mapStateToProps, {updateMessage, sendMessage}), withAuthNavigate)(DialogsContainer);
+

@@ -6,6 +6,7 @@ const instance = axios.create({
   withCredentials: true,
   headers: key
 });
+
 export const usersAPI = {
   follow: {
     deleteFollow(id) {return instance.delete(`follow/${id}`).then(response => response.data)},
@@ -13,6 +14,8 @@ export const usersAPI = {
   },
   profile: {
     getProfile(id) {return instance.get(`profile/${id}`).then(response => response.data)},
+    getProfileStatus(id) {return instance.get(`profile/status/${id}`).then(response => response.data)},
+    putProfileStatus(status) {return instance.put('profile/status', {status: status}).then(response => response.data)},
   },
   auth: {
     getAuth() {return instance.get('auth/me').then(response => response.data)},
