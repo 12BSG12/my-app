@@ -1,5 +1,9 @@
 import style from './login.module.css'
 import { Field, reduxForm } from 'redux-form'
+import {Element} from '../common/FormControls/FormControls'
+import {required} from '../../util/validators/validators'
+
+const Input = Element("input");
 
 const LoginForm = (props) => {
   return (
@@ -8,13 +12,13 @@ const LoginForm = (props) => {
         <li>
           <div className={style.item}>
             <label htmlFor="name">E-Mail</label>
-            <Field name="email" type="email" component="input"/>
+            <Field name="email" type="email" component={Input} validate={[required]}/>
           </div>
         </li>
         <li>
           <div className={style.item}>
             <label htmlFor="password">Password</label>
-            <Field name="password" type="password" component="input"/>
+            <Field name="password" type="password" component={Input} validate={[required]}/>
           </div>
         </li>
         <li>

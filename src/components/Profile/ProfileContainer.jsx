@@ -21,12 +21,8 @@ class ProfileContainer extends Component {
   }
 
   onSubmit = (formData) => {
-    if(formData.message){
-      this.props.addPost(formData.message);
-      formData.message = null;
-    }
-    else
-      alert('Введите текст поста')
+    this.props.addPost(formData.message);
+    formData.message = null;
   }
 
   render(){

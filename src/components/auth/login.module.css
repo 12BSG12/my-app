@@ -24,9 +24,7 @@
   display: flex;
   align-items: center;
 }
-input{
-  border: 1px solid red;
-}
+
 li:not(:last-child){
   margin-bottom: 20px;
 }

@@ -13,8 +13,8 @@ class Login extends Component {
     return (
       <div className={style.formBlock}>
         <ul className={style.formNav}>
-          <li className={style.active}><a href="#">Sign In</a></li>
-          <li><a href="#">Sign Up</a></li>
+          <li className={style.active}>Sign In</li>
+          <li>Sign Up</li>
         </ul>
         <div className={style.formUlBlock}>
           <LoginReduxForm onSubmit={this.onSubmit}/>

@@ -6,12 +6,8 @@ import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 import { compose } from 'redux';
 class DialogsContainer extends Component {
   onSubmit = (formData) => {
-    if(formData.message){
-      this.props.sendMessage(formData.message);
-      formData.message = null;
-    }
-    else
-      alert('Введите текст поста')
+    this.props.sendMessage(formData.message);
+    formData.message = null;
   }
   render() {
     const {dialogsData, messagesData} = this.props
