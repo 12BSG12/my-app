@@ -1,10 +1,11 @@
 import User from './User/User';
 import style from './Dialogs.module.css';
 import Message from './Message/Message';
+import DialogsReduxForm from './DialogsForm';
 
 const Dialogs = (props) => {
-  const getDialogs = props.dialogsData.map(dialog => <User username={dialog.name} key={dialog.id} id={dialog.id}/>);
-  const getMassage = props.messagesData.map(message => <Message message={message.message} id={message.id} key={message.id}/>);
+  const getDialogs = props.dialogsData.map((dialog, i) => <User username={dialog.name} key={i} id={dialog.id}/>);
+  const getMassage = props.messagesData.map((message,i) => <Message message={message.message} id={message.id} key={i}/>);
   return (
     <div>
       <div className={style.title}>Dialogs</div>
@@ -16,10 +17,7 @@ const Dialogs = (props) => {
           <div className={style.message}>
             { getMassage }
           </div>
-          <div className={style.body}>
-            <textarea className={style.textarea} value={props.newMessageText} onChange={props.handleMessageChange} placeholder='Write a message...'/>
-            <button className={style.btn} onClick={props.sendMessage}>Send</button>
-          </div>
+          <DialogsReduxForm onSubmit={props.onSubmit}/>
         </div>
       </div>
     </div>

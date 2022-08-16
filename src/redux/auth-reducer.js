@@ -2,13 +2,15 @@ import { usersAPI } from '../api/api';
 import defaultAvatar from '../assets/images/default_avatar.webp';
 
 const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_PASS = 'SET_USER_PASS';
 
 let initialState = {
   id: null,
   email: null,
   login: null,
   isAuth: false,
-  photo: null
+  photo: null,
+  pass: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -18,6 +20,11 @@ const authReducer = (state = initialState, action) => {
         ...state, 
         ...action.data,
         isAuth: true
+      };
+    case SET_USER_PASS:
+      return {
+        ...state,
+        pass: action.pass
       };
     default:
       return state;
@@ -34,6 +41,11 @@ const setUserData = (id, email, login, photo) => ({
   }
 });
 
+const setUserPass = (pass) => ({
+  type: SET_USER_PASS,
+  pass
+});
+
 export const setUserDataThunkCreator = () => (dispatch) =>{
   usersAPI.auth.getAuth().then(data => {
     if(data.resultCode === 0){
@@ -42,6 +54,15 @@ export const setUserDataThunkCreator = () => (dispatch) =>{
         let photo = data.photos.small??defaultAvatar;
         dispatch(setUserData(id, email, login, photo));
       });
+    }
+  });
+}
+
+export const loginThunkCreator = (formData) => (dispatch) =>{
+  usersAPI.auth.getLogin(formData).then(data => {
+    if(data.resultCode !== 0){
+      console.log(data);
+      dispatch(setUserPass(formData.password));
     }
   });
 }

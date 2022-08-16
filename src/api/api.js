@@ -19,6 +19,7 @@ export const usersAPI = {
   },
   auth: {
     getAuth() {return instance.get('auth/me').then(response => response.data)},
+    getLogin(formData) {return instance.post('auth/login', {formData: formData}).then(response => response.data)},
   },
   users: {
     getUsers(currentPage, pageSize) {return instance.get(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data)},
