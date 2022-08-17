@@ -1,5 +1,6 @@
 import { usersAPI } from '../api/api';
 import defaultAvatar from '../assets/images/default_avatar.webp';
+import { stopSubmit  } from 'redux-form';
 
 const SET_USER_DATA = 'SET_USER_DATA';
 
@@ -34,8 +35,8 @@ const setUserData = (id, email, login, isAuth, photo) => ({
   }
 });
 
-export const setUserDataThunkCreator = () => (dispatch) =>{
-  usersAPI.auth.getAuth().then(data => {
+export const getUserDataThunkCreator = () => (dispatch) =>{
+  return usersAPI.auth.getAuth().then(data => {
     if(data.resultCode === 0){
       let {id, email, login} = data.data;
       usersAPI.profile.getProfile(id).then(data =>  {
@@ -46,10 +47,13 @@ export const setUserDataThunkCreator = () => (dispatch) =>{
   });
 }
 
-export const loginThunkCreator = (email, password, rememberMe) => (dispatch) =>{
+export const loginThunkCreator = (email, password, rememberMe) => (dispatch) => {
   usersAPI.auth.postLogin(email, password, rememberMe).then(response => {
     if(response.data.resultCode === 0){
-      dispatch(setUserDataThunkCreator());
+      dispatch(getUserDataThunkCreator());
+    } else if(response.data.resultCode === 1){
+      let messageErrow = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
+      dispatch(stopSubmit('login', {_error: messageErrow}))
     }
   });
 }

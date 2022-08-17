@@ -34,3 +34,6 @@ a{
 .active{
   color: aqua;
 }
+.formSummaryError{
+  color: red;
+}

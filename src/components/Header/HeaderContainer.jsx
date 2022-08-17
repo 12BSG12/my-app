@@ -1,13 +1,9 @@
 import { Component } from "react";
 import { connect } from "react-redux";
 import Header from "./Header";
-import { setUserDataThunkCreator, logOutThunkCreator } from '../../redux/auth-reducer';
+import { logOutThunkCreator } from '../../redux/auth-reducer';
 
 class HeaderContainer extends Component{
-  componentDidMount(){
-    this.props.setUserDataThunkCreator();
-  }
-
   onClickLogOut = () => {
     this.props.logOutThunkCreator();
   }
@@ -26,4 +22,4 @@ const mapStateToProps = (state) =>({
   photo: state.auth.photo
 });
 
-export default connect(mapStateToProps,{setUserDataThunkCreator, logOutThunkCreator})(HeaderContainer)
+export default connect(mapStateToProps,{ logOutThunkCreator})(HeaderContainer)

@@ -10,7 +10,7 @@ class Login extends Component {
     this.props.loginThunkCreator(formData.email, formData.password, formData.rememberMe)
   }
   render(){
-    if(this.props.isAuth) return <Navigate to='/profile'/>
+    if(this.props.isAuth) return <Navigate to='/'/>
     return (
       <div className={style.formBlock}>
         <ul className={style.formNav}>
