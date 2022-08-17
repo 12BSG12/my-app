@@ -19,7 +19,8 @@ export const usersAPI = {
   },
   auth: {
     getAuth() {return instance.get('auth/me').then(response => response.data)},
-    getLogin(formData) {return instance.post('auth/login', {formData: formData}).then(response => response.data)},
+    postLogin(email, password, rememberMe=false) {return instance.post('auth/login', {email, password, rememberMe})},
+    deleteLogOut() {return instance.delete('auth/login' )},
   },
   users: {
     getUsers(currentPage, pageSize) {return instance.get(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data)},

@@ -2,7 +2,6 @@ import { usersAPI } from '../api/api';
 import defaultAvatar from '../assets/images/default_avatar.webp';
 
 const SET_USER_DATA = 'SET_USER_DATA';
-const SET_USER_PASS = 'SET_USER_PASS';
 
 let initialState = {
   id: null,
@@ -10,7 +9,6 @@ let initialState = {
   login: null,
   isAuth: false,
   photo: null,
-  pass: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -18,32 +16,22 @@ const authReducer = (state = initialState, action) => {
     case SET_USER_DATA:
       return {
         ...state, 
-        ...action.data,
-        isAuth: true
-      };
-    case SET_USER_PASS:
-      return {
-        ...state,
-        pass: action.pass
+        ...action.data
       };
     default:
       return state;
   }
 };
 
-const setUserData = (id, email, login, photo) => ({
+const setUserData = (id, email, login, isAuth, photo) => ({
   type: SET_USER_DATA,
   data: {
     id,
     email,
     login,
+    isAuth,
     photo
   }
-});
-
-const setUserPass = (pass) => ({
-  type: SET_USER_PASS,
-  pass
 });
 
 export const setUserDataThunkCreator = () => (dispatch) =>{
@@ -52,17 +40,24 @@ export const setUserDataThunkCreator = () => (dispatch) =>{
       let {id, email, login} = data.data;
       usersAPI.profile.getProfile(id).then(data =>  {
         let photo = data.photos.small??defaultAvatar;
-        dispatch(setUserData(id, email, login, photo));
+        dispatch(setUserData(id, email, login, true, photo));
       });
     }
   });
 }
 
-export const loginThunkCreator = (formData) => (dispatch) =>{
-  usersAPI.auth.getLogin(formData).then(data => {
-    if(data.resultCode !== 0){
-      console.log(data);
-      dispatch(setUserPass(formData.password));
+export const loginThunkCreator = (email, password, rememberMe) => (dispatch) =>{
+  usersAPI.auth.postLogin(email, password, rememberMe).then(response => {
+    if(response.data.resultCode === 0){
+      dispatch(setUserDataThunkCreator());
+    }
+  });
+}
+
+export const logOutThunkCreator = () => (dispatch) =>{
+  usersAPI.auth.deleteLogOut().then(response => {
+    if(response.data.resultCode === 0){
+      dispatch(setUserData(null, null, null, false, null));
     }
   });
 }
