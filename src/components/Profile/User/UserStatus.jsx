@@ -1,47 +1,26 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import style from './User.module.css';
 
-class UserStatus extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      editeMode: false,
-      status: this.props.status
-    }
+const UserStatus = (props) => {
+  const [editeMode, setEditeMode] = useState(false)
+  const [status, setStatus] = useState(props.status)
+
+  const disableEditeMode = () =>{
+    setEditeMode(false);
+    props.updateProfileStatusThunkCreator(status);
   }
-  upadateStatusText = (e) =>{
-    let text = e.target.value;
-    this.setState({
-      status: text
-    })
-  }
-  activateEditeMode= () =>{
-    this.setState({
-      editeMode: true,
-    })
-  }
-  disableEditeMode= () =>{
-    this.setState({
-      editeMode: false,
-    })
-    this.props.updateProfileStatusThunkCreator(this.state.status);
-  }
-  componentDidUpdate(prevProps){
-    if(prevProps.status !== this.props.status){
-      this.setState({
-        status: this.props.status
-      })
-    }
-  }
-  render(){
-    const status = !this.state.editeMode 
-    ? <div onDoubleClick={this.activateEditeMode}>Status: {this.props.status || '...'}</div> 
-    : <div><input autoFocus={true} onBlur={this.disableEditeMode} className={style.input} value={this.state.status} onChange={this.upadateStatusText}/></div>;
-    return (
-      <div>
-        {status}
-      </div>
-    )
-  }
+
+  useEffect(() => {
+    setStatus(props.status);
+  }, [props.status])
+  
+  const sts = !editeMode 
+  ? <div onDoubleClick={() => setEditeMode(true)}>Status: {props.status || '...'}</div> 
+  : <div><input autoFocus={true} onBlur={disableEditeMode} className={style.input} value={status} onChange={(e) => setStatus(e.target.value)}/></div>;
+  return (
+    <div>
+      {sts}
+    </div>
+  )
 }
 export default UserStatus;

@@ -5,7 +5,7 @@ import { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, fol
 import Preloader from '../common/Preloader/Preloader';
 import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 import { compose } from 'redux';
-
+import { getUsers, getPage, getTotalCount, getCurrentPage, getIsFetching, getFollowind } from '../../redux/selectors/users';
 class UsersContainer extends Component { 
   componentDidMount(){
     this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
@@ -44,13 +44,22 @@ class UsersContainer extends Component {
   }
 } 
 
+// const mapStateToProps = (state) =>({
+//   usersData: state.usersPage.usersData,
+//   pageSize: state.usersPage.pageSize,
+//   totalCount: state.usersPage.totalCount,
+//   currentPage: state.usersPage.currentPage,
+//   isFetching: state.usersPage.isFetching,
+//   followindInProgress: state.usersPage.followindInProgress
+// });
+
 const mapStateToProps = (state) =>({
-  usersData: state.usersPage.usersData,
-  pageSize: state.usersPage.pageSize,
-  totalCount: state.usersPage.totalCount,
-  currentPage: state.usersPage.currentPage,
-  isFetching: state.usersPage.isFetching,
-  followindInProgress: state.usersPage.followindInProgress
+  usersData: getUsers(state),
+  pageSize:  getPage(state),
+  totalCount: getTotalCount(state),
+  currentPage:  getCurrentPage(state),
+  isFetching: getIsFetching(state),
+  followindInProgress: getFollowind(state)
 });
 
 export default compose(connect(mapStateToProps, { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator }), withAuthNavigate)(UsersContainer);
