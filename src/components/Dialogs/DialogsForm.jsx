@@ -6,9 +6,9 @@ import { required, maxLength } from '../../util/validators/validators';
 const Textarea = Element("textarea");
 const max = maxLength(300)
 
-const DialogsForm = (props) => {  
+const DialogsForm = ({handleSubmit}) => {  
   return (
-    <form className={style.body} onSubmit={props.handleSubmit}>
+    <form className={style.body} onSubmit={handleSubmit}>
       <Field className={style.textarea} component={Textarea} name='message' validate={[required, max]} placeholder='Write a message...'/>
       <button className={style.btn}>Send</button>
     </form>

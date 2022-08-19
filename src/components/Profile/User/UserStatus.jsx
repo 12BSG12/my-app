@@ -1,25 +1,23 @@
 import { useEffect, useState } from 'react';
 import style from './User.module.css';
 
-const UserStatus = (props) => {
-  const [editeMode, setEditeMode] = useState(false)
-  const [status, setStatus] = useState(props.status)
-
+const UserStatus = ({status, updateProfileStatusThunkCreator}) => {
+  const [editeMode, setEditeMode] = useState(false);
+  const [sts, setStatus] = useState(status);
   const disableEditeMode = () =>{
     setEditeMode(false);
-    props.updateProfileStatusThunkCreator(status);
+    updateProfileStatusThunkCreator(sts);
   }
 
   useEffect(() => {
-    setStatus(props.status);
-  }, [props.status])
+    setStatus(status);
+  }, [status])
   
-  const sts = !editeMode 
-  ? <div onDoubleClick={() => setEditeMode(true)}>Status: {props.status || '...'}</div> 
-  : <div><input autoFocus={true} onBlur={disableEditeMode} className={style.input} value={status} onChange={(e) => setStatus(e.target.value)}/></div>;
   return (
     <div>
-      {sts}
+      {!editeMode 
+      ? <div onDoubleClick={() => setEditeMode(true)}>Status: {status || '...'}</div> 
+      : <div><input autoFocus={true} onBlur={disableEditeMode} className={style.input} value={sts} onChange={(e) => setStatus(e.target.value)}/></div>}
     </div>
   )
 }

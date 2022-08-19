@@ -35,35 +35,31 @@ const setUserData = (id, email, login, isAuth, photo) => ({
   }
 });
 
-export const getUserDataThunkCreator = () => (dispatch) =>{
-  return usersAPI.auth.getAuth().then(data => {
-    if(data.resultCode === 0){
-      let {id, email, login} = data.data;
-      usersAPI.profile.getProfile(id).then(data =>  {
-        let photo = data.photos.small??defaultAvatar;
-        dispatch(setUserData(id, email, login, true, photo));
-      });
-    }
-  });
+export const getUserDataThunkCreator = () => async (dispatch) =>{
+  let dataAuth = await usersAPI.auth.getAuth()
+  if(dataAuth.resultCode === 0){
+    let {id, email, login} = dataAuth.data;
+    let dataProfile = await usersAPI.profile.getProfile(id);
+    let photo = dataProfile.photos.small??defaultAvatar;
+    dispatch(setUserData(id, email, login, true, photo));
+  }
 }
 
-export const loginThunkCreator = (email, password, rememberMe) => (dispatch) => {
-  usersAPI.auth.postLogin(email, password, rememberMe).then(response => {
-    if(response.data.resultCode === 0){
-      dispatch(getUserDataThunkCreator());
-    } else if(response.data.resultCode === 1){
-      let messageErrow = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
-      dispatch(stopSubmit('login', {_error: messageErrow}))
-    }
-  });
+export const loginThunkCreator = (email, password, rememberMe) => async (dispatch) => {
+  let response =  await usersAPI.auth.postLogin(email, password, rememberMe);
+  if(response.data.resultCode === 0){
+    dispatch(getUserDataThunkCreator());
+  } else if(response.data.resultCode === 1){
+    let messageErrow = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
+    dispatch(stopSubmit('login', {_error: messageErrow}))
+  }
 }
 
-export const logOutThunkCreator = () => (dispatch) =>{
-  usersAPI.auth.deleteLogOut().then(response => {
-    if(response.data.resultCode === 0){
-      dispatch(setUserData(null, null, null, false, null));
-    }
-  });
+export const logOutThunkCreator = () => async (dispatch) =>{
+  let response = await usersAPI.auth.deleteLogOut();
+  if(response.data.resultCode === 0){
+    dispatch(setUserData(null, null, null, false, null));
+  }
 }
 
 export default authReducer;

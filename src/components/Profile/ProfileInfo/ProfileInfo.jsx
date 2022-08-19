@@ -1,8 +1,7 @@
 import Header from "../Header/Header";
 import User from "../User/User";
 
-const ProfileInfo = (props) => {
-  const {userProfileData, profileStatus, updateProfileStatusThunkCreator} = props
+const ProfileInfo = ({userProfileData, profileStatus, updateProfileStatusThunkCreator}) => {
   return(
     <>
       <Header />

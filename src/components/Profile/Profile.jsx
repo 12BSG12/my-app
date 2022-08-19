@@ -1,8 +1,7 @@
 import Mypost from "./Myposts/Mypost";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
-const Profile = (props) => {
-  const {updateProfileStatusThunkCreator, postData, onSubmit, userProfileData, profileStatus} = props;
+const Profile = ({updateProfileStatusThunkCreator, postData, onSubmit, userProfileData, profileStatus}) => {
   return(
     <>
       <ProfileInfo {...{userProfileData, profileStatus, updateProfileStatusThunkCreator}}/>
@@ -10,5 +9,4 @@ const Profile = (props) => {
     </>
   );
 }
-
 export default Profile;

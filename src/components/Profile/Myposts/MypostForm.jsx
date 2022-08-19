@@ -6,9 +6,9 @@ import { Element } from '../../common/FormControls/FormControls';
 const Textarea = Element("textarea");
 const max = maxLength(300);
 
-const MyPostForm = (props) => {
+const MyPostForm = ({handleSubmit}) => {
   return (
-    <form className={style.form} onSubmit={props.handleSubmit}>
+    <form className={style.form} onSubmit={handleSubmit}>
       <label className={style.title}>My posts</label>
       <Field className={style.textarea} component={Textarea} name="message" validate={[required, max]} placeholder="your news..."/>
       <button className={style.btn}>Send</button> 

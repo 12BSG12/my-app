@@ -2,23 +2,23 @@ import User from './User';
 import style from './Users.module.css';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
 
-const Users = (props) => {
-  const getUsers = props.usersData.map(user => <User 
+const Users = ({usersData, follow, unFollow, followindInProgress, slicedPages, changePage, currentPage}) => {
+  const getUsers = usersData.map(user => <User 
     id={user.id}
     photos={user.photos.small??defaultAvatar}
     name={user.name} 
     key={user.id} 
     status={user.status}
     followed ={user.followed}
-    follow={props.follow}
-    unFollow={props.unFollow}
-    followindInProgress={props.followindInProgress}
+    follow={follow}
+    unFollow={unFollow}
+    followindInProgress={followindInProgress}
   />);
   return(
     <div className={style.body}>
       <div className={style.title}>Users</div>
       <div className={style.pages}>
-        {props.slicedPages.map(p => <span onClick={() => props.changePage(p)} className={props.currentPage === p ? style.p : ''}>{p}</span>)}
+        {slicedPages.map(p => <span onClick={() => changePage(p)} className={currentPage === p ? style.p : ''}>{p}</span>)}
       </div>
       <div className={style.users}>
         {getUsers}

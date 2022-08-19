@@ -26,7 +26,7 @@ export const setInitializedThunkCreator = () => (dispatch) =>{
   let promise = dispatch(getUserDataThunkCreator());
   Promise.all([promise]).then(() => {
     dispatch(setInitialized());
-  })
+  }).catch((err) => console.log(err));
 }
 
 export default appReducer;
