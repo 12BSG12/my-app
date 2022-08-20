@@ -19,23 +19,13 @@ class UsersContainer extends Component {
   
   render(){
     let pagesCount = Math.ceil(this.props.totalCount / this.props.pageSize);
-    let pagesArray = [];
-    for (let i = 1; i <= pagesCount; i++) {
-      pagesArray.push(i);
-    }
-
-    //Эффект карусели
-    let curP = this.props.currentPage;
-    let curPF = ((curP - 5) < 0) ?  0  : curP - 5;
-    let curPL = curP + 4;
-    let slicedPages = pagesArray.slice( curPF, curPL);
     const {usersData, currentPage, isFetching, followindInProgress} = this.props
     return(
       <>
         {this.props.isFetching ? <Preloader /> : <Users  
         follow={this.follow}
         unFollow={this.unFollow}
-        slicedPages={slicedPages}
+        pagesCount={pagesCount}
         changePage={this.changePage}
         {...{usersData, currentPage, isFetching, followindInProgress}}
         />}

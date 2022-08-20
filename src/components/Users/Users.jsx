@@ -1,8 +1,10 @@
 import User from './User';
 import style from './Users.module.css';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
-const Users = ({usersData, follow, unFollow, followindInProgress, slicedPages, changePage, currentPage}) => {
+const Users = ({usersData, follow, unFollow, followindInProgress, pagesCount, changePage, currentPage}) => {
   const getUsers = usersData.map(user => <User 
     id={user.id}
     photos={user.photos.small??defaultAvatar}
@@ -17,9 +19,9 @@ const Users = ({usersData, follow, unFollow, followindInProgress, slicedPages, c
   return(
     <div className={style.body}>
       <div className={style.title}>Users</div>
-      <div className={style.pages}>
-        {slicedPages.map(p => <span onClick={() => changePage(p)} className={currentPage === p ? style.p : ''}>{p}</span>)}
-      </div>
+      <Stack spacing={2}>
+        <Pagination count={pagesCount} color="primary" showFirstButton showLastButton page={currentPage} onChange={(_, num) => changePage(num)} />
+      </Stack>
       <div className={style.users}>
         {getUsers}
       </div>
