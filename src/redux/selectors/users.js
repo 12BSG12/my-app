@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+// import { createSelector } from 'reselect'
 
 export const getUsers = state => state.usersPage.usersData
 export const getPage = state => state.usersPage.pageSize
