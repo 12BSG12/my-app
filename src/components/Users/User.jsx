@@ -1,24 +1,20 @@
 import style from './Users.module.css';
 import { NavLink } from "react-router-dom";
 
-const User = (props) => {
-  const btn = props.followed 
-  ? <button className={style.btn} disabled={props.followindInProgress.some(id => id === props.id)} onClick={()=> props.unFollow(props.id)}>UnFollow</button>
-  : <button className={style.btn} disabled={props.followindInProgress.some(id => id === props.id)} onClick={()=> props.follow(props.id)}>Follow</button>;
+const User = ({followed, followindInProgress, id, photos, unFollow, follow, name, status}) => {
+  const btn = followed 
+  ? <button className={style.btn} disabled={followindInProgress.some(_id => _id === id)} onClick={()=> unFollow(id)}>UnFollow</button>
+  : <button className={style.btn} disabled={followindInProgress.some(_id => _id === id)} onClick={()=> follow(id)}>Follow</button>;
   return (
     <div className={style.item}>
         <div className={style.left}>          
-          <NavLink to={"/profile/" + props.id}><img className={style.img} src={props.photos} alt="" /></NavLink>
+          <NavLink to={"/profile/" + id}><img className={style.img} src={photos} alt="" /></NavLink>
           {btn}
         </div>
         <div className={style.right}>
           <div className={style.info}>
-            <div className={style.name}>{props.name}</div>
-            <div className={style.stays}>{props.status}</div>
-          </div>
-          <div className={style.location}>
-            <div className={style.counrty}>{props.counrty},</div>
-            <div className={style.city}>{props.city}</div>
+            <div className={style.name}>{name}</div>
+            <div className={style.stays}>{status}</div>
           </div>
         </div>
     </div>

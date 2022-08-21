@@ -1,46 +1,43 @@
 import Users from './Users';
-import {Component} from 'react';
-import { connect } from 'react-redux'
 import { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator } from '../../redux/users-reducer';
 import Preloader from '../common/Preloader/Preloader';
 import { withAuthNavigate } from '../../hoc/withAuthNavigate';
-import { compose } from 'redux';
 import { getUsers, getPage, getTotalCount, getCurrentPage, getIsFetching, getFollowind } from '../../redux/selectors/users';
-class UsersContainer extends Component { 
-  componentDidMount(){
-    this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize)
-  };
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from "react-redux";
 
-  changePage = (page) => this.props.changePageThunkCreator(page, this.props.pageSize);
-
-  unFollow = (id) => this.props.unFollowThunkCreator(id);
-
-  follow = (id) => this.props.followThunkCreator(id);
+const UsersContainer = () => {
+  let usersData = useSelector(state => getUsers(state));
+  let pageSize = useSelector(state => getPage(state));
+  let totalCount = useSelector(state => getTotalCount(state));
+  let currentPage = useSelector(state => getCurrentPage(state));
+  let isFetching = useSelector(state => getIsFetching(state));
+  let followindInProgress = useSelector(state => getFollowind(state));
   
-  render(){
-    let pagesCount = Math.ceil(this.props.totalCount / this.props.pageSize);
-    const {usersData, currentPage, isFetching, followindInProgress} = this.props
-    return(
-      <>
-        {this.props.isFetching ? <Preloader /> : <Users  
-        follow={this.follow}
-        unFollow={this.unFollow}
-        pagesCount={pagesCount}
-        changePage={this.changePage}
-        {...{usersData, currentPage, isFetching, followindInProgress}}
-        />}
-      </>
-    );
-  }
-} 
+  let dispatch = useDispatch();
 
-const mapStateToProps = (state) =>({
-  usersData: getUsers(state),
-  pageSize:  getPage(state),
-  totalCount: getTotalCount(state),
-  currentPage:  getCurrentPage(state),
-  isFetching: getIsFetching(state),
-  followindInProgress: getFollowind(state)
-});
+  useEffect(() =>{
+    dispatch(getUsersThunkCreator(currentPage, pageSize))
+  }, [dispatch, currentPage, pageSize]);
 
-export default compose(connect(mapStateToProps, { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator }), withAuthNavigate)(UsersContainer);
+  const changePage = (page) => dispatch(changePageThunkCreator(page, pageSize));
+
+  const unFollow = (id) => dispatch(unFollowThunkCreator(id));
+
+  const follow = (id) => dispatch(followThunkCreator(id));
+
+  let pagesCount = Math.ceil(totalCount / pageSize);
+  return(
+    <>
+      {isFetching ? <Preloader /> : <Users  
+      follow={follow}
+      unFollow={unFollow}
+      pagesCount={pagesCount}
+      changePage={changePage}
+      {...{usersData, currentPage, isFetching, followindInProgress}}
+      />}
+    </>
+  );
+}
+
+export default withAuthNavigate(UsersContainer);

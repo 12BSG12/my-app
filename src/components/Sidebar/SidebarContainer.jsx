@@ -1,15 +1,17 @@
 import Sidebar from './Sidebar';
-import { connect } from 'react-redux'
-import { Component } from 'react';
+import {useEffect} from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import {getFriendsThunkCreator} from '../../redux/sidebar-reducer'
 
-class SidebarContainer extends Component{
-  render(){
-    return <Sidebar friendsData={this.props.friendsData}/>
-  }
+const SidebarContainer = () => {
+  let friendsData = useSelector(state => state.sidebar.friendsData);
+  let dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getFriendsThunkCreator())
+  }, [dispatch])
+  
+  return <Sidebar friendsData={friendsData}/>
 }
 
-const mapStateToProps = (state) =>({
-  friendsData: state.sidebar.friendsData,
-});
-
-export default connect(mapStateToProps)(SidebarContainer);
+export default SidebarContainer;

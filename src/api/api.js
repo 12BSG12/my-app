@@ -16,6 +16,7 @@ export const usersAPI = {
     getProfile(id) {return instance.get(`profile/${id}`).then(response => response.data)},
     getProfileStatus(id) {return instance.get(`profile/status/${id}`).then(response => response.data)},
     putProfileStatus(status) {return instance.put('profile/status', {status: status}).then(response => response.data)},
+    putProfilePhoto(formData) {return instance.put('profile/photo', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => response.data)},
   },
   auth: {
     getAuth() {return instance.get('auth/me').then(response => response.data)},
@@ -24,5 +25,6 @@ export const usersAPI = {
   },
   users: {
     getUsers(currentPage, pageSize) {return instance.get(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data)},
+    getFriends(totalCount) {return instance.get(`users?friend=true&count=${totalCount}`).then(response => response.data)},
   }
 }

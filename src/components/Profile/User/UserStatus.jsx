@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import style from './User.module.css';
 
 const UserStatus = ({status, updateProfileStatusThunkCreator}) => {
   const [editeMode, setEditeMode] = useState(false);
   const [sts, setStatus] = useState(status);
+  let dispatch = useDispatch();
   const disableEditeMode = () =>{
     setEditeMode(false);
-    updateProfileStatusThunkCreator(sts);
+    dispatch(updateProfileStatusThunkCreator(sts));
   }
 
   useEffect(() => {

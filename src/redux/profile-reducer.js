@@ -4,6 +4,7 @@ const ADD_POST = 'ADD-POST';
 const DELETE_POST = 'DELETE-POST';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
 const SET_USER_PROFILE_STATUS = 'SET-USER-PROFILE_STATUS';
+const SET_USER_PROFILE_PHOTO= 'SET-USER-PROFILE_PHOTO';
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING';
 
 let initialState = {
@@ -13,7 +14,8 @@ let initialState = {
     {id: 2, message:'It`s our new program! Hey!', likesCount: 24},
   ],
   isFetching: false,
-  profileStatus: ''
+  profileStatus: '',
+  profilePhoto: null
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -42,6 +44,11 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state,
         profileStatus: action.status
+      }
+    case SET_USER_PROFILE_PHOTO:
+      return {
+        ...state,
+        profilePhoto: action.photo
       }
     default:
       return state;
@@ -72,6 +79,11 @@ const setUserProfileStatus = (status) => ({
   status
 });
 
+const setUserProfilePhoto = (photo) => ({
+  type: SET_USER_PROFILE_PHOTO,
+  photo
+});
+
 export const setUserProfileThunkCreator = (userID) => async (dispatch) => {
   dispatch(toggleFetchingPage(true));
   let data = await usersAPI.profile.getProfile(userID);
@@ -88,6 +100,15 @@ export const updateProfileStatusThunkCreator = (status) => async (dispatch)  => 
   let data = await usersAPI.profile.putProfileStatus(status);
   if(data.resultCode === 0){
     dispatch(setUserProfileStatus(status));
+  }
+}
+
+export const updateProfilePhotoThunkCreator = (file) => async (dispatch)  => {
+  let formData = new FormData()
+  formData.append('image', file)
+  let data = await usersAPI.profile.putProfilePhoto(formData);
+  if(data.resultCode === 0){
+    dispatch(setUserProfilePhoto(data.data.photos));
   }
 }
 

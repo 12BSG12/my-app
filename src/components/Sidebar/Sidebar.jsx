@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 import Friends from "./Friends/Friends";
 import style from './Sidebar.module.css';
 
-const Sidebar = (props) => {
-  const getFriends = props.friendsData.map(friend => <Friends name={friend.name} key={friend.id}/>);
+const Sidebar = ({friendsData}) => {
+  const getFriends = friendsData.map(friend => <NavLink to={"/profile/" + friend.id} key={friend.id}><Friends name={friend.name} photo={friend.photos.small}/></NavLink>);
   const setActive = ({isActive}) => isActive ? style.active : style.link;
   return (
     <div className= {style.sidebar}>

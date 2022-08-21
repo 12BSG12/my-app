@@ -1,25 +1,20 @@
-import { Component } from "react";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Header from "./Header";
 import { logOutThunkCreator } from '../../redux/auth-reducer';
 
-class HeaderContainer extends Component{
-  onClickLogOut = () => {
-    this.props.logOutThunkCreator();
+const HeaderContainer = () => {
+  let login = useSelector(state => state.auth.login)
+  let isAuth = useSelector(state => state.auth.isAuth)
+  let photo = useSelector(state => state.auth.photo)
+
+  let dispatch = useDispatch()
+
+  const onClickLogOut = () => {
+    dispatch(logOutThunkCreator());
   }
-  
-  render(){
-    return(
-      <Header login={this.props.login} isAuth={this.props.isAuth} photo={this.props.photo} onClickLogOut={this.onClickLogOut}/>
-    );
-  }
+  return(
+    <Header login={login} isAuth={isAuth} photo={photo} onClickLogOut={onClickLogOut}/>
+  );
 }
 
-const mapStateToProps = (state) =>({
-  id: state.auth.id,
-  login: state.auth.login,
-  isAuth: state.auth.isAuth,
-  photo: state.auth.photo
-});
-
-export default connect(mapStateToProps,{ logOutThunkCreator})(HeaderContainer)
+export default HeaderContainer;
