@@ -25,7 +25,7 @@ const getFriends = (friends) => ({
 
 export const getFriendsThunkCreator = () => async (dispatch) => {
   let count = await usersAPI.users.getFriends()
-  let data = await usersAPI.users.getFriends(count);
+  let data = await usersAPI.users.getFriends(count.totalCount);
   dispatch(getFriends(data.items));
 }
 

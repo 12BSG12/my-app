@@ -3,6 +3,7 @@ import defaultAvatar from '../assets/images/default_avatar.webp';
 import { stopSubmit  } from 'redux-form';
 
 const SET_USER_DATA = 'SET_USER_DATA';
+const SET_USER_PHOTO = 'SET_USER_PHOTO';
 
 let initialState = {
   id: null,
@@ -19,6 +20,11 @@ const authReducer = (state = initialState, action) => {
         ...state, 
         ...action.data
       };
+    case SET_USER_PHOTO:
+      return {
+        ...state, 
+        photo: action.photo
+      };
     default:
       return state;
   }
@@ -33,6 +39,11 @@ const setUserData = (id, email, login, isAuth, photo) => ({
     isAuth,
     photo
   }
+});
+
+export const setUserPhoto = (photo) => ({
+  type: SET_USER_PHOTO,
+  photo
 });
 
 export const getUserDataThunkCreator = () => async (dispatch) =>{

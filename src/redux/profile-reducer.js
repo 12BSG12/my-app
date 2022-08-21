@@ -1,4 +1,5 @@
 import { usersAPI } from '../api/api';
+import { setUserPhoto } from './auth-reducer';
 
 const ADD_POST = 'ADD-POST';
 const DELETE_POST = 'DELETE-POST';
@@ -15,7 +16,6 @@ let initialState = {
   ],
   isFetching: false,
   profileStatus: '',
-  profilePhoto: null
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -48,7 +48,7 @@ const profileReducer = (state = initialState, action) => {
     case SET_USER_PROFILE_PHOTO:
       return {
         ...state,
-        profilePhoto: action.photo
+        userProfileData: {...state.userProfileData, photos: action.photos}
       }
     default:
       return state;
@@ -79,9 +79,9 @@ const setUserProfileStatus = (status) => ({
   status
 });
 
-const setUserProfilePhoto = (photo) => ({
+const setUserProfilePhoto = (photos) => ({
   type: SET_USER_PROFILE_PHOTO,
-  photo
+  photos
 });
 
 export const setUserProfileThunkCreator = (userID) => async (dispatch) => {
@@ -103,12 +103,13 @@ export const updateProfileStatusThunkCreator = (status) => async (dispatch)  => 
   }
 }
 
-export const updateProfilePhotoThunkCreator = (file) => async (dispatch)  => {
+export const setProfilePhotoThunkCreator = (file) => async (dispatch)  => {
   let formData = new FormData()
   formData.append('image', file)
   let data = await usersAPI.profile.putProfilePhoto(formData);
   if(data.resultCode === 0){
     dispatch(setUserProfilePhoto(data.data.photos));
+    dispatch(setUserPhoto(data.data.photos.small))
   }
 }
 
