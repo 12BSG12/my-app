@@ -4,6 +4,7 @@ import { setUserPhoto } from './auth-reducer';
 const ADD_POST = 'ADD-POST';
 const DELETE_POST = 'DELETE-POST';
 const SET_USER_PROFILE = 'SET-USER-PROFILE';
+const SET_USER_PROFILE_EDIT = 'SET-USER-PROFILE-EDIT';
 const SET_USER_PROFILE_STATUS = 'SET-USER-PROFILE_STATUS';
 const SET_USER_PROFILE_PHOTO= 'SET-USER-PROFILE_PHOTO';
 const TOGGLE_FETCHING = 'TOGGLE-FETCHING';
@@ -34,6 +35,11 @@ const profileReducer = (state = initialState, action) => {
       return {
         ...state, 
         userProfileData: action.profile,
+      }
+    case SET_USER_PROFILE_EDIT:
+      return {
+        ...state, 
+        userProfileData: {...state.userProfileData, ...action.data},
       }
     case TOGGLE_FETCHING:
       return {
@@ -84,6 +90,11 @@ const setUserProfilePhoto = (photos) => ({
   photos
 });
 
+const setUserProfileEdit = (data) => ({
+  type: SET_USER_PROFILE_EDIT,
+  data
+});
+
 export const setUserProfileThunkCreator = (userID) => async (dispatch) => {
   dispatch(toggleFetchingPage(true));
   let data = await usersAPI.profile.getProfile(userID);
@@ -110,6 +121,30 @@ export const setProfilePhotoThunkCreator = (file) => async (dispatch)  => {
   if(data.resultCode === 0){
     dispatch(setUserProfilePhoto(data.data.photos));
     dispatch(setUserPhoto(data.data.photos.small))
+  }
+}
+
+export const setProfileEditThunkCreator = (formData) => async (dispatch)  => {
+  let obj = {
+    aboutMe: formData.aboutMe,
+    contacts: {
+      facebook: formData.facebook,
+      website: formData.website,
+      vk: formData.vk,
+      twitter: formData.twitter,
+      instagram: formData.instagram,
+      youtube: formData.youtube,
+      github: formData.github,
+      mainLink: formData.mainLink
+    },
+    lookingForAJobDescription: null,
+    lookingForAJob: formData.lookingForAJob,
+    fullName: formData.fullName,
+    userId: 25419,
+  }
+  let data = await usersAPI.profile.putProfileEdit(obj);
+  if(data.resultCode === 0){
+    dispatch(setUserProfileEdit(obj))
   }
 }
 

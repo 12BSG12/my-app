@@ -11,7 +11,7 @@ const ProfileContainer = () => {
   let isFetching = useSelector(state =>  state.profilePage.isFetching);
   let postData = useSelector(state => state.profilePage.postData);
   let defualutID = useSelector(state => state.auth.id);
-  let profileStatus = useSelector(state =>  state.profilePage.profileStatus);
+  let profileStatus = useSelector(state =>  state.profilePage.profileStatus);;
   
   let dispatch = useDispatch();
 

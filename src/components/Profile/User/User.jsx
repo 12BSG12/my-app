@@ -9,7 +9,7 @@ import { setProfilePhotoThunkCreator } from '../../../redux/profile-reducer'
 import EditForm from './EditForm';
 import { useState } from 'react';
 
-const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}, fullName, profileStatus, aboutMe}) => {
+const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}, fullName, profileStatus, aboutMe, lookingForAJob}) => {
   const [isEdit, setEdit] = useState(false);
 
   let dispatch =  useDispatch()
@@ -52,6 +52,7 @@ const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}
               <div className={style.links}>
                 {getLinks}
               </div>
+              <div className={style.job}>Looking for a Job: {lookingForAJob ? 'yes' : 'no'}</div>
             </div>
           </>
         }

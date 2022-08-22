@@ -17,6 +17,7 @@ export const usersAPI = {
     getProfileStatus(id) {return instance.get(`profile/status/${id}`).then(response => response.data)},
     putProfileStatus(status) {return instance.put('profile/status', {status: status}).then(response => response.data)},
     putProfilePhoto(formData) {return instance.put('profile/photo', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => response.data)},
+    putProfileEdit(formData) {return instance.put('profile', {...formData}).then(response => response.data)},
   },
   auth: {
     getAuth() {return instance.get('auth/me').then(response => response.data)},

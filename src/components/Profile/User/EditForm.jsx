@@ -5,8 +5,12 @@ import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from '../../../util/validators/Input';
+import {setProfileEditThunkCreator} from '../../../redux/profile-reducer'
+import { useDispatch, useSelector } from "react-redux";
 
 const EditForm = () =>{
+  let data = useSelector(state => state.profilePage.userProfileData)
+  let dispatch = useDispatch()
   const { 
     control, 
     handleSubmit,
@@ -14,22 +18,24 @@ const EditForm = () =>{
     formState: {isValid } 
   } = useForm({
     defaultValues: {
-      FullName: "",
-      checkbox: false,
-      AboutMe: "",
-      Facebook: "",
-      Website: "",
-      Vk: "",
-      Twitter: "",
-      Instagram: "",
-      Youtube: "",
-      Github: "",
-      MainLink: ""
+      fullName: data.fullName,
+      lookingForAJob: data.lookingForAJob,
+      aboutMe: data.aboutMe,
+      facebook: data.facebook,
+      website: data.website,
+      vk: data.vk,
+      twitter: data.twitter,
+      instagram: data.instagram,
+      youtube: data.youtube,
+      github: data.github,
+      mainLink: data.mainLink
     },
     mode: 'onBlur'
   });
 
   const onSubmit = data => {
+    console.log(data);
+    dispatch(setProfileEditThunkCreator(data));
     reset();
   }
   return (
@@ -44,7 +50,7 @@ const EditForm = () =>{
         autoComplete="off"
         >
         <div>
-          <Input control={control} name="FullName" label='Full name' rules={{ 
+          <Input control={control} name="fullName" label='Full name' rules={{ 
             required: 'Поле обязательно для заполнения', 
             minLength: {
               value: 2,
@@ -58,25 +64,25 @@ const EditForm = () =>{
           />
         </div>
         <div>
-          <Input control={control} name="AboutMe" rows={4} label='About me' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="aboutMe" rows={4} label='About me' rules={{maxLength: {value: 50}}}/>
         </div>
-          <Input control={control} name="Facebook" label='Facebook' rules={{maxLength: {value: 50}}}/>
-          <Input control={control} name="Vk" label='Vk' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="facebook" label='Facebook' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="vk" label='Vk' rules={{maxLength: {value: 50}}}/>
         <div>
-          <Input control={control} name="Twitter" label='Twitter' rules={{maxLength: {value: 50}}}/>
-          <Input control={control} name="Instagram" label='Instagram' rules={{maxLength: {value: 50}}}/>
-        </div>
-        <div>
-          <Input control={control} name="Youtube" label='Youtube' rules={{maxLength: {value: 50}}}/>
-          <Input control={control} name="Github" label='Github' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="twitter" label='Twitter' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="instagram" label='Instagram' rules={{maxLength: {value: 50}}}/>
         </div>
         <div>
-          <Input control={control} name="MainLink" label='MainLink' rules={{maxLength: {value: 50}}}/>
-          <Input control={control} name="Website" label='Website' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="youtube" label='Youtube' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="github" label='Github' rules={{maxLength: {value: 50}}}/>
+        </div>
+        <div>
+          <Input control={control} name="mainLink" label='MainLink' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="website" label='Website' rules={{maxLength: {value: 50}}}/>
         </div>
         <div>
         <Controller
-          name="checkbox"
+          name="lookingForAJob"
           control={control}
           render={({ field }) => <FormControlLabel {...field} value="start" control={<Checkbox />} 
           label="Looking for a job"
