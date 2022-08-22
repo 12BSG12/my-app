@@ -1,12 +1,17 @@
 import style from './User.module.css';
+import st from './EditForm.module.scss';
 import defaultAvatar from '../../../assets/images/default_avatar.webp';
 import UserStatus from './UserStatus';
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { setProfilePhotoThunkCreator } from '../../../redux/profile-reducer'
+import EditForm from './EditForm';
+import { useState } from 'react';
 
 const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}, fullName, profileStatus, aboutMe}) => {
+  const [isEdit, setEdit] = useState(false);
+
   let dispatch =  useDispatch()
 
   const cts = Object.values(contacts).every(n => n === null) && "...";
@@ -37,13 +42,19 @@ const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}
       <div className={style.body}>
         <div className={style.name}>{fullName}</div>
         <UserStatus status = {profileStatus} updateProfileStatusThunkCreator={updateProfileStatusThunkCreator}/>
-        <div className={style.about}>About me: {aboutMe??'...'}</div>
-        <div className={style.contacts}>
-          <div className={style.contacts_title}>Contacts: {cts}</div>
-          <div className={style.links}>
-            {getLinks}
-          </div>
-        </div>
+        {!isOwner && <button className={st.btn} onClick={() => setEdit(!isEdit)}>Edit</button>}
+        {
+          isEdit ? <EditForm /> :
+          <>
+            <div className={style.about}>About me: {aboutMe??'...'}</div>
+            <div className={style.contacts}>
+              <div className={style.contacts_title}>Contacts: {cts}</div>
+              <div className={style.links}>
+                {getLinks}
+              </div>
+            </div>
+          </>
+        }
       </div>
     </div>
   );
