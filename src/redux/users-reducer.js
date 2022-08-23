@@ -1,5 +1,6 @@
 import { usersAPI } from '../api/api';
 import {updataObjectInArray} from '../util/object-helpers/helpers'
+import {delFriends, addFriends} from './sidebar-reducer'
 
 const FOLLOW = 'FOLLOW';
 const UNFOLLOW = 'UNFOLLOW';
@@ -120,10 +121,12 @@ export const changePageThunkCreator  = (page, pageSize) => async (dispatch) => {
 
 export const unFollowThunkCreator  = (id) => async (dispatch)  => {
   await followed(id, dispatch, usersAPI.follow.deleteFollow, unFollow);
+  dispatch(delFriends(id));
 }
 
 export const followThunkCreator  = (id) => async (dispatch) => {
   await followed(id, dispatch, usersAPI.follow.postFollow, follow);
+  dispatch(addFriends());
 }
 
 export default usersReducer;

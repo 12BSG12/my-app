@@ -5,11 +5,11 @@ import {getFriendsThunkCreator} from '../../redux/sidebar-reducer'
 
 const SidebarContainer = () => {
   let friendsData = useSelector(state => state.sidebar.friendsData);
+  let count = useSelector(state => state.sidebar.count);
   let dispatch = useDispatch();
-
   useEffect(() => {
-    dispatch(getFriendsThunkCreator())
-  }, [dispatch])
+    dispatch(getFriendsThunkCreator(count))
+  }, [dispatch, count])
   
   return <Sidebar friendsData={friendsData}/>
 }
