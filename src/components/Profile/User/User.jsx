@@ -6,10 +6,13 @@ import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { setProfilePhotoThunkCreator } from '../../../redux/profile-reducer'
-import EditForm from './EditForm';
 import { useState } from 'react';
+import {Suspense, lazy} from 'react';
+import Preloader from '../../common/Preloader/Preloader';
 
-const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}, fullName, profileStatus, aboutMe, lookingForAJob}) => {
+const EditForm = lazy(() => import('./EditForm'));
+
+const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}, fullName, profileStatus, aboutMe, lookingForAJob , lookingForAJobDescription}) => {
   const [isEdit, setEdit] = useState(false);
 
   let dispatch =  useDispatch()
@@ -38,13 +41,13 @@ const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}
         }
         <img className={style.avatar__img} src={large??defaultAvatar} alt=''/>
       </Button>
+      {!isOwner && <button className={st.btn} onClick={() => setEdit(!isEdit)}>Edit</button>}
       </div>
       <div className={style.body}>
         <div className={style.name}>{fullName}</div>
         <UserStatus status = {profileStatus} updateProfileStatusThunkCreator={updateProfileStatusThunkCreator}/>
-        {!isOwner && <button className={st.btn} onClick={() => setEdit(!isEdit)}>Edit</button>}
         {
-          isEdit ? <EditForm /> :
+          isEdit ? <Suspense fallback={<Preloader />}><EditForm /></Suspense> :
           <>
             <div className={style.about}>About me: {aboutMe??'...'}</div>
             <div className={style.contacts}>
@@ -53,6 +56,7 @@ const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}
                 {getLinks}
               </div>
               <div className={style.job}>Looking for a Job: {lookingForAJob ? 'yes' : 'no'}</div>
+              <div className={style.job}>Job description: {lookingForAJobDescription??'...'}</div>
             </div>
           </>
         }

@@ -1,5 +1,5 @@
 import { usersAPI } from '../api/api';
-import { setUserPhoto } from './auth-reducer';
+import { setUserPhoto, setUserFullName } from './auth-reducer';
 
 const ADD_POST = 'ADD-POST';
 const DELETE_POST = 'DELETE-POST';
@@ -126,25 +126,25 @@ export const setProfilePhotoThunkCreator = (file) => async (dispatch)  => {
 
 export const setProfileEditThunkCreator = (formData) => async (dispatch)  => {
   let obj = {
-    aboutMe: formData.aboutMe,
-    contacts: {
-      facebook: formData.facebook,
-      website: formData.website,
-      vk: formData.vk,
-      twitter: formData.twitter,
-      instagram: formData.instagram,
-      youtube: formData.youtube,
-      github: formData.github,
-      mainLink: formData.mainLink
-    },
-    lookingForAJobDescription: null,
     lookingForAJob: formData.lookingForAJob,
-    fullName: formData.fullName,
-    userId: 25419,
+    lookingForAJobDescription: formData.lookingForAJobDescription,
+    aboutMe: formData.aboutMe,
+    fullName: formData.fullName || null,
+    contacts: {
+      github: formData.github || null,
+      vk: formData.vk || null, 
+      facebook: formData.facebook || null,
+      instagram: formData.instagram || null,
+      twitter: formData.twitter || null,
+      website: formData.website || null,
+      youtube: formData.youtube || null,
+      mainLink: formData.mainLink || null
+    },
   }
   let data = await usersAPI.profile.putProfileEdit(obj);
   if(data.resultCode === 0){
     dispatch(setUserProfileEdit(obj))
+    dispatch(setUserFullName(obj.fullName));
   }
 }
 

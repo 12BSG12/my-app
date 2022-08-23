@@ -3,7 +3,7 @@ import Header from "./Header";
 import { logOutThunkCreator } from '../../redux/auth-reducer';
 
 const HeaderContainer = () => {
-  let login = useSelector(state => state.auth.login)
+  let login = useSelector(state => state.auth.fullName)
   let isAuth = useSelector(state => state.auth.isAuth)
   let photo = useSelector(state => state.auth.photo)
 

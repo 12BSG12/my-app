@@ -1,10 +1,9 @@
 import style from './EditForm.module.scss';
 import { DevTool } from "@hookform/devtools";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Box from '@mui/material/Box';
-import Checkbox from '@mui/material/Checkbox';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Input from '../../../util/validators/Input';
+import Checkbox from '../../../util/validators/Checkbox';
 import {setProfileEditThunkCreator} from '../../../redux/profile-reducer'
 import { useDispatch, useSelector } from "react-redux";
 
@@ -14,30 +13,27 @@ const EditForm = () =>{
   const { 
     control, 
     handleSubmit,
-    reset, 
     formState: {isValid } 
   } = useForm({
     defaultValues: {
       fullName: data.fullName,
       lookingForAJob: data.lookingForAJob,
-      aboutMe: data.aboutMe,
-      facebook: data.facebook,
-      website: data.website,
-      vk: data.vk,
-      twitter: data.twitter,
-      instagram: data.instagram,
-      youtube: data.youtube,
-      github: data.github,
-      mainLink: data.mainLink
+      aboutMe: data.aboutMe ?? '',
+      facebook: data.contacts.facebook ?? '',
+      website: data.contacts.website ?? '',
+      vk: data.contacts.vk ?? '',
+      twitter: data.contacts.twitter ?? '',
+      instagram: data.contacts.instagram ?? '',
+      youtube: data.contacts.youtube ?? '',
+      github: data.contacts.github ?? '',
+      mainLink: data.contacts.mainLink ?? '',
+      lookingForAJobDescription: data.lookingForAJobDescription ?? ''
     },
     mode: 'onBlur'
   });
 
-  const onSubmit = data => {
-    console.log(data);
-    dispatch(setProfileEditThunkCreator(data));
-    reset();
-  }
+  const onSubmit = data => dispatch(setProfileEditThunkCreator(data));
+
   return (
     <>
       <Box
@@ -64,7 +60,9 @@ const EditForm = () =>{
           />
         </div>
         <div>
-          <Input control={control} name="aboutMe" rows={4} label='About me' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="aboutMe" rows={4} label='About me' rules={{
+            required: 'Поле обязательно для заполнения', 
+            maxLength: {value: 100}}}/>
         </div>
           <Input control={control} name="facebook" label='Facebook' rules={{maxLength: {value: 50}}}/>
           <Input control={control} name="vk" label='Vk' rules={{maxLength: {value: 50}}}/>
@@ -79,15 +77,16 @@ const EditForm = () =>{
         <div>
           <Input control={control} name="mainLink" label='MainLink' rules={{maxLength: {value: 50}}}/>
           <Input control={control} name="website" label='Website' rules={{maxLength: {value: 50}}}/>
+          <Input control={control} name="lookingForAJobDescription" label='Job description' rules={{ 
+            required: 'Поле обязательно для заполнения', 
+            maxLength: {
+              value: 100,
+              message: 'Максимум 100 символов'
+            }}}
+          />
         </div>
         <div>
-        <Controller
-          name="lookingForAJob"
-          control={control}
-          render={({ field }) => <FormControlLabel {...field} value="start" control={<Checkbox />} 
-          label="Looking for a job"
-          labelPlacement="start"/>}
-        />
+          <Checkbox control={control} name="lookingForAJob" label="Looking for a job"/>
         </div>
         <button className={style.btn} disabled={!isValid}>Send</button>
       </Box>

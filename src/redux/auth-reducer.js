@@ -4,11 +4,11 @@ import { stopSubmit  } from 'redux-form';
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_USER_PHOTO = 'SET_USER_PHOTO';
+const SET_USER_FULL_NAME = 'SET_USER_FULL_NAME';
 
 let initialState = {
   id: null,
-  email: null,
-  login: null,
+  fullName: null,
   isAuth: false,
   photo: null,
 }
@@ -25,17 +25,21 @@ const authReducer = (state = initialState, action) => {
         ...state, 
         photo: action.photo
       };
+    case SET_USER_FULL_NAME:
+      return {
+        ...state, 
+        fullName: action.name
+      };
     default:
       return state;
   }
 };
 
-const setUserData = (id, email, login, isAuth, photo) => ({
+const setUserData = (id, fullName, isAuth, photo) => ({
   type: SET_USER_DATA,
   data: {
     id,
-    email,
-    login,
+    fullName,
     isAuth,
     photo
   }
@@ -46,13 +50,18 @@ export const setUserPhoto = (photo) => ({
   photo
 });
 
+export const setUserFullName = (name) => ({
+  type: SET_USER_FULL_NAME,
+  name
+});
+
 export const getUserDataThunkCreator = () => async (dispatch) =>{
   let dataAuth = await usersAPI.auth.getAuth()
   if(dataAuth.resultCode === 0){
-    let {id, email, login} = dataAuth.data;
+    let {id} = dataAuth.data;
     let dataProfile = await usersAPI.profile.getProfile(id);
     let photo = dataProfile.photos.small??defaultAvatar;
-    dispatch(setUserData(id, email, login, true, photo));
+    dispatch(setUserData(id, dataProfile.fullName, true, photo));
   }
 }
 
@@ -69,7 +78,7 @@ export const loginThunkCreator = (email, password, rememberMe) => async (dispatc
 export const logOutThunkCreator = () => async (dispatch) =>{
   let response = await usersAPI.auth.deleteLogOut();
   if(response.data.resultCode === 0){
-    dispatch(setUserData(null, null, null, false, null));
+    dispatch(setUserData(null, null, false, null));
   }
 }
 
