@@ -23,3 +23,23 @@
   letter-spacing: 0em;
   margin-bottom: 6px;
 }
+
+.captcha{
+  img{
+    margin-bottom: 5px;
+  }
+  input{
+    padding: 5px 10px;
+    font-size: 14px;
+    width: 200px;
+    border: 1px solid rgb(150, 147, 147);
+    border-radius: 5px;
+    &:hover{
+      border-color: #000;
+    }
+  }
+}
+
+.error{
+  color: rgb(199, 34, 34);
+}

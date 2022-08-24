@@ -1,16 +1,19 @@
 import { usersAPI } from '../api/api';
 import defaultAvatar from '../assets/images/default_avatar.webp';
-import { stopSubmit  } from 'redux-form';
 
 const SET_USER_DATA = 'SET_USER_DATA';
 const SET_USER_PHOTO = 'SET_USER_PHOTO';
 const SET_USER_FULL_NAME = 'SET_USER_FULL_NAME';
+const SET_CAPTACHA = 'SET_CAPTACHA';
+const SET_ERROR = 'SET_ERROR';
 
 let initialState = {
   id: null,
   fullName: null,
   isAuth: false,
   photo: null,
+  captchaURL: null,
+  messageError: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -29,6 +32,16 @@ const authReducer = (state = initialState, action) => {
       return {
         ...state, 
         fullName: action.name
+      };
+    case SET_CAPTACHA:
+      return {
+        ...state, 
+        captchaURL: action.captcha
+      };
+    case SET_ERROR:
+      return {
+        ...state, 
+        messageError: action.error
       };
     default:
       return state;
@@ -55,6 +68,16 @@ export const setUserFullName = (name) => ({
   name
 });
 
+const setCaptcha = (captcha) => ({
+  type: SET_CAPTACHA,
+  captcha
+});
+
+const stopSubmit = (error) => ({
+  type: SET_ERROR,
+  error
+});
+
 export const getUserDataThunkCreator = () => async (dispatch) =>{
   let dataAuth = await usersAPI.auth.getAuth()
   if(dataAuth.resultCode === 0){
@@ -65,13 +88,21 @@ export const getUserDataThunkCreator = () => async (dispatch) =>{
   }
 }
 
-export const loginThunkCreator = (email, password, rememberMe) => async (dispatch) => {
-  let response =  await usersAPI.auth.postLogin(email, password, rememberMe);
-  if(response.data.resultCode === 0){
-    dispatch(getUserDataThunkCreator());
-  } else if(response.data.resultCode === 1){
-    let messageErrow = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
-    dispatch(stopSubmit('login', {_error: messageErrow}))
+export const loginThunkCreator = (email, password, rememberMe, captcha) => async (dispatch) => {
+  let response =  await usersAPI.auth.postLogin(email, password, rememberMe, captcha);
+  switch (response.data.resultCode) {
+    case 0:
+      dispatch(getUserDataThunkCreator());
+      break;
+    case 1:
+      let error = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
+      dispatch(stopSubmit(error))
+      break;
+    case 10:
+      dispatch(getCaptcha())
+    break;
+    default:
+      break;
   }
 }
 
@@ -79,7 +110,14 @@ export const logOutThunkCreator = () => async (dispatch) =>{
   let response = await usersAPI.auth.deleteLogOut();
   if(response.data.resultCode === 0){
     dispatch(setUserData(null, null, false, null));
+    dispatch(setCaptcha(null));
+    dispatch(stopSubmit(null));
   }
+}
+
+const getCaptcha = () => async (dispatch) =>{
+  let data = await usersAPI.security.getCaptcha();
+  dispatch(setCaptcha(data.url));
 }
 
 export default authReducer;

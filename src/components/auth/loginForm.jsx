@@ -2,26 +2,32 @@ import { useForm } from "react-hook-form";
 import Box from '@mui/material/Box';
 import Input from '../common/formControl/Input';
 import { loginThunkCreator } from '../../redux/auth-reducer';
-import { useDispatch } from "react-redux";
 import Checkbox from '../common/formControl/Checkbox'
 import Button from '@mui/material/Button';
 import Password from "../common/formControl/Password";
+import style from './login.module.scss'
+import { useDispatch, useSelector } from "react-redux";
 
-const LoginReduxForm = () =>{
-
-  let dispatch = useDispatch()
-
+const LoginReduxForm = () => {
+  let dispatch = useDispatch();
+  let captchaURL = useSelector(state => state.auth.captchaURL);
+  let messageError = useSelector(state => state.auth.messageError);
   const { 
     control, 
     handleSubmit,
+    register,
     formState: { isValid } 
   } = useForm({
     defaultValues: {
+      rememberMe: false,
+      password: ''
     },
     mode: 'onBlur'
   });
 
-  const onSubmit = formData => dispatch(loginThunkCreator(formData.email, formData.password, formData.rememberMe));
+  const onSubmit = formData => {
+    dispatch(loginThunkCreator(formData.email, formData.password, formData.rememberMe, formData.captcha));
+  };
 
   return (
       <Box
@@ -50,6 +56,16 @@ const LoginReduxForm = () =>{
         <div>
           <Checkbox control={control} name="rememberMe" label="Remember me" value="start" labelPlacement='end'/>
         </div>
+        {
+          messageError && <p className={style.error}>{messageError}</p>
+        }
+        {
+          captchaURL && 
+          <div className={style.captcha}>
+            <img src={captchaURL} alt=''/> <br/>
+            <input {...register("captcha")} type='text' placeholder='Введите текст с картинки...'/>
+          </div>
+        }
         <Button
           disabled={!isValid}
           type="submit"

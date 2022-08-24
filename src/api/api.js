@@ -21,11 +21,14 @@ export const usersAPI = {
   },
   auth: {
     getAuth() {return instance.get('auth/me').then(response => response.data)},
-    postLogin(email, password, rememberMe=false) {return instance.post('auth/login', {email, password, rememberMe})},
+    postLogin(email, password, rememberMe=false, captcha) {return instance.post('auth/login', {email, password, rememberMe, captcha})},
     deleteLogOut() {return instance.delete('auth/login' )},
   },
   users: {
     getUsers(currentPage, pageSize) {return instance.get(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data)},
     getFriends(totalCount) {return instance.get(`users?friend=true&count=${totalCount}`).then(response => response.data)},
+  },
+  security: {
+    getCaptcha() {return instance.get('security/get-captcha-url').then(response => response.data)},
   }
 }

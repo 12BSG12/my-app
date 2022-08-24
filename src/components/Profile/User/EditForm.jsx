@@ -86,7 +86,7 @@ const EditForm = () =>{
           />
         </div>
         <div>
-          <Checkbox control={control} name="lookingForAJob" label="Looking for a job" value="start" labelPlacement='right'/>
+          <Checkbox control={control} name="lookingForAJob" label="Looking for a job" value="start" labelPlacement='start'/>
         </div>
         <button className={style.btn} disabled={!isValid}>Send</button>
       </Box>
