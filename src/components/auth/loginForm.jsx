@@ -1,42 +1,66 @@
-import style from './login.module.css'
-import { Field, reduxForm } from 'redux-form'
-import {Element} from '../common/FormControls/FormControls'
-import {required} from '../../util/validators/validators'
+import { useForm } from "react-hook-form";
+import Box from '@mui/material/Box';
+import Input from '../common/formControl/Input';
+import { loginThunkCreator } from '../../redux/auth-reducer';
+import { useDispatch } from "react-redux";
+import Checkbox from '../common/formControl/Checkbox'
+import Button from '@mui/material/Button';
+import Password from "../common/formControl/Password";
 
-const Input = Element("input");
+const LoginReduxForm = () =>{
 
-const LoginForm = ({handleSubmit, error}) => {
+  let dispatch = useDispatch()
+
+  const { 
+    control, 
+    handleSubmit,
+    formState: { isValid } 
+  } = useForm({
+    defaultValues: {
+    },
+    mode: 'onBlur'
+  });
+
+  const onSubmit = formData => dispatch(loginThunkCreator(formData.email, formData.password, formData.rememberMe));
+
   return (
-    <form onSubmit={handleSubmit}>
-      <ul className={style.formUl}>
-        <li>
-          <div className={style.item}>
-            <label htmlFor="name">E-Mail</label>
-            <Field name="email" type="email" component={Input} validate={[required]}/>
-          </div>
-        </li>
-        <li>
-          <div className={style.item}>
-            <label htmlFor="password">Password</label>
-            <Field name="password" type="password" component={Input} validate={[required]}/>
-          </div>
-        </li>
-        {error && <li className={style.formSummaryError}>{error}</li>}
-        <li>
-          <div className={style.formBottom}>
-            <div className={style.checkbox}>
-              <Field type="checkbox" name="rememberMe" component="input"/>
-              <p>remember me</p>
-            </div>
-            <button type="submit">Sign in</button>
-          </div>
-        </li>
-      </ul>
-    </form>
+      <Box
+        onSubmit={handleSubmit(onSubmit)}
+        component="form"
+        sx={{
+          '& .MuiTextField-root': { mt: 2 , width: '100%' },
+        }}
+        noValidate
+        >
+        <div>
+          <Input control={control} name="email" label='Email Address' rules={{ 
+            required: 'Поле обязательно для заполнения', 
+            minLength: {
+              value: 2,
+              message: 'Минимум 2 символа'
+            }, 
+            maxLength: {
+              value: 40,
+              message: 'Максимум 40 символов'
+            }, 
+            pattern: /^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/i }}
+          />
+        </div>
+        <Password control={control} name="password" rules={{ required: 'Поле обязательно для заполнения'}}/>
+        <div>
+          <Checkbox control={control} name="rememberMe" label="Remember me" value="start" labelPlacement='end'/>
+        </div>
+        <Button
+          disabled={!isValid}
+          type="submit"
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Sign In
+        </Button>
+      </Box>
   );
-} 
+}
 
-const LoginReduxForm = reduxForm({
-  form: 'login'
-})(LoginForm)
 export default LoginReduxForm;

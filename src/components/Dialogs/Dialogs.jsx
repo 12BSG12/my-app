@@ -3,7 +3,7 @@ import style from './Dialogs.module.css';
 import Message from './Message/Message';
 import DialogsReduxForm from './DialogsForm';
 
-const Dialogs = ({dialogsData, messagesData, onSubmit}) => {
+const Dialogs = ({dialogsData, messagesData}) => {
   const getDialogs = dialogsData.map((dialog, i) => <User username={dialog.name} key={i} id={dialog.id}/>);
   const getMassage = messagesData.map((message,i) => <Message message={message.message} id={message.id} key={i}/>);
   return (
@@ -17,7 +17,7 @@ const Dialogs = ({dialogsData, messagesData, onSubmit}) => {
           <div className={style.message}>
             { getMassage }
           </div>
-          <DialogsReduxForm onSubmit={onSubmit}/>
+          <DialogsReduxForm/>
         </div>
       </div>
     </div>

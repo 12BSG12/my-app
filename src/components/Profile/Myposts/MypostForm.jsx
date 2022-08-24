@@ -1,21 +1,29 @@
 import style from './Mypost.module.css';
-import { Field, reduxForm } from 'redux-form'
-import { required, maxLength } from '../../../util/validators/validators';
-import { Element } from '../../common/FormControls/FormControls';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from "react-redux";
+import { addPost } from '../../../redux/profile-reducer'
 
-const Textarea = Element("textarea");
-const max = maxLength(300);
+const MyPostForm = () => {
+  let dispatch = useDispatch();
+  const { register, reset, handleSubmit, formState: { errors, isValid} } = useForm({mode: 'onChange'});
+  const onSubmit = (formData) => {
+    dispatch(addPost(formData.message));
+    reset();
+  }
 
-const MyPostForm = ({handleSubmit}) => {
   return (
-    <form className={style.form} onSubmit={handleSubmit}>
-      <label className={style.title}>My posts</label>
-      <Field className={style.textarea} component={Textarea} name="message" validate={[required, max]} placeholder="your news..."/>
-      <button className={style.btn}>Send</button> 
-    </form>
+    <>
+      <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+        <label className={style.title}>My posts</label>
+        <textarea className={style.textarea} 
+          {...register("message", {required:true, maxLength: {value: 10, message: 'максимальная длина поста 10 символов'}})}
+          placeholder="your news..."
+        />
+        {errors?.message && <p>{errors.message.message}</p>}
+        <button className={style.btn} type="submit" disabled={!isValid}>Send</button> 
+      </form>
+    </>
   );
 } 
-const MyPostReduxForm = reduxForm({
-  form: 'mypost'
-})(MyPostForm)
-export default MyPostReduxForm;
+
+export default MyPostForm;

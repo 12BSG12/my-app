@@ -7,10 +7,10 @@ const Cbox = (props) => {
   return (
     <FormControlLabel 
       {...field} 
-      value="start" 
+      value={props.value}
       control={<Checkbox name={props.name} checked={field.value} />} 
       label={props.label} 
-      labelPlacement="start"
+      labelPlacement={props.labelPlacement}
     />
   );
 }

@@ -1,6 +1,6 @@
 import Profile from './Profile';
 import Preloader from '../common/Preloader/Preloader';
-import { addPost, setUserProfileThunkCreator, setProfileStatusThunkCreator, updateProfileStatusThunkCreator} from '../../redux/profile-reducer';
+import { setUserProfileThunkCreator, setProfileStatusThunkCreator, updateProfileStatusThunkCreator} from '../../redux/profile-reducer';
 import { useParams } from 'react-router-dom';
 import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 import { useEffect } from 'react';
@@ -23,14 +23,10 @@ const ProfileContainer = () => {
     dispatch(setProfileStatusThunkCreator(userID));
   }, [dispatch, userID]);
 
-  const onSubmit = (formData) => {
-    dispatch(addPost(formData.message));
-    formData.message = null;
-  }
   return (
     <main>
       {!userProfileData || isFetching ? <Preloader /> 
-      : <Profile {...{userProfileData, postData, profileStatus, updateProfileStatusThunkCreator}} onSubmit={onSubmit}/>}
+      : <Profile {...{userProfileData, postData, profileStatus, updateProfileStatusThunkCreator}}/>}
     </main>
   );
 }

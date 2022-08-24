@@ -43,6 +43,9 @@
 .textarea::placeholder{
   color: black;
 }
+.form{
+  position: relative;
+}
 .btn{
   position: absolute;
   top: 50%;

@@ -1,21 +1,28 @@
 import style from './Dialogs.module.css';
-import { Field, reduxForm } from 'redux-form'
-import { Element } from '../common/FormControls/FormControls';
-import { required, maxLength } from '../../util/validators/validators';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from "react-redux";
+import {sendMessage} from '../../redux/dialogs-reducer';
 
-const Textarea = Element("textarea");
-const max = maxLength(300)
+const DialogsForm = () => {
+  let dispatch = useDispatch();
+  const { register, reset, handleSubmit, formState: { errors, isValid} } = useForm({mode: 'onChange'});
+  const onSubmit = (formData) => {
+    dispatch(sendMessage(formData.message));
+    reset();
+  }
 
-const DialogsForm = ({handleSubmit}) => {  
   return (
-    <form className={style.body} onSubmit={handleSubmit}>
-      <Field className={style.textarea} component={Textarea} name='message' validate={[required, max]} placeholder='Write a message...'/>
-      <button className={style.btn}>Send</button>
-    </form>
+    <>
+      <form className={style.form} onSubmit={handleSubmit(onSubmit)}>
+        <textarea className={style.textarea} 
+          {...register("message", {required:true, maxLength: {value: 10, message: 'максимальная длина поста 10 символов'}})}
+          placeholder="write a message..."
+        />
+        {errors?.message && <p>{errors.message.message}</p>}
+        <button className={style.btn} type="submit" disabled={!isValid}>Send</button> 
+      </form>
+    </>
   );
 } 
 
-const DialogsReduxForm = reduxForm({
-  form: 'dialogs'
-})(DialogsForm)
-export default DialogsReduxForm;
+export default DialogsForm;

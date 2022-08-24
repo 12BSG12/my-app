@@ -2,8 +2,8 @@ import style from './EditForm.module.scss';
 import { DevTool } from "@hookform/devtools";
 import { useForm } from "react-hook-form";
 import Box from '@mui/material/Box';
-import Input from '../../../util/validators/Input';
-import Checkbox from '../../../util/validators/Checkbox';
+import Input from '../../common/formControl/Input';
+import Checkbox from '../../common/formControl/Checkbox';
 import {setProfileEditThunkCreator} from '../../../redux/profile-reducer'
 import { useDispatch, useSelector } from "react-redux";
 
@@ -86,7 +86,7 @@ const EditForm = () =>{
           />
         </div>
         <div>
-          <Checkbox control={control} name="lookingForAJob" label="Looking for a job"/>
+          <Checkbox control={control} name="lookingForAJob" label="Looking for a job" value="start" labelPlacement='right'/>
         </div>
         <button className={style.btn} disabled={!isValid}>Send</button>
       </Box>

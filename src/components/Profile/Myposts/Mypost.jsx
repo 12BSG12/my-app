@@ -1,12 +1,12 @@
 import Post from './Post/Post';
 import style from './Mypost.module.css';
-import MyPostReduxForm from './MypostForm';
+import MyPostForm from './MypostForm';
 
-const Mypost = ({postData, onSubmit}) => {
+const Mypost = ({postData}) => {
   const getPost = postData.map((post,i) => <Post message={post.message} key={i} likesCount={post.likesCount}/>); 
   return (
     <div>
-      <MyPostReduxForm onSubmit={onSubmit}/>
+      <MyPostForm />
       <div className={style.posts}>
         {getPost}
       </div>
