@@ -96,55 +96,80 @@ const setUserProfileEdit = (data) => ({
 });
 
 export const setUserProfileThunkCreator = (userID) => async (dispatch) => {
-  dispatch(toggleFetchingPage(true));
-  let data = await usersAPI.profile.getProfile(userID);
-  dispatch(toggleFetchingPage(false));
-  dispatch(setUserProfile(data));
+  try {
+    dispatch(toggleFetchingPage(true));
+    let data = await usersAPI.profile.getProfile(userID);
+    dispatch(toggleFetchingPage(false));
+    dispatch(setUserProfile(data));
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
+  }
 }
 
 export const setProfileStatusThunkCreator = (userID) => async (dispatch)  => {
-  let data = await usersAPI.profile.getProfileStatus(userID);
-  dispatch(setUserProfileStatus(data));
+  try {
+    let data = await usersAPI.profile.getProfileStatus(userID);
+    dispatch(setUserProfileStatus(data));
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
+  }
 }
 
 export const updateProfileStatusThunkCreator = (status) => async (dispatch)  => {
-  let data = await usersAPI.profile.putProfileStatus(status);
-  if(data.resultCode === 0){
-    dispatch(setUserProfileStatus(status));
+  try {
+    let data = await usersAPI.profile.putProfileStatus(status);
+    if(data.resultCode === 0){
+      dispatch(setUserProfileStatus(status));
+    }
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
   }
 }
 
 export const setProfilePhotoThunkCreator = (file) => async (dispatch)  => {
-  let formData = new FormData()
-  formData.append('image', file)
-  let data = await usersAPI.profile.putProfilePhoto(formData);
-  if(data.resultCode === 0){
-    dispatch(setUserProfilePhoto(data.data.photos));
-    dispatch(setUserPhoto(data.data.photos.small))
+  try {
+    let formData = new FormData()
+    formData.append('image', file)
+    let data = await usersAPI.profile.putProfilePhoto(formData);
+    if(data.resultCode === 0){
+      dispatch(setUserProfilePhoto(data.data.photos));
+      dispatch(setUserPhoto(data.data.photos.small))
+    }
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
   }
 }
 
 export const setProfileEditThunkCreator = (formData) => async (dispatch)  => {
-  let obj = {
-    lookingForAJob: formData.lookingForAJob,
-    lookingForAJobDescription: formData.lookingForAJobDescription,
-    aboutMe: formData.aboutMe,
-    fullName: formData.fullName || null,
-    contacts: {
-      github: formData.github || null,
-      vk: formData.vk || null, 
-      facebook: formData.facebook || null,
-      instagram: formData.instagram || null,
-      twitter: formData.twitter || null,
-      website: formData.website || null,
-      youtube: formData.youtube || null,
-      mainLink: formData.mainLink || null
-    },
-  }
-  let data = await usersAPI.profile.putProfileEdit(obj);
-  if(data.resultCode === 0){
-    dispatch(setUserProfileEdit(obj))
-    dispatch(setUserFullName(obj.fullName));
+  try {
+    let obj = {
+      lookingForAJob: formData.lookingForAJob,
+      lookingForAJobDescription: formData.lookingForAJobDescription,
+      aboutMe: formData.aboutMe,
+      fullName: formData.fullName || null,
+      contacts: {
+        github: formData.github || null,
+        vk: formData.vk || null, 
+        facebook: formData.facebook || null,
+        instagram: formData.instagram || null,
+        twitter: formData.twitter || null,
+        website: formData.website || null,
+        youtube: formData.youtube || null,
+        mainLink: formData.mainLink || null
+      },
+    }
+    let data = await usersAPI.profile.putProfileEdit(obj);
+    if(data.resultCode === 0){
+      dispatch(setUserProfileEdit(obj))
+      dispatch(setUserFullName(obj.fullName));
+    }
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
   }
 }
 

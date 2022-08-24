@@ -95,38 +95,63 @@ const togglefollowindProgress = (id, boolean) => ({
 });
  
  const followed = async (id, dispatch, api, actionCr) => {
-  dispatch(togglefollowindProgress(id, true));
-  let data = await api(id);
-  if(data.resultCode === 0){
-    dispatch(actionCr(id))
+  try {
+    dispatch(togglefollowindProgress(id, true));
+    let data = await api(id);
+    if(data.resultCode === 0){
+      dispatch(actionCr(id))
+    }
+    dispatch(togglefollowindProgress(id, false));
+  } catch(error) {
+    console.log(error);
+    return Promise.reject(error)
   }
-  dispatch(togglefollowindProgress(id, false));
 } 
 
 export const getUsersThunkCreator  = (currentPage, pageSize) => async (dispatch) => {
-  dispatch(toggleFetchingPage(true));
-  let data = await usersAPI.users.getUsers(currentPage, pageSize);
-  dispatch(toggleFetchingPage(false));
-  dispatch(setUsers(data.items))
-  dispatch(setTotalCount(data.totalCount))
+  try {
+    dispatch(toggleFetchingPage(true));
+    let data = await usersAPI.users.getUsers(currentPage, pageSize);
+    dispatch(toggleFetchingPage(false));
+    dispatch(setUsers(data.items))
+    dispatch(setTotalCount(data.totalCount))
+  } catch(error) {
+    console.log(error);
+    return Promise.reject(error)
+  }
 }
 
 export const changePageThunkCreator  = (page, pageSize) => async (dispatch) => {
-  dispatch(setCurrentPage(page));
-  dispatch(toggleFetchingPage(true));
-  let data = await usersAPI.users.getUsers(page, pageSize);
-  dispatch(toggleFetchingPage(false));
-  dispatch(setUsers(data.items))
+  try {
+    dispatch(setCurrentPage(page));
+    dispatch(toggleFetchingPage(true));
+    let data = await usersAPI.users.getUsers(page, pageSize);
+    dispatch(toggleFetchingPage(false));
+    dispatch(setUsers(data.items))
+  } catch(error) {
+    console.log(error);
+    return Promise.reject(error)
+  }
 }
 
 export const unFollowThunkCreator  = (id) => async (dispatch)  => {
-  await followed(id, dispatch, usersAPI.follow.deleteFollow, unFollow);
-  dispatch(delFriends(id));
+  try {
+    await followed(id, dispatch, usersAPI.follow.deleteFollow, unFollow);
+    dispatch(delFriends(id));
+  } catch(error){
+    console.log(error);
+    return Promise.reject(error)
+  }
 }
 
 export const followThunkCreator  = (id) => async (dispatch) => {
-  await followed(id, dispatch, usersAPI.follow.postFollow, follow);
-  dispatch(addFriends());
+  try {
+    await followed(id, dispatch, usersAPI.follow.postFollow, follow);
+    dispatch(addFriends());
+  } catch(error) {
+    console.log(error);
+    return Promise.reject(error)
+  }
 }
 
 export default usersReducer;

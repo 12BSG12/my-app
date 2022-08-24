@@ -89,35 +89,50 @@ export const getUserDataThunkCreator = () => async (dispatch) =>{
 }
 
 export const loginThunkCreator = (email, password, rememberMe, captcha) => async (dispatch) => {
-  let response =  await usersAPI.auth.postLogin(email, password, rememberMe, captcha);
-  switch (response.data.resultCode) {
-    case 0:
-      dispatch(getUserDataThunkCreator());
+  try {
+    let response =  await usersAPI.auth.postLogin(email, password, rememberMe, captcha);
+    switch (response.data.resultCode) {
+      case 0:
+        dispatch(getUserDataThunkCreator());
+        break;
+      case 1:
+        let error = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
+        dispatch(stopSubmit(error))
+        break;
+      case 10:
+        dispatch(getCaptcha())
       break;
-    case 1:
-      let error = response.data.messages.length > 0 ? response.data.messages[0] : 'Some error'
-      dispatch(stopSubmit(error))
-      break;
-    case 10:
-      dispatch(getCaptcha())
-    break;
-    default:
-      break;
+      default:
+        break;
+    }
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
   }
 }
 
 export const logOutThunkCreator = () => async (dispatch) =>{
-  let response = await usersAPI.auth.deleteLogOut();
-  if(response.data.resultCode === 0){
-    dispatch(setUserData(null, null, false, null));
-    dispatch(setCaptcha(null));
-    dispatch(stopSubmit(null));
+  try {
+    let response = await usersAPI.auth.deleteLogOut();
+    if(response.data.resultCode === 0){
+      dispatch(setUserData(null, null, false, null));
+      dispatch(setCaptcha(null));
+      dispatch(stopSubmit(null));
+    }
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
   }
 }
 
 const getCaptcha = () => async (dispatch) =>{
-  let data = await usersAPI.security.getCaptcha();
-  dispatch(setCaptcha(data.url));
+  try {
+    let data = await usersAPI.security.getCaptcha();
+    dispatch(setCaptcha(data.url));
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
+  }
 }
 
 export default authReducer;

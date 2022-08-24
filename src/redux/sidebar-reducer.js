@@ -58,10 +58,15 @@ export const addFriends = () => ({
 });
 
 export const getFriendsThunkCreator = (totalCount) => async (dispatch) => {
-  let count = await usersAPI.users.getFriends();
-  dispatch(getCount(count.totalCount));
-  let data = await usersAPI.users.getFriends(totalCount);
-  dispatch(getFriends(data.items));
+  try {
+    let count = await usersAPI.users.getFriends();
+    dispatch(getCount(count.totalCount));
+    let data = await usersAPI.users.getFriends(totalCount);
+    dispatch(getFriends(data.items));
+  } catch (error) {
+    console.log(error);
+    return Promise.reject(error)
+  }
 }
 
 export default sidebarReducer;

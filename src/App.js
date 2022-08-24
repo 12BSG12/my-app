@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setInitializedThunkCreator} from './redux/app-reducer';
 import Preloader from './components/common/Preloader/Preloader';
 import {Suspense, lazy} from 'react';
+import { Navigate } from 'react-router-dom';
 
 const ProfileContainer = lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -37,6 +38,7 @@ const App = () => {
           <Routes>
               <Route path='/profile/:userId' element={<ProfileContainer />}/>
               <Route path='/profile' element={<ProfileContainer />}/>
+              <Route path='/' element={<Navigate to="/profile" />} />
               <Route path='/dialogs/*' element={<DialogsContainer />}/>
               <Route path='/news' element={<News />}/>
               <Route path='/music' element={<Music />}/>
