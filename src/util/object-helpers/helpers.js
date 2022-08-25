@@ -1,1 +1,0 @@
-export const updataObjectInArray = (item, objPropName, actionProp, newObjProps) => item.map(user => (user[objPropName] === actionProp) ? {...user, ...newObjProps} : user);
