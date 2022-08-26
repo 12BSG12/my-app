@@ -1,7 +1,7 @@
 import style from './Dialogs.module.css';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from "react-redux";
-import {sendMessage} from '../../redux/dialogs-reducer';
+import { sendMessage } from '../../redux/reducers/dialogs';
 
 const DialogsForm = () => {
   let dispatch = useDispatch();

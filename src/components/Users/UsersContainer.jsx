@@ -1,5 +1,5 @@
 import Users from './Users';
-import { getUsersThunkCreator, changePageThunkCreator, unFollowThunkCreator, followThunkCreator } from '../../redux/users-reducer';
+import { getUsersAsyncThunk, changePageAsyncThunk, unFollowAsyncThunk, followAsyncThunk } from '../../redux/reducers/users';
 import Preloader from '../common/Preloader/Preloader';
 import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 import { getUsers, getPage, getTotalCount, getCurrentPage, getIsFetching, getFollowind } from '../../redux/selectors/users';
@@ -17,14 +17,14 @@ const UsersContainer = () => {
   let dispatch = useDispatch();
 
   useEffect(() =>{
-    dispatch(getUsersThunkCreator(currentPage, pageSize))
+    dispatch(getUsersAsyncThunk({currentPage, pageSize}))
   }, [dispatch, currentPage, pageSize]);
 
-  const changePage = (page) => dispatch(changePageThunkCreator(page, pageSize));
+  const changePage = (page) => dispatch(changePageAsyncThunk({page, pageSize}));
 
-  const unFollow = (id) => dispatch(unFollowThunkCreator(id));
+  const unFollow = (id) => dispatch(unFollowAsyncThunk(id));
 
-  const follow = (id) => dispatch(followThunkCreator(id));
+  const follow = (id) => dispatch(followAsyncThunk(id));
 
   let pagesCount = Math.ceil(totalCount / pageSize);
   return(

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import Box from '@mui/material/Box';
 import Input from '../../common/formControl/Input';
 import Checkbox from '../../common/formControl/Checkbox';
-import {setProfileEditThunkCreator} from '../../../redux/profile-reducer'
+import {setProfileEditAsyncThunk} from '../../../redux/reducers/profile'
 import { useDispatch, useSelector } from "react-redux";
 
 const EditForm = () =>{
@@ -32,7 +32,7 @@ const EditForm = () =>{
     mode: 'onBlur'
   });
 
-  const onSubmit = data => dispatch(setProfileEditThunkCreator(data));
+  const onSubmit = data => dispatch(setProfileEditAsyncThunk(data));
 
   return (
     <>

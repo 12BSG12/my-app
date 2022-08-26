@@ -1,4 +1,4 @@
-import { usersAPI } from '../api/api';
+import { usersAPI } from '../../api/api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const getFriendsAsyncThunk = createAsyncThunk(
@@ -53,5 +53,5 @@ const sidebarReducer = createSlice({
   }
 })
 
-export const { increment, decrement, incrementByAmount } = sidebarReducer.actions
+export const {delFriends, addFriends, getCount, getFriends} = sidebarReducer.actions
 export default sidebarReducer.reducer

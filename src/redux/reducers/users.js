@@ -1,8 +1,6 @@
-import { usersAPI } from '../api/api';
+import { usersAPI } from '../../api/api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { delFriends, addFriends } from './sidebar'
-import {updataObjectInArray} from '../util/object-helpers/helpers'
-
 
 const updataObjectInArray = (item, objPropName, actionProp, newObjProps) => item.map(user => (user[objPropName] === actionProp) ? newObjProps : user);
 const followed = async (id, dispatch, api, actionCr) => {
@@ -15,7 +13,7 @@ const followed = async (id, dispatch, api, actionCr) => {
 } 
 
 export const getUsersAsyncThunk = createAsyncThunk(
-  'users/getUsersAsyncThunk',
+  'usersPage/getUsersAsyncThunk',
   async ({currentPage, pageSize}, {rejectWithValue, dispatch}) => {
     try {
       dispatch(toggleFetchingPage(true));
@@ -30,7 +28,7 @@ export const getUsersAsyncThunk = createAsyncThunk(
 )
 
 export const changePageAsyncThunk   = createAsyncThunk(
-  'users/changePageAsyncThunk',
+  'usersPage/changePageAsyncThunk',
   async ({page, pageSize}, {rejectWithValue, dispatch}) => {
     try {
       dispatch(setCurrentPage(page));
@@ -45,7 +43,7 @@ export const changePageAsyncThunk   = createAsyncThunk(
 )
 
 export const unFollowAsyncThunk  = createAsyncThunk(
-  'users/unFollowAsyncThunk',
+  'usersPage/unFollowAsyncThunk',
   async (id, {rejectWithValue, dispatch}) => {
     try {
       await followed(id, dispatch, usersAPI.follow.deleteFollow, unFollow);
@@ -57,7 +55,7 @@ export const unFollowAsyncThunk  = createAsyncThunk(
 )
 
 export const followAsyncThunk  = createAsyncThunk(
-  'users/followAsyncThunk',
+  'usersPage/followAsyncThunk',
   async (id, {rejectWithValue, dispatch}) => {
     try {
       await followed(id, dispatch, usersAPI.follow.postFollow, follow);
@@ -69,7 +67,7 @@ export const followAsyncThunk  = createAsyncThunk(
 )
 
 const usersReducer = createSlice({
-  name: 'users',
+  name: 'usersPage',
   initialState: {
     usersData: [],
     pageSize: 4,

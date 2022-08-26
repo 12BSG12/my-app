@@ -3,14 +3,14 @@ import { useDispatch } from 'react-redux';
 import style from './User.module.css';
 import { useParams } from 'react-router-dom';
 
-const UserStatus = ({status, updateProfileStatusThunkCreator}) => {
+const UserStatus = ({status, updateProfileStatusAsyncThunk}) => {
   const [editeMode, setEditeMode] = useState(false);
   const [sts, setStatus] = useState(status);
   let dispatch = useDispatch();
   let isOwner = useParams().userId;
   const disableEditeMode = () =>{
     setEditeMode(false);
-    dispatch(updateProfileStatusThunkCreator(sts));
+    dispatch(updateProfileStatusAsyncThunk(sts));
   }
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { setInitializedThunkCreator} from './redux/app-reducer';
+import { setInitializedAsyncThunk} from './redux/reducers/app';
 import Preloader from './components/common/Preloader/Preloader';
 import {Suspense, lazy} from 'react';
 import { Navigate } from 'react-router-dom';
@@ -23,7 +23,7 @@ const App = () => {
   let dispatch = useDispatch();
 
   useEffect(() =>{
-    dispatch(setInitializedThunkCreator());
+    dispatch(setInitializedAsyncThunk());
   }, [dispatch]);
 
   if(!initialized) {

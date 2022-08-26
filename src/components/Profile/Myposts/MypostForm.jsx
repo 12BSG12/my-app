@@ -1,7 +1,7 @@
 import style from './Mypost.module.css';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from "react-redux";
-import { addPost } from '../../../redux/profile-reducer'
+import { addPost } from '../../../redux/reducers/profile'
 
 const MyPostForm = () => {
   let dispatch = useDispatch();

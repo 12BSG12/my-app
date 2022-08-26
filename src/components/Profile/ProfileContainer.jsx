@@ -1,6 +1,6 @@
 import Profile from './Profile';
 import Preloader from '../common/Preloader/Preloader';
-import { setUserProfileThunkCreator, setProfileStatusThunkCreator, updateProfileStatusThunkCreator} from '../../redux/profile-reducer';
+import { setUserProfileAsyncThunk, setProfileStatusAsyncThunk, updateProfileStatusAsyncThunk} from '../../redux/reducers/profile';
 import { useParams } from 'react-router-dom';
 import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 import { useEffect } from 'react';
@@ -19,14 +19,14 @@ const ProfileContainer = () => {
   if (!userID) userID = defualutID;
 
   useEffect(() =>{
-    dispatch(setUserProfileThunkCreator(userID));
-    dispatch(setProfileStatusThunkCreator(userID));
+    dispatch(setUserProfileAsyncThunk(userID));
+    dispatch(setProfileStatusAsyncThunk(userID));
   }, [dispatch, userID]);
 
   return (
     <main>
       {!userProfileData || isFetching ? <Preloader /> 
-      : <Profile {...{userProfileData, postData, profileStatus, updateProfileStatusThunkCreator}}/>}
+      : <Profile {...{userProfileData, postData, profileStatus, updateProfileStatusAsyncThunk}}/>}
     </main>
   );
 }

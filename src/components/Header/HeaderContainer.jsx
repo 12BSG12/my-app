@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import Header from "./Header";
-import { logOutThunkCreator } from '../../redux/auth-reducer';
+import { logOutAsyncThunk } from '../../redux/reducers/auth';
 
 const HeaderContainer = () => {
   let login = useSelector(state => state.auth.fullName)
@@ -10,7 +10,7 @@ const HeaderContainer = () => {
   let dispatch = useDispatch()
 
   const onClickLogOut = () => {
-    dispatch(logOutThunkCreator());
+    dispatch(logOutAsyncThunk());
   }
   return(
     <Header login={login} isAuth={isAuth} photo={photo} onClickLogOut={onClickLogOut}/>

@@ -5,14 +5,14 @@ import UserStatus from './UserStatus';
 import { Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { setProfilePhotoThunkCreator } from '../../../redux/profile-reducer'
+import { setProfilePhotoAsyncThunk } from '../../../redux/reducers/profile'
 import { useState } from 'react';
 import {Suspense, lazy} from 'react';
 import Preloader from '../../common/Preloader/Preloader';
 
 const EditForm = lazy(() => import('./EditForm'));
 
-const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}, fullName, profileStatus, aboutMe, lookingForAJob , lookingForAJobDescription}) => {
+const User = ({contacts, updateProfileStatusAsyncThunk, photos: {small, large}, fullName, profileStatus, aboutMe, lookingForAJob , lookingForAJobDescription}) => {
   const [isEdit, setEdit] = useState(false);
 
   let dispatch =  useDispatch()
@@ -21,7 +21,7 @@ const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}
   const getLinks = Object.entries(contacts).map((links,i) => <a href={links[1]} target='_blank' key={i} rel="noreferrer noopener">{!links[1] ? null : links[0]}</a>);
 
   const onChange = (e) =>{ 
-    if(e.target.files.length) dispatch(setProfilePhotoThunkCreator(e.target.files[0]));
+    if(e.target.files.length) dispatch(setProfilePhotoAsyncThunk(e.target.files[0]));
   }
 
   let isOwner = useParams().userId;
@@ -45,7 +45,7 @@ const User = ({contacts, updateProfileStatusThunkCreator, photos: {small, large}
       </div>
       <div className={style.body}>
         <div className={style.name}>{fullName}</div>
-        <UserStatus status = {profileStatus} updateProfileStatusThunkCreator={updateProfileStatusThunkCreator}/>
+        <UserStatus status = {profileStatus} updateProfileStatusAsyncThunk={updateProfileStatusAsyncThunk}/>
         {
           isEdit ? <Suspense fallback={<Preloader />}><EditForm /></Suspense> :
           <>

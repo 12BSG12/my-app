@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import Box from '@mui/material/Box';
 import Input from '../common/formControl/Input';
-import { loginThunkCreator } from '../../redux/auth-reducer';
+import { loginAsyncThunk } from '../../redux/reducers/auth';
 import Checkbox from '../common/formControl/Checkbox'
 import Button from '@mui/material/Button';
 import Password from "../common/formControl/Password";
@@ -26,7 +26,7 @@ const LoginReduxForm = () => {
   });
 
   const onSubmit = formData => {
-    dispatch(loginThunkCreator(formData.email, formData.password, formData.rememberMe, formData.captcha));
+    dispatch(loginAsyncThunk({email: formData.email, password: formData.password, rememberMe: formData.rememberMe, captcha: formData.captcha}));
   };
 
   return (
