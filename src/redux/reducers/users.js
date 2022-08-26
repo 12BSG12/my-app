@@ -16,9 +16,7 @@ export const getUsersAsyncThunk = createAsyncThunk(
   'usersPage/getUsersAsyncThunk',
   async ({currentPage, pageSize}, {rejectWithValue, dispatch}) => {
     try {
-      dispatch(toggleFetchingPage(true));
       let data = await usersAPI.users.getUsers(currentPage, pageSize);
-      dispatch(toggleFetchingPage(false));
       dispatch(setUsers(data.items))
       dispatch(setTotalCount(data.totalCount))
     } catch(error) {
@@ -32,9 +30,7 @@ export const changePageAsyncThunk   = createAsyncThunk(
   async ({page, pageSize}, {rejectWithValue, dispatch}) => {
     try {
       dispatch(setCurrentPage(page));
-      dispatch(toggleFetchingPage(true));
       let data = await usersAPI.users.getUsers(page, pageSize);
-      dispatch(toggleFetchingPage(false));
       dispatch(setUsers(data.items))
     } catch(error) {
       return rejectWithValue(error)
@@ -74,8 +70,7 @@ const usersReducer = createSlice({
     totalCount: 0,
     currentPage: 1,
     followindInProgress: [],
-    isFetching: false,
-    error: null
+    isFetching: false
   },
   reducers: {
     follow (state, action) {
@@ -93,9 +88,6 @@ const usersReducer = createSlice({
     setCurrentPage (state, action) {
       state.currentPage = action.payload
     },
-    toggleFetchingPage (state, action) {
-      state.isFetching = action.payload
-    },
     togglefollowindProgress (state, action) {
       const { boolean, id } = action.payload;
       state.followindInProgress = boolean
@@ -104,20 +96,20 @@ const usersReducer = createSlice({
     }
   },
   extraReducers: {
-    [getUsersAsyncThunk.rejected]: (state, action) => {
-      state.error = action.payload
+    [getUsersAsyncThunk.pending]: (state) => {
+      state.isFetching = true
     },
-    [changePageAsyncThunk.rejected]: (state, action) => {
-      state.error = action.payload
+    [getUsersAsyncThunk.fulfilled]: (state) => {
+      state.isFetching = false
     },
-    [unFollowAsyncThunk.rejected]: (state, action) => {
-      state.error = action.payload
+    [changePageAsyncThunk.pending]: (state) => {
+      state.isFetching = true
     },
-    [followAsyncThunk.rejected]: (state, action) => {
-      state.error = action.payload
+    [changePageAsyncThunk.fulfilled]: (state) => {
+      state.isFetching = false
     }
   }
 });
 
-export const { follow, unFollow, setUsers, setTotalCount, setCurrentPage, toggleFetchingPage, togglefollowindProgress } = usersReducer.actions
+export const { follow, unFollow, setUsers, setTotalCount, setCurrentPage, togglefollowindProgress } = usersReducer.actions
 export default usersReducer.reducer

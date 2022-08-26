@@ -20,7 +20,7 @@ const sidebarReducer = createSlice({
   initialState: {
     friendsData: [],
     count: 0,
-    status: null,
+    isLoading: false,
     error: null
   },
   reducers: {
@@ -40,14 +40,13 @@ const sidebarReducer = createSlice({
   },
   extraReducers: {
     [getFriendsAsyncThunk.pending]: (state) => {
-      state.status = 'loading...'
+      state.isLoading = true
       state.error = null
     },
     [getFriendsAsyncThunk.fulfilled]: (state) => {
-      state.status = 'response'
+      state.isLoading = false
     },
     [getFriendsAsyncThunk.rejected]: (state, action) => {
-      state.status = 'rejected'
       state.error = action.payload
     }
   }

@@ -6,9 +6,7 @@ export const setUserProfileAsyncThunk = createAsyncThunk(
   'profilePage/setUserProfileAsyncThunk',
   async (userID, {rejectWithValue, dispatch}) => {
     try {
-      dispatch(toggleFetchingPage(true));
       let data = await usersAPI.profile.getProfile(userID);
-      dispatch(toggleFetchingPage(false));
       dispatch(setUserProfile(data));
     } catch (error) {
       return rejectWithValue(error.message)
@@ -123,10 +121,18 @@ const profileReducer = createSlice({
     setUserProfileEdit (state, action) {
       state.userProfileData = {...state.userProfileData, ...action.payload}
     }
+  },
+  extraReducers: {
+    [setUserProfileAsyncThunk.pending]: (state) => {
+      state.isFetching = true
+    },
+    [setUserProfileAsyncThunk.fulfilled]: (state) => {
+      state.isFetching = false
+    }
   }
 })
 
 export const { addPost, deletePost, 
   setUserProfilePhoto, setUserProfileStatus, 
-  setUserProfileEdit, toggleFetchingPage, setUserProfile } = profileReducer.actions
+  setUserProfileEdit, setUserProfile } = profileReducer.actions
 export default profileReducer.reducer

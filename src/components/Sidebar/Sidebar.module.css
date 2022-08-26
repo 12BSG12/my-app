@@ -1,6 +1,6 @@
 .sidebar {
   grid-area: nav;
-  background-color: green;
+  background-color: rgb(25,118,210);
 }
 
 .menu{

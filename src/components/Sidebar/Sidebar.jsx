@@ -1,8 +1,9 @@
+import Skeleton from "./Skeleton";
 import { NavLink } from "react-router-dom";
 import Friends from "./Friends/Friends";
 import style from './Sidebar.module.css';
 
-const Sidebar = ({friendsData}) => {
+const Sidebar = ({friendsData, isLoading}) => {
   const getFriends = friendsData.map(friend => <NavLink to={"/profile/" + friend.id} key={friend.id}><Friends name={friend.name} photo={friend.photos.small}/></NavLink>);
   const setActive = ({isActive}) => isActive ? style.active : style.link;
   return (
@@ -27,10 +28,14 @@ const Sidebar = ({friendsData}) => {
           <NavLink className={setActive} to="/settings">Settings</NavLink>
         </li>
       </ul>
+      
       <div className={style.title}>Friends</div>
-      <div className={style.friends}>
-        {getFriends}
-      </div>
+      {
+        isLoading ? <Skeleton /> :
+        <div className={style.friends}>
+          {getFriends}
+        </div>
+      }
     </div>
   );
 } 
