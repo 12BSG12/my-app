@@ -2,7 +2,7 @@ import { usersAPI } from '../../api/api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { delFriends, addFriends } from './sidebar'
 
-const updataObjectInArray = (item, objPropName, actionProp, newObjProps) => item.map(user => (user[objPropName] === actionProp) ? newObjProps : user);
+const updataObjectInArray = (item, objPropName, actionProp, newObjProps) => item.map(user => (user[objPropName] === actionProp) ? Object.assign(user, newObjProps) : user);
 const followed = async (id, dispatch, api, actionCr) => {
   dispatch(togglefollowindProgress(id, true));
   let data = await api(id);

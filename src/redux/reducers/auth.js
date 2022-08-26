@@ -2,7 +2,6 @@ import { usersAPI } from '../../api/api';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-
 export const getUserDataAsyncThunk = createAsyncThunk(
   'auth/getUserDataAsyncThunk',
   async (_, {rejectWithValue, dispatch}) => {

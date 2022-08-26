@@ -1,6 +1,6 @@
 import { usersAPI } from '../../api/api';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { setUserPhoto, setUserFullName } from './auth';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const setUserProfileAsyncThunk = createAsyncThunk(
   'profilePage/setUserProfileAsyncThunk',
@@ -35,7 +35,7 @@ export const setProfilePhotoAsyncThunk = createAsyncThunk(
 
 export const setProfileEditAsyncThunk = createAsyncThunk(
   'profilePage/setProfileEditAsyncThunk',
-  async (formData, {rejectWithValue, dispatch}) => {
+  async (formData, {rejectWithValue, dispatch}) => {  
     try {
       let obj = {
         lookingForAJob: formData.lookingForAJob,
@@ -118,10 +118,10 @@ const profileReducer = createSlice({
       state.profileStatus = action.payload
     },
     setUserProfilePhoto (state, action) {
-      state.userProfileData = {photos: action.payload}
+      state.userProfileData.photos = action.payload
     },
     setUserProfileEdit (state, action) {
-      state.userProfileData = action.payload
+      state.userProfileData = Object.assign(state.userProfileData, action.payload)
     }
   }
 })

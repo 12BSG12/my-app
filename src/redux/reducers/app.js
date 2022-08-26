@@ -6,9 +6,9 @@ export const setInitializedAsyncThunk = createAsyncThunk(
   async (_, {rejectWithValue, dispatch}) => {
     try {
       let promise = dispatch(getUserDataAsyncThunk());
-      dispatch(setInitialized());
       Promise.all([promise]).then(() => {
-      });
+        dispatch(setInitialized());
+      }); 
     } catch (error) {
       return rejectWithValue(error.message)
     }
@@ -20,8 +20,10 @@ const appReducer = createSlice({
   initialState: {
     initialized: false
   },
-  setInitialized (state) {
-    state.initialized = true
+  reducers: {
+    setInitialized (state) {
+      state.initialized = true
+    }
   }
 })
 

@@ -1,11 +1,11 @@
 import Header from "../Header/Header";
 import User from "../User/User";
 
-const ProfileInfo = ({userProfileData, profileStatus, updateProfileStatusThunkCreator}) => {
+const ProfileInfo = ({userProfileData, profileStatus, updateProfileStatusAsyncThunk}) => {
   return(
     <>
       <Header />
-      <User {...userProfileData} profileStatus={profileStatus} updateProfileStatusThunkCreator={updateProfileStatusThunkCreator}/>
+      <User {...userProfileData} profileStatus={profileStatus} updateProfileStatusAsyncThunk={updateProfileStatusAsyncThunk}/>
     </>
   );
 }
