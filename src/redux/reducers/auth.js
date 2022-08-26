@@ -50,7 +50,7 @@ export const logOutAsyncThunk = createAsyncThunk(
     try {
       let response = await usersAPI.auth.deleteLogOut();
       if(response.data.resultCode === 0){
-        dispatch(setUserData(null, null, false, null));
+        dispatch(setUserData({id: null, fullName: null, isAuth: false, photo: null}));
         dispatch(setCaptcha(null));
         dispatch(stopSubmit(null));
       }
@@ -84,10 +84,11 @@ const authReducer = createSlice({
   },
   reducers: {
     setUserData (state, action) {
-      state.id = action.payload.id
-      state.fullName = action.payload.fullName
-      state.isAuth = action.payload.isAuth
-      state.photo = action.payload.photo
+      const { id, fullName, isAuth, photo } = action.payload;
+      state.id = id
+      state.fullName = fullName
+      state.isAuth = isAuth
+      state.photo = photo
     },
     setUserPhoto (state, action) {
       state.photo = action.payload

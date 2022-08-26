@@ -121,7 +121,7 @@ const profileReducer = createSlice({
       state.userProfileData.photos = action.payload
     },
     setUserProfileEdit (state, action) {
-      state.userProfileData = Object.assign(state.userProfileData, action.payload)
+      state.userProfileData = {...state.userProfileData, ...action.payload}
     }
   }
 })

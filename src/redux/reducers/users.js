@@ -2,7 +2,7 @@ import { usersAPI } from '../../api/api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { delFriends, addFriends } from './sidebar'
 
-const updataObjectInArray = (item, objPropName, actionProp, newObjProps) => item.map(user => (user[objPropName] === actionProp) ? Object.assign(user, newObjProps) : user);
+const updataObjectInArray = (item, objPropName, actionProp, newObjProps) => item.map(user => (user[objPropName] === actionProp) ? {...user, ...newObjProps}: user);
 const followed = async (id, dispatch, api, actionCr) => {
   dispatch(togglefollowindProgress(id, true));
   let data = await api(id);
@@ -97,9 +97,10 @@ const usersReducer = createSlice({
       state.isFetching = action.payload
     },
     togglefollowindProgress (state, action) {
-      state.followindInProgress = action.payload.boolean
-      ? state.followindInProgress.push(action.payload.id)
-      : state.followindInProgress.filter(id => id !== action.payload.id)
+      const { boolean, id } = action.payload;
+      state.followindInProgress = boolean
+      ? state.followindInProgress.push(id)
+      : state.followindInProgress.filter(_id => _id !== id)
     }
   },
   extraReducers: {
