@@ -43,7 +43,7 @@ export const unFollowAsyncThunk  = createAsyncThunk(
   async (id, {rejectWithValue, dispatch}) => {
     try {
       await followed(id, dispatch, usersAPI.follow.deleteFollow, unFollow);
-      dispatch(delFriends(id));
+      //dispatch(delFriends(id));
     } catch(error){
       return rejectWithValue(error)
     }
@@ -55,7 +55,7 @@ export const followAsyncThunk  = createAsyncThunk(
   async (id, {rejectWithValue, dispatch}) => {
     try {
       await followed(id, dispatch, usersAPI.follow.postFollow, follow);
-      dispatch(addFriends());
+      //dispatch(addFriends());
     } catch(error) {
       return rejectWithValue(error)
     }

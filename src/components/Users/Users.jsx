@@ -4,7 +4,7 @@ import defaultAvatar from '../../assets/images/default_avatar.webp';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 
-const Users = ({usersData, follow, unFollow, followindInProgress, pagesCount, changePage, currentPage}) => {
+const Users = ({usersData, follow, unFollow, followindInProgress, pagesCount, setPage, page}) => {
   const getUsers = usersData.map(user => <User 
     id={user.id}
     photos={user.photos.small??defaultAvatar}
@@ -20,12 +20,11 @@ const Users = ({usersData, follow, unFollow, followindInProgress, pagesCount, ch
     <div className={style.body}>
       <div className={style.title}>Users</div>
       <Stack spacing={2}>
-        <Pagination count={pagesCount} color="primary" showFirstButton showLastButton page={currentPage} onChange={(_, num) => changePage(num)} />
+        <Pagination count={pagesCount} color="primary" showFirstButton showLastButton page={page} onChange={(_, num) => setPage(num)} />
       </Stack>
       <div className={style.users}>
         {getUsers}
       </div>
-      <button className={style.bigbtn}>Show more</button>
     </div>
   )
 } 

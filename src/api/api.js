@@ -32,3 +32,8 @@ export const usersAPI = {
     getCaptcha() {return instance.get('security/get-captcha-url').then(response => response.data)},
   }
 }
+
+export const api = {
+  baseUrl: 'https://social-network.samuraijs.com/api/1.0/',
+  credentials: 'include',
+}
