@@ -1,10 +1,11 @@
 import Dialogs from './Dialogs';
 import { withAuthNavigate } from '../../hoc/withAuthNavigate';
-import { useSelector } from "react-redux";
+import { useAppSelector } from '../../hooks/hooks';
+import React from 'react'
 
 const DialogsContainer = () => {
-  let dialogsData = useSelector(state => state.dialogsPage.dialogsData);
-  let messagesData = useSelector(state => state.dialogsPage.messagesData);
+  let dialogsData = useAppSelector(state => state.dialogsPage.dialogsData);
+  let messagesData = useAppSelector(state => state.dialogsPage.messagesData);
   
   return <Dialogs {...{dialogsData, messagesData}}/>;
 }

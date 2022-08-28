@@ -2,8 +2,15 @@ import User from './User/User';
 import style from './Dialogs.module.css';
 import Message from './Message/Message';
 import DialogsReduxForm from './DialogsForm';
+import { dialogs, message } from '../../redux/reducers/dialogs';
+import React from 'react'
 
-const Dialogs = ({dialogsData, messagesData}) => {
+interface IDialogs {
+  dialogsData: dialogs[],
+  messagesData: message[]
+}
+
+const Dialogs: React.FC<IDialogs> = ({dialogsData, messagesData}) => {
   const getDialogs = dialogsData.map((dialog, i) => <User username={dialog.name} key={i} id={dialog.id}/>);
   const getMassage = messagesData.map((message,i) => <Message message={message.message} id={message.id} key={i}/>);
   return (

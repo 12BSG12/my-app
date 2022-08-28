@@ -1,6 +1,6 @@
 import { usersAPI } from '../../api/api';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
 export const getUserDataAsyncThunk = createAsyncThunk(
   'auth/getUserDataAsyncThunk',
@@ -18,6 +18,13 @@ export const getUserDataAsyncThunk = createAsyncThunk(
     }
   }
 )
+
+type login = {
+  email: string,
+  password: string,
+  rememberMe: string
+  captcha: string
+}
 
 export const loginAsyncThunk = createAsyncThunk(
   'auth/loginAsyncThunk',
@@ -60,46 +67,57 @@ export const logOutAsyncThunk = createAsyncThunk(
   }
 )
 
-const getCaptchaAsyncThunk = createAsyncThunk(
+const getCaptchaAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: string}>(
   'auth/getCaptchaAsyncThunk',
   async (_, {rejectWithValue, dispatch}) => {
     try {
       let data = await usersAPI.security.getCaptcha();
       dispatch(setCaptcha(data.url));
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue(String(error))
     }
   }
 )
 
+type state = {
+  id: number | null,
+  fullName: string | null,
+  isAuth: boolean,
+  photo: string | null,
+  captchaURL?: string | null,
+  messageError?: string | null
+}
+
+const initialState: state = {
+  id: null,
+  fullName: 'null',
+  isAuth: false,
+  photo: null,
+  captchaURL: null,
+  messageError: null
+}
+
 const authReducer = createSlice({
   name: 'auth',
-  initialState: {
-    id: null,
-    fullName: null,
-    isAuth: false,
-    photo: null,
-    captchaURL: null,
-    messageError: null
-  },
+  initialState,
   reducers: {
-    setUserData (state, action) {
+    setUserData (state, action: PayloadAction<state>) {
       const { id, fullName, isAuth, photo } = action.payload;
       state.id = id
       state.fullName = fullName
       state.isAuth = isAuth
       state.photo = photo
     },
-    setUserPhoto (state, action) {
+    setUserPhoto (state, action: PayloadAction<string>) {
       state.photo = action.payload
     },
-    setUserFullName (state, action) {
+    setUserFullName (state, action: PayloadAction<string>) {
       state.fullName = action.payload
     },  
-    setCaptcha (state, action) {
+    setCaptcha (state, action: PayloadAction<string | null>) {
       state.captchaURL = action.payload
     },
-    stopSubmit (state, action) {
+    stopSubmit (state, action: PayloadAction<string | null>) {
       state.messageError = action.payload
     }
   }

@@ -3,11 +3,12 @@ import SidebarContainer from './components/Sidebar/SidebarContainer';
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from "react-redux";
 import { setInitializedAsyncThunk} from './redux/reducers/app';
 import Preloader from './components/common/Preloader/Preloader';
 import {Suspense, lazy} from 'react';
 import { Navigate } from 'react-router-dom';
+import React from 'react'
+import { useAppDispatch, useAppSelector } from './hooks/hooks';
 
 const ProfileContainer = lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = lazy(() => import('./components/Dialogs/DialogsContainer'));
@@ -18,9 +19,9 @@ const UsersContainer = lazy(() => import('./components/Users/UsersContainer'));
 const Login = lazy(() => import('./components/auth/login'));
 
 const App = () => {
-  let initialized = useSelector(state => state.app.initialized);
+  let initialized = useAppSelector(state => state.app.initialized);
   
-  let dispatch = useDispatch();
+  let dispatch = useAppDispatch();
 
   useEffect(() =>{
     dispatch(setInitializedAsyncThunk());
