@@ -9,13 +9,20 @@ import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import {useState} from 'react'
+import {FC, useState} from 'react'
 import { NavLink } from "react-router-dom";
 
-const Header = ({isAuth, login, photo, onClickLogOut}) => {
-  const [anchorElUser, setAnchorElUser] = useState(null);
+interface IHeader {
+  login: string | null,
+  isAuth: boolean | null,
+  photo: string | null,
+  onClickLogOut(): void
+}
 
-  const handleOpenUserMenu = (event) => {
+const Header: FC<IHeader> = ({isAuth, login, photo, onClickLogOut}) => {
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
   };
 
@@ -46,9 +53,9 @@ const Header = ({isAuth, login, photo, onClickLogOut}) => {
           <Box sx={{ flexGrow: 0}}>
             {
               isAuth ? <>
-                <Tooltip title={login} >
+                <Tooltip title={login??''} >
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
-                    <Avatar alt="" src={photo} />
+                    <Avatar alt="" src={photo??''} />
                   </IconButton>
                 </Tooltip>
                 <Menu

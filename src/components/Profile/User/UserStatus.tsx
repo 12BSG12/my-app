@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { FC, useEffect, useState } from 'react';
 import style from './User.module.css';
 import { useParams } from 'react-router-dom';
+import { updateProfileStatusAsyncThunk } from '../../../redux/reducers/profile';
+import { useAppDispatch } from '../../../hooks/hooks';
 
-const UserStatus = ({status, updateProfileStatusAsyncThunk}) => {
+const UserStatus:FC<{status: string}> = ({status}) => {
   const [editeMode, setEditeMode] = useState(false);
   const [sts, setStatus] = useState(status);
-  let dispatch = useDispatch();
+  let dispatch = useAppDispatch();
   let isOwner = useParams().userId;
   const disableEditeMode = () =>{
     setEditeMode(false);

@@ -1,7 +1,13 @@
 import TextField from '@mui/material/TextField';
-import { useController } from "react-hook-form";
+import { useController, UseControllerProps } from "react-hook-form";
+import { FormValuesType } from './FormValuesType'
 
-const Input = (props) => {
+interface Iinput {
+  rows?: number
+  label: string
+}
+
+const Input = (props: Iinput & UseControllerProps<FormValuesType>) => {
   const {field, fieldState: {error}} = useController(props);
   return (
     <TextField 
@@ -16,4 +22,4 @@ const Input = (props) => {
   );
 }
 
-export default Input;
+export default Input

@@ -10,7 +10,7 @@ export const setInitializedAsyncThunk = createAsyncThunk<undefined, void, {rejec
         dispatch(setInitialized());
       }); 
     } catch (error) {
-      return rejectWithValue(String(error))
+      return rejectWithValue('Server Error!')
     }
   }
 )

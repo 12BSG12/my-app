@@ -2,10 +2,17 @@ import Skeleton from "./Skeleton";
 import { NavLink } from "react-router-dom";
 import Friends from "./Friends/Friends";
 import style from './Sidebar.module.css';
+import { FC } from "react";
+import { friendsType } from "../../redux/reducers/sidebar";
 
-const Sidebar = ({friendsData, isLoading}) => {
+interface ISidebar {
+  friendsData: friendsType[]
+  isLoading: boolean
+}
+
+const Sidebar: FC<ISidebar> = ({friendsData, isLoading}) => {
   const getFriends = friendsData.map(friend => <NavLink to={"/profile/" + friend.id} key={friend.id}><Friends name={friend.name} photo={friend.photos.small}/></NavLink>);
-  const setActive = ({isActive}) => isActive ? style.active : style.link;
+  const setActive = ({isActive}: any) => isActive ? style.active : style.link;
   return (
     <div className= {style.sidebar}>
       <ul className= {style.menu}>

@@ -6,13 +6,18 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import { useState } from 'react';
-import { useController } from "react-hook-form";
+import { useController, UseControllerProps } from "react-hook-form";
 import FormHelperText from '@mui/material/FormHelperText';
+import { FormValuesType } from './FormValuesType'
 
-const Password = (props) =>{
+interface State {
+  showPassword: boolean;
+}
+
+const Password = (props: UseControllerProps<FormValuesType>) =>{
   const {field, fieldState: {error}} = useController(props);
 
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<State>({
     showPassword: false,
   });
 
@@ -23,10 +28,9 @@ const Password = (props) =>{
     });
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
-
 
   return (
     <FormControl sx={{ mt: 2, width: '100%' }} variant="outlined" error={Boolean(error)}>

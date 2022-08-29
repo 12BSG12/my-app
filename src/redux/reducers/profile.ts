@@ -2,19 +2,19 @@ import { usersAPI } from '../../api/api';
 import { setUserPhoto, setUserFullName } from './auth';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-export const setUserProfileAsyncThunk = createAsyncThunk(
+export const setUserProfileAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'profilePage/setUserProfileAsyncThunk',
   async (userID, {rejectWithValue, dispatch}) => {
     try {
       let data = await usersAPI.profile.getProfile(userID);
       dispatch(setUserProfile(data));
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
 
-export const setProfilePhotoAsyncThunk = createAsyncThunk(
+export const setProfilePhotoAsyncThunk = createAsyncThunk<undefined, any, {rejectValue: string}>(
   'profilePage/setProfilePhotoAsyncThunk',
   async (file, {rejectWithValue, dispatch}) => {
     try {
@@ -26,30 +26,30 @@ export const setProfilePhotoAsyncThunk = createAsyncThunk(
         dispatch(setUserPhoto(data.data.photos.small))
       }
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
 
-export const setProfileEditAsyncThunk = createAsyncThunk(
+export const setProfileEditAsyncThunk = createAsyncThunk<undefined, userType, {rejectValue: string}>(
   'profilePage/setProfileEditAsyncThunk',
   async (formData, {rejectWithValue, dispatch}) => {  
     try {
       let obj = {
+        aboutMe: formData.aboutMe,
+        contacts: {
+          facebook: formData.contacts?.facebook || null,
+          website: formData.contacts?.website || null,
+          vk: formData.contacts?.vk || null,
+          twitter: formData.contacts?.twitter || null,
+          instagram: formData.contacts?.instagram || null,
+          youtube: formData.contacts?.youtube || null,
+          github: formData.contacts?.github || null,
+          mainLink: formData.contacts?.mainLink || null
+        },
         lookingForAJob: formData.lookingForAJob,
         lookingForAJobDescription: formData.lookingForAJobDescription,
-        aboutMe: formData.aboutMe,
-        fullName: formData.fullName || null,
-        contacts: {
-          github: formData.github || null,
-          vk: formData.vk || null, 
-          facebook: formData.facebook || null,
-          instagram: formData.instagram || null,
-          twitter: formData.twitter || null,
-          website: formData.website || null,
-          youtube: formData.youtube || null,
-          mainLink: formData.mainLink || null
-        },
+        fullName: formData.fullName,
       }
       let data = await usersAPI.profile.putProfileEdit(obj);
       if(data.resultCode === 0){
@@ -57,24 +57,24 @@ export const setProfileEditAsyncThunk = createAsyncThunk(
         dispatch(setUserFullName(obj.fullName));
       }
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
 
-export const setProfileStatusAsyncThunk = createAsyncThunk(
+export const setProfileStatusAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'profilePage/setProfileStatusAsyncThunk',
   async (userID, {rejectWithValue, dispatch}) => {
     try {
       let data = await usersAPI.profile.getProfileStatus(userID);
       dispatch(setUserProfileStatus(data));
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
 
-export const updateProfileStatusAsyncThunk = createAsyncThunk(
+export const updateProfileStatusAsyncThunk = createAsyncThunk<undefined, string, {rejectValue: string}>(
   'profilePage/updateProfileStatusAsyncThunk',
   async (status, {rejectWithValue, dispatch}) => {
     try {
@@ -83,22 +83,59 @@ export const updateProfileStatusAsyncThunk = createAsyncThunk(
         dispatch(setUserProfileStatus(status));
       }
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
 
+export type userType = {
+  aboutMe: string | null | undefined
+  contacts?: {
+    facebook: string | null,
+    website: string | null,
+    vk: string | null,
+    twitter: string | null,
+    instagram: string | null,
+    youtube: string | null,
+    github: string | null,
+    mainLink: string | null
+  },
+  lookingForAJob: boolean,
+  lookingForAJobDescription: string | null,
+  fullName: string,
+  userId?: number | null,
+  photos?: {
+    small: string | null,
+    large: string | null
+  }
+}
+
+export type postType = {
+  id: number
+  message: string,
+  likesCount: number
+}
+
+export type profileState = {
+  userProfileData: userType | null
+  postData: postType[]
+  isFetching?: boolean
+  profileStatus: string
+}
+
+const initialState: profileState = {
+  userProfileData: null,
+  postData: [
+    {id: 1, message:'Hey, why nobdy love me?', likesCount: 12},
+    {id: 2, message:'It`s our new program! Hey!', likesCount: 24},
+  ],
+  isFetching: false,
+  profileStatus: '',
+}
+
 const profileReducer = createSlice({
   name: 'profilePage',
-  initialState: {
-    userProfileData : null,
-    postData: [
-      {id: 1, message:'Hey, why nobdy love me?', likesCount: 12},
-      {id: 2, message:'It`s our new program! Hey!', likesCount: 24},
-    ],
-    isFetching: false,
-    profileStatus: '',
-  },
+  initialState,
   reducers: {
     addPost (state, action) {
       state.postData.push({id: 3, message: action.payload, likesCount: 24})
@@ -116,20 +153,23 @@ const profileReducer = createSlice({
       state.profileStatus = action.payload
     },
     setUserProfilePhoto (state, action) {
-      state.userProfileData.photos = action.payload
+      if (state.userProfileData !== null) {
+        state.userProfileData.photos = action.payload
+      }
     },
     setUserProfileEdit (state, action) {
       state.userProfileData = {...state.userProfileData, ...action.payload}
     }
   },
-  extraReducers: {
-    [setUserProfileAsyncThunk.pending]: (state) => {
-      state.isFetching = true
-    },
-    [setUserProfileAsyncThunk.fulfilled]: (state) => {
-      state.isFetching = false
-    }
-  }
+  extraReducers: (builder) => {
+    builder
+      .addCase(setUserProfileAsyncThunk.pending, (state) => {
+        state.isFetching = true
+      })
+      .addCase(setUserProfileAsyncThunk.fulfilled, (state) => {
+        state.isFetching = false
+      })
+  },
 })
 
 export const { addPost, deletePost, 

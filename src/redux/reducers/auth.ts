@@ -2,7 +2,7 @@ import { usersAPI } from '../../api/api';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 
-export const getUserDataAsyncThunk = createAsyncThunk(
+export const getUserDataAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: string}>(
   'auth/getUserDataAsyncThunk',
   async (_, {rejectWithValue, dispatch}) => {
     try {
@@ -14,19 +14,19 @@ export const getUserDataAsyncThunk = createAsyncThunk(
         dispatch(setUserData({id, fullName: dataProfile.fullName, isAuth: true, photo}));
       }
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
 
-type login = {
+interface ILogin {
   email: string,
   password: string,
-  rememberMe: string
+  rememberMe: boolean
   captcha: string
 }
 
-export const loginAsyncThunk = createAsyncThunk(
+export const loginAsyncThunk = createAsyncThunk<void, ILogin, {rejectValue: string}>(
   'auth/loginAsyncThunk',
   async ({email, password, rememberMe, captcha}, {rejectWithValue, dispatch}) => {
     try {
@@ -46,12 +46,12 @@ export const loginAsyncThunk = createAsyncThunk(
           break;
       }
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
 
-export const logOutAsyncThunk = createAsyncThunk(
+export const logOutAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: string}>(
   'auth/logOutAsyncThunk',
   async (_, {rejectWithValue, dispatch}) => {
     try {
@@ -62,7 +62,7 @@ export const logOutAsyncThunk = createAsyncThunk(
         dispatch(stopSubmit(null));
       }
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
@@ -74,7 +74,7 @@ const getCaptchaAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: str
       let data = await usersAPI.security.getCaptcha();
       dispatch(setCaptcha(data.url));
     } catch (error) {
-      return rejectWithValue(String(error))
+      return rejectWithValue('Server Error!')
     }
   }
 )
@@ -90,7 +90,7 @@ type state = {
 
 const initialState: state = {
   id: null,
-  fullName: 'null',
+  fullName: null,
   isAuth: false,
   photo: null,
   captchaURL: null,

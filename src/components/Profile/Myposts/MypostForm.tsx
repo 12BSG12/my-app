@@ -3,10 +3,14 @@ import { useForm } from 'react-hook-form';
 import { useDispatch } from "react-redux";
 import { addPost } from '../../../redux/reducers/profile'
 
+type FormValuesType = {
+  message: string
+};
+
 const MyPostForm = () => {
   let dispatch = useDispatch();
-  const { register, reset, handleSubmit, formState: { errors, isValid} } = useForm({mode: 'onChange'});
-  const onSubmit = (formData) => {
+  const { register, reset, handleSubmit, formState: { errors, isValid} } = useForm<FormValuesType>({mode: 'onChange'});
+  const onSubmit = (formData: FormValuesType) => {
     dispatch(addPost(formData.message));
     reset();
   }

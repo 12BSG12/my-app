@@ -1,10 +1,10 @@
 import style from './login.module.scss'
 import LoginReduxForm from './loginForm';
 import { Navigate } from 'react-router-dom';
-import { useSelector } from "react-redux";
+import { useAppSelector } from '../../hooks/hooks';
 
 const Login = () => {
-  let isAuth = useSelector(state => state.auth.isAuth);
+  let isAuth = useAppSelector(state => state.auth.isAuth);
 
   if(isAuth) return <Navigate to='/profile'/>
 

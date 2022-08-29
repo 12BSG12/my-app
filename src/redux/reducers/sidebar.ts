@@ -1,7 +1,7 @@
 import { usersAPI } from '../../api/api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 
-export const getFriendsAsyncThunk = createAsyncThunk(
+export const getFriendsAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'sidebar/getFriendsAsyncThunk',
   async (totalCount, {rejectWithValue, dispatch}) => {
     try {
@@ -10,19 +10,37 @@ export const getFriendsAsyncThunk = createAsyncThunk(
       let data = await usersAPI.users.getFriends(totalCount);
       dispatch(getFriends(data.items));
     } catch (error) {
-      return rejectWithValue(error.message)
+      return rejectWithValue('Server Error!')
     }
   }
 )
 
+export type friendsType = {
+  id: number
+  name: string
+  photos: {
+    small: string
+    large: string
+  }
+}
+
+export type state = {
+  friendsData: friendsType[],
+  count: number,
+  isLoading: boolean,
+  error: string | null |undefined
+}
+
+const initialState: state = {
+  friendsData: [],
+  count: 0,
+  isLoading: false,
+  error: null
+}
+
 const sidebarReducer = createSlice({
   name: 'sidebar',
-  initialState: {
-    friendsData: [],
-    count: 0,
-    isLoading: false,
-    error: null
-  },
+  initialState,
   reducers: {
     getFriends (state, action) {
       state.friendsData = action.payload;
@@ -38,18 +56,20 @@ const sidebarReducer = createSlice({
       state.count += 1; 
     }
   },
-  extraReducers: {
-    [getFriendsAsyncThunk.pending]: (state) => {
-      state.isLoading = true
-      state.error = null
-    },
-    [getFriendsAsyncThunk.fulfilled]: (state) => {
-      state.isLoading = false
-    },
-    [getFriendsAsyncThunk.rejected]: (state, action) => {
-      state.error = action.payload
-    }
-  }
+  extraReducers: (builder) => {
+    builder
+      .addCase(getFriendsAsyncThunk.pending, (state) => {
+        state.isLoading = true
+        state.error = null
+      })
+      .addCase(getFriendsAsyncThunk.fulfilled, (state) => {
+        state.isLoading = false
+      })
+      .addCase(getFriendsAsyncThunk.rejected, (state, action) => {
+        state.error = action.payload
+      })
+
+  },
 })
 
 export const {delFriends, addFriends, getCount, getFriends} = sidebarReducer.actions

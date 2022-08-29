@@ -10,7 +10,7 @@ export type message = {
   message: string
 }
 
-type state = {
+export type state = {
   dialogsData: dialogs[] 
   messagesData: message[]
 }

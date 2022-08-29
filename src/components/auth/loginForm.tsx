@@ -6,18 +6,19 @@ import Checkbox from '../common/formControl/Checkbox'
 import Button from '@mui/material/Button';
 import Password from "../common/formControl/Password";
 import style from './login.module.scss'
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../hooks/hooks";
+import { FormValuesType } from '../common/formControl/FormValuesType';
 
 const LoginReduxForm = () => {
-  let dispatch = useDispatch();
-  let captchaURL = useSelector(state => state.auth.captchaURL);
-  let messageError = useSelector(state => state.auth.messageError);
+  let dispatch = useAppDispatch();
+  let captchaURL = useAppSelector(state => state.auth.captchaURL);
+  let messageError = useAppSelector(state => state.auth.messageError);
   const { 
     control, 
     handleSubmit,
     register,
     formState: { isValid } 
-  } = useForm({
+  } = useForm<FormValuesType>({
     defaultValues: {
       rememberMe: false,
       password: ''
@@ -25,7 +26,7 @@ const LoginReduxForm = () => {
     mode: 'onBlur'
   });
 
-  const onSubmit = formData => {
+  const onSubmit = (formData: FormValuesType) => {
     dispatch(loginAsyncThunk({email: formData.email, password: formData.password, rememberMe: formData.rememberMe, captcha: formData.captcha}));
   };
 
