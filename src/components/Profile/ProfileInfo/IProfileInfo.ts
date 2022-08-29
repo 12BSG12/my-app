@@ -1,5 +1,6 @@
-import { userType } from './../../../redux/reducers/profile';
+import { IUser } from "../../../models/profileType"
+
 export interface IProfileInfo {
-  userProfileData: userType | null
+  userProfileData: IUser | null
   profileStatus: string
 }

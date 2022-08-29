@@ -1,5 +1,6 @@
 import { usersAPI } from '../../api/api';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { sidebarType } from '../../models/sidebarType';
 
 export const getFriendsAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'sidebar/getFriendsAsyncThunk',
@@ -15,23 +16,7 @@ export const getFriendsAsyncThunk = createAsyncThunk<undefined, number, {rejectV
   }
 )
 
-export type friendsType = {
-  id: number
-  name: string
-  photos: {
-    small: string
-    large: string
-  }
-}
-
-export type state = {
-  friendsData: friendsType[],
-  count: number,
-  isLoading: boolean,
-  error: string | null |undefined
-}
-
-const initialState: state = {
+const initialState: sidebarType = {
   friendsData: [],
   count: 0,
   isLoading: false,

@@ -1,21 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { dialogsType } from '../../models/dialogsType'
 
-export type dialogs = {
-  id: number
-  name: string
-}
-
-export type message = {
-  id: number
-  message: string
-}
-
-export type state = {
-  dialogsData: dialogs[] 
-  messagesData: message[]
-}
-
-const initialState: state = {
+const initialState: dialogsType = {
   dialogsData: [
     {id:1, name:'Vadim'},
     {id:2, name:'Andrew'},

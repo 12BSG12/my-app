@@ -1,9 +1,9 @@
 import { FC } from "react";
-import { profileState } from "../../redux/reducers/profile";
+import { profileType } from "../../models/profileType";
 import MyPost from "./MyPosts/MyPost";
 import ProfileInfo from "./ProfileInfo/ProfileInfo";
 
-const Profile: FC<profileState> = ({postData, userProfileData, profileStatus}) => {
+const Profile: FC<profileType> = ({postData, userProfileData, profileStatus}) => {
   return(
     <>
       <ProfileInfo {...{userProfileData, profileStatus}}/>

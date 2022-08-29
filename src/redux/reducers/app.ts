@@ -1,5 +1,6 @@
 import {getUserDataAsyncThunk} from './auth'
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { appType } from '../../models/appType';
 
 export const setInitializedAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: string}>(
   'app/setInitializedAsyncThunk',
@@ -15,11 +16,7 @@ export const setInitializedAsyncThunk = createAsyncThunk<undefined, void, {rejec
   }
 )
 
-type state = {
-  initialized: boolean;
-}
-
-const initialState: state = {
+const initialState: appType = {
   initialized: false
 }
 

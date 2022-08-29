@@ -1,10 +1,10 @@
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
-import { dialogs } from "../../../redux/reducers/dialogs";
+import { IDialogs } from "../../../models/dialogsType";
 import style from './User.module.css';
 
 
-const User: FC<dialogs> = ({id, name}) => {
+const User: FC<IDialogs> = ({id, name}) => {
   const setActive = ({isActive}:any) => isActive ? style.active : style.link;
   return (
     <div className={style.item}>

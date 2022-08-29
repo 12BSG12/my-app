@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { message } from '../../../redux/reducers/dialogs';
+import { IMessage } from '../../../models/dialogsType';
 import style from './Message.module.css';
 
-const Message: FC<message> = ({message}) => {
+const Message: FC<IMessage> = ({message}) => {
   return (
       <div className={style.item}>
         {/* <div className={style.interviewer}>

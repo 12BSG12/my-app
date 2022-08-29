@@ -1,6 +1,6 @@
-import { friendsType } from "../../redux/reducers/sidebar"
+import { IFriends } from "../../models/sidebarType"
 
 export interface ISidebar {
-  friendsData: friendsType[]
+  friendsData: IFriends[]
   isLoading: boolean
 }

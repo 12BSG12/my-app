@@ -1,4 +1,5 @@
-import { postType } from '../../../redux/reducers/profile';
+import { IPost } from "../../../models/profileType";
+
 export interface IMyPost {
-  postData: postType[]
+  postData: IPost[]
 }

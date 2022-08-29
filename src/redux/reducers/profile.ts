@@ -1,6 +1,7 @@
 import { usersAPI } from '../../api/api';
 import { setUserPhoto, setUserFullName } from './auth';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { IUser, profileType } from '../../models/profileType';
 
 export const setUserProfileAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'profilePage/setUserProfileAsyncThunk',
@@ -31,7 +32,7 @@ export const setProfilePhotoAsyncThunk = createAsyncThunk<undefined, any, {rejec
   }
 )
 
-export const setProfileEditAsyncThunk = createAsyncThunk<undefined, userType, {rejectValue: string}>(
+export const setProfileEditAsyncThunk = createAsyncThunk<undefined, IUser, {rejectValue: string}>(
   'profilePage/setProfileEditAsyncThunk',
   async (formData, {rejectWithValue, dispatch}) => {  
     try {
@@ -88,42 +89,7 @@ export const updateProfileStatusAsyncThunk = createAsyncThunk<undefined, string,
   }
 )
 
-export type userType = {
-  aboutMe: string | null | undefined
-  contacts?: {
-    facebook: string | null,
-    website: string | null,
-    vk: string | null,
-    twitter: string | null,
-    instagram: string | null,
-    youtube: string | null,
-    github: string | null,
-    mainLink: string | null
-  },
-  lookingForAJob: boolean,
-  lookingForAJobDescription: string | null,
-  fullName: string,
-  userId?: number | null,
-  photos?: {
-    small: string | null,
-    large: string | null
-  }
-}
-
-export type postType = {
-  id: number
-  message: string,
-  likesCount: number
-}
-
-export type profileState = {
-  userProfileData: userType | null
-  postData: postType[]
-  isFetching?: boolean
-  profileStatus: string
-}
-
-const initialState: profileState = {
+const initialState: profileType = {
   userProfileData: null,
   postData: [
     {id: 1, message:'Hey, why nobdy love me?', likesCount: 12},

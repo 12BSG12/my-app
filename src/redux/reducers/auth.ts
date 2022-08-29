@@ -1,6 +1,7 @@
 import { usersAPI } from '../../api/api';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { authType } from '../../models/authType';
 
 export const getUserDataAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: string}>(
   'auth/getUserDataAsyncThunk',
@@ -79,16 +80,7 @@ const getCaptchaAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: str
   }
 )
 
-type state = {
-  id: number | null,
-  fullName: string | null,
-  isAuth: boolean,
-  photo: string | null,
-  captchaURL?: string | null,
-  messageError?: string | null
-}
-
-const initialState: state = {
+const initialState: authType = {
   id: null,
   fullName: null,
   isAuth: false,
@@ -101,7 +93,7 @@ const authReducer = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setUserData (state, action: PayloadAction<state>) {
+    setUserData (state, action: PayloadAction<authType>) {
       const { id, fullName, isAuth, photo } = action.payload;
       state.id = id
       state.fullName = fullName
