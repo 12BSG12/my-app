@@ -8,7 +8,6 @@ import {setProfileEditAsyncThunk} from '../../../redux/reducers/profile'
 import { useAppDispatch, useAppSelector } from '../../../hooks/hooks';
 import { FormValuesType } from '../../common/formControl/FormValuesType';
 
-
 const EditForm = () =>{
   let data = useAppSelector(state => state.profilePage.userProfileData)
   let dispatch = useAppDispatch()

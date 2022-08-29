@@ -7,7 +7,6 @@ import { setInitializedAsyncThunk} from './redux/reducers/app';
 import Preloader from './components/common/Preloader/Preloader';
 import {Suspense, lazy} from 'react';
 import { Navigate } from 'react-router-dom';
-import React from 'react'
 import { useAppDispatch, useAppSelector } from './hooks/hooks';
 
 const ProfileContainer = lazy(() => import('./components/Profile/ProfileContainer'));

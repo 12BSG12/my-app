@@ -1,14 +1,10 @@
 import Post from './Post/Post';
 import style from './Mypost.module.css';
-import MyPostForm from './MypostForm';
+import MyPostForm from './MyPostForm';
 import { FC } from "react";
-import { postType } from "../../../redux/reducers/profile";
+import { IMyPost } from './IMyPost';
 
-interface IMyPost {
-  postData: postType[]
-}
-
-const Mypost: FC<IMyPost> = ({postData}) => {
+const MyPost: FC<IMyPost> = ({postData}) => {
   const getPost = postData.map((post,i) => <Post message={post.message} key={i} likesCount={post.likesCount}/>); 
   return (
     <div>
@@ -20,4 +16,4 @@ const Mypost: FC<IMyPost> = ({postData}) => {
   );
 } 
 
-export default Mypost;
+export default MyPost;

@@ -11,24 +11,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import {FC, useState} from 'react'
 import { NavLink } from "react-router-dom";
-
-interface IHeader {
-  login: string | null,
-  isAuth: boolean | null,
-  photo: string | null,
-  onClickLogOut(): void
-}
+import { IHeader } from './IHeader';
 
 const Header: FC<IHeader> = ({isAuth, login, photo, onClickLogOut}) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  
+  const handleCloseUserMenu = () => setAnchorElUser(null);
 
   return (
     <AppBar position="static" className={style.header}>
@@ -54,7 +42,7 @@ const Header: FC<IHeader> = ({isAuth, login, photo, onClickLogOut}) => {
             {
               isAuth ? <>
                 <Tooltip title={login??''} >
-                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} >
+                  <IconButton onClick={(e) => setAnchorElUser(e.currentTarget)} sx={{ p: 0 }} >
                     <Avatar alt="" src={photo??''} />
                   </IconButton>
                 </Tooltip>

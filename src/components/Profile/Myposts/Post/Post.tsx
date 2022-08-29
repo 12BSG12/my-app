@@ -1,10 +1,6 @@
 import { FC } from 'react';
+import { IPost } from './IPost';
 import style from './Post.module.css';
-
-interface IPost {
-  message: string
-  likesCount: number
-}
 
 const Post: FC<IPost> = ({message, likesCount}) => {
   return (

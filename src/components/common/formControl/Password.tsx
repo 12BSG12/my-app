@@ -10,14 +10,10 @@ import { useController, UseControllerProps } from "react-hook-form";
 import FormHelperText from '@mui/material/FormHelperText';
 import { FormValuesType } from './FormValuesType'
 
-interface State {
-  showPassword: boolean;
-}
-
 const Password = (props: UseControllerProps<FormValuesType>) =>{
   const {field, fieldState: {error}} = useController(props);
 
-  const [values, setValues] = useState<State>({
+  const [values, setValues] = useState({
     showPassword: false,
   });
 

@@ -4,17 +4,14 @@ import defaultAvatar from '../../../assets/images/default_avatar.webp';
 import UserStatus from './UserStatus';
 import { Button } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import { setProfilePhotoAsyncThunk, userType } from '../../../redux/reducers/profile'
+import { setProfilePhotoAsyncThunk } from '../../../redux/reducers/profile'
 import { FC, useState } from 'react';
 import {Suspense, lazy} from 'react';
 import Preloader from '../../common/Preloader/Preloader';
 import { useAppDispatch } from '../../../hooks/hooks';
+import { IProfileInfo } from '../ProfileInfo/IProfileInfo';
 
 const EditForm = lazy(() => import('./EditForm'));
-interface IProfileInfo {
-  userProfileData: userType | null
-  profileStatus: string
-}
 
 const User: FC<IProfileInfo> = ({profileStatus, userProfileData}) => {
   const [isEdit, setEdit] = useState(false);

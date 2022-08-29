@@ -3,12 +3,7 @@ import { NavLink } from "react-router-dom";
 import Friends from "./Friends/Friends";
 import style from './Sidebar.module.css';
 import { FC } from "react";
-import { friendsType } from "../../redux/reducers/sidebar";
-
-interface ISidebar {
-  friendsData: friendsType[]
-  isLoading: boolean
-}
+import { ISidebar } from "./ISidebar";
 
 const Sidebar: FC<ISidebar> = ({friendsData, isLoading}) => {
   const getFriends = friendsData.map(friend => <NavLink to={"/profile/" + friend.id} key={friend.id}><Friends name={friend.name} photo={friend.photos.small}/></NavLink>);

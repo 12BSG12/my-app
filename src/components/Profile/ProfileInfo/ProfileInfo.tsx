@@ -1,12 +1,7 @@
 import { FC } from "react";
-import { userType } from "../../../redux/reducers/profile";
 import Header from "../Header/Header";
 import User from "../User/User";
-
-interface IProfileInfo {
-  userProfileData: userType | null
-  profileStatus: string
-}
+import { IProfileInfo } from "./IProfileInfo";
 
 const ProfileInfo: FC<IProfileInfo> = ({userProfileData, profileStatus}) => {
   return(
