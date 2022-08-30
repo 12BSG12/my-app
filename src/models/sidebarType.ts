@@ -5,6 +5,8 @@ export interface IFriends {
     small: string
     large: string
   }
+  status: string,
+  followed: boolean
 }
 
 export type sidebarType = {

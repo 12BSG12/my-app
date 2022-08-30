@@ -1,13 +1,13 @@
 import { usersAPI } from '../../api/api';
 import { setUserPhoto, setUserFullName } from './auth';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit'
 import { IUser, profileType } from '../../models/profileType';
 
 export const setUserProfileAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'profilePage/setUserProfileAsyncThunk',
   async (userID, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.profile.getProfile(userID);
+      let data = await usersAPI.profile.getProfile(userID) as IUser;
       dispatch(setUserProfile(data));
     } catch (error) {
       return rejectWithValue('Server Error!')
@@ -15,13 +15,23 @@ export const setUserProfileAsyncThunk = createAsyncThunk<undefined, number, {rej
   }
 )
 
+interface photo {
+  data: {
+    photos: {
+      small: string,
+      large: string
+    }
+  }
+  resultCode: number
+}
+
 export const setProfilePhotoAsyncThunk = createAsyncThunk<undefined, any, {rejectValue: string}>(
   'profilePage/setProfilePhotoAsyncThunk',
   async (file, {rejectWithValue, dispatch}) => {
     try {
       let formData = new FormData()
       formData.append('image', file)
-      let data = await usersAPI.profile.putProfilePhoto(formData);
+      let data = await usersAPI.profile.putProfilePhoto(formData) as photo;
       if(data.resultCode === 0){
         dispatch(setUserProfilePhoto(data.data.photos));
         dispatch(setUserPhoto(data.data.photos.small))
@@ -63,12 +73,17 @@ export const setProfileEditAsyncThunk = createAsyncThunk<undefined, IUser, {reje
   }
 )
 
+interface status {
+  status: string,
+  resultCode: number
+}
+
 export const setProfileStatusAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'profilePage/setProfileStatusAsyncThunk',
   async (userID, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.profile.getProfileStatus(userID);
-      dispatch(setUserProfileStatus(data));
+      let data = await usersAPI.profile.getProfileStatus(userID) as status;
+      dispatch(setUserProfileStatus(data.status));
     } catch (error) {
       return rejectWithValue('Server Error!')
     }
@@ -79,7 +94,7 @@ export const updateProfileStatusAsyncThunk = createAsyncThunk<undefined, string,
   'profilePage/updateProfileStatusAsyncThunk',
   async (status, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.profile.putProfileStatus(status);
+      let data = await usersAPI.profile.putProfileStatus(status) as status;
       if(data.resultCode === 0){
         dispatch(setUserProfileStatus(status));
       }
@@ -103,27 +118,27 @@ const profileReducer = createSlice({
   name: 'profilePage',
   initialState,
   reducers: {
-    addPost (state, action) {
+    addPost (state, action: PayloadAction<string>) {
       state.postData.push({id: 3, message: action.payload, likesCount: 24})
     },
-    deletePost (state, action) {
+    deletePost (state, action: PayloadAction<number>) {
       state.postData = state.postData.filter(item => item.id !== action.payload)
     },
-    setUserProfile (state, action) {
+    setUserProfile (state, action: PayloadAction<IUser>) {
       state.userProfileData = action.payload
     },
-    toggleFetchingPage (state, action) {
+    toggleFetchingPage (state, action: PayloadAction<boolean>) {
       state.isFetching = action.payload
     },
-    setUserProfileStatus (state, action) {
+    setUserProfileStatus (state, action: PayloadAction<string>) {
       state.profileStatus = action.payload
     },
-    setUserProfilePhoto (state, action) {
+    setUserProfilePhoto (state, action: PayloadAction<{small:string | null, large:string | null}>) {
       if (state.userProfileData !== null) {
         state.userProfileData.photos = action.payload
       }
     },
-    setUserProfileEdit (state, action) {
+    setUserProfileEdit (state, action: PayloadAction<IUser>) {
       state.userProfileData = {...state.userProfileData, ...action.payload}
     }
   },

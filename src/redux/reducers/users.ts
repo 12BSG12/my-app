@@ -4,18 +4,19 @@ import { delFriends, addFriends } from './sidebar'
 import { IUsers, usersType } from '../../models/usersType';
 
 const updataObjectInArray = (item: IUsers[], objPropName: keyof IUsers, actionProp: number, newObjProps: any) => item.map(user => (user[objPropName] === actionProp) ? {...user, ...newObjProps}: user);
-const followed = async (id: number, dispatch: any, api: (id: number) => {resultCode: number}, actionCr: (id: number) => {}) => {
+const followed = async (id: number, dispatch: any, api: any, actionCr: (id: number) => {}) => {
   let data = await api(id);
   if(data.resultCode === 0){
     dispatch(actionCr(id))
   }
 } 
 
+
 export const getUsersAsyncThunk = createAsyncThunk<undefined, {currentPage: number, pageSize: number}, {rejectValue: string}>(
   'usersPage/getUsersAsyncThunk',
   async ({currentPage, pageSize}, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.users.getUsers(currentPage, pageSize);
+      let data = await usersAPI.users.getUsers(currentPage, pageSize) as {items: IUsers[], totalCount: number};
       dispatch(setUsers(data.items))
       dispatch(setTotalCount(data.totalCount))
     } catch(error) {
@@ -29,7 +30,7 @@ export const changePageAsyncThunk = createAsyncThunk<undefined, {currentPage: nu
   async ({currentPage, pageSize}, {rejectWithValue, dispatch}) => {
     try {
       dispatch(setCurrentPage(currentPage));
-      let data = await usersAPI.users.getUsers(currentPage, pageSize);
+      let data = await usersAPI.users.getUsers(currentPage, pageSize) as {items: IUsers[]};
       dispatch(setUsers(data.items))
     } catch(error) {
       return rejectWithValue('Server Error!')
@@ -80,7 +81,7 @@ const usersReducer = createSlice({
     unFollow (state, action: PayloadAction<number>) {
       state.usersData = updataObjectInArray(state.usersData, "id", action.payload, {followed: false})
     },
-    setUsers (state, action: PayloadAction<IUsers[]>) {
+    setUsers (state, action) {
       state.usersData = action.payload
     },
     setTotalCount (state, action: PayloadAction<number>) {

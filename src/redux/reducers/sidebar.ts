@@ -1,14 +1,15 @@
 import { usersAPI } from '../../api/api';
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { sidebarType } from '../../models/sidebarType';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { IFriends, sidebarType } from '../../models/sidebarType';
+
 
 export const getFriendsAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'sidebar/getFriendsAsyncThunk',
   async (totalCount, {rejectWithValue, dispatch}) => {
     try {
-      let count = await usersAPI.users.getFriends();
+      let count = await usersAPI.users.getFriends() as {totalCount: number};
       dispatch(getCount(count.totalCount));
-      let data = await usersAPI.users.getFriends(totalCount);
+      let data = await usersAPI.users.getFriends(totalCount) as {items: IFriends}
       dispatch(getFriends(data.items));
     } catch (error) {
       return rejectWithValue('Server Error!')
@@ -30,10 +31,10 @@ const sidebarReducer = createSlice({
     getFriends (state, action) {
       state.friendsData = action.payload;
     },
-    getCount (state, action) {
+    getCount (state, action: PayloadAction<number>) {
       state.count =  action.payload;
     },
-    delFriends (state, action) {
+    delFriends (state, action: PayloadAction<number>) {
       state.friendsData = state.friendsData.filter(item => item.id !== action.payload);
       state.count -= 1;
     },
