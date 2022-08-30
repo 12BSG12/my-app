@@ -3,8 +3,10 @@ import style from './Users.module.css';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
+import { FC } from 'react';
+import { _IUsers } from './IUsers';
 
-const Users = ({usersData, follow, unFollow, followindInProgress, pagesCount, changePage, currentPage}) => {
+const Users: FC<_IUsers> = ({usersData, follow, unFollow,followindInProgress, loading, pagesCount, changePage, currentPage}) => {
   const getUsers = usersData.map(user => <User 
     id={user.id}
     photos={user.photos.small??defaultAvatar}
@@ -14,6 +16,7 @@ const Users = ({usersData, follow, unFollow, followindInProgress, pagesCount, ch
     followed ={user.followed}
     follow={follow}
     unFollow={unFollow}
+    loading={loading}
     followindInProgress={followindInProgress}
   />);
   return(
