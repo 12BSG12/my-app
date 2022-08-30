@@ -5,12 +5,10 @@ import { IUsers, usersType } from '../../models/usersType';
 
 const updataObjectInArray = (item: IUsers[], objPropName: keyof IUsers, actionProp: number, newObjProps: any) => item.map(user => (user[objPropName] === actionProp) ? {...user, ...newObjProps}: user);
 const followed = async (id: number, dispatch: any, api: (id: number) => {resultCode: number}, actionCr: (id: number) => {}) => {
-  dispatch(togglefollowindProgress({id, boolean: true}));
   let data = await api(id);
   if(data.resultCode === 0){
     dispatch(actionCr(id))
   }
-  dispatch(togglefollowindProgress({id, boolean: false}));
 } 
 
 export const getUsersAsyncThunk = createAsyncThunk<undefined, {currentPage: number, pageSize: number}, {rejectValue: string}>(
@@ -68,7 +66,6 @@ const initialState: usersType = {
   pageSize: 4,
   totalCount: 0,
   currentPage: 1,
-  followindInProgress: [],
   isFetching: false,
   loading: false
 }
@@ -92,12 +89,6 @@ const usersReducer = createSlice({
     setCurrentPage (state, action: PayloadAction<number>) {
       state.currentPage = action.payload
     },
-    togglefollowindProgress (state, action: PayloadAction<{id: number, boolean: boolean}>) {
-      const { id, boolean } = action.payload;
-      boolean
-      ? state.followindInProgress.push({id})
-      : state.followindInProgress.filter(item => item.id !== id)
-    }
   },
   extraReducers: (builder) => {
     builder
@@ -113,20 +104,8 @@ const usersReducer = createSlice({
       .addCase(changePageAsyncThunk.fulfilled, (state) => {
         state.isFetching = false
       })
-      .addCase(unFollowAsyncThunk.pending, (state) => {
-        state.loading = true
-      })
-      .addCase(unFollowAsyncThunk.fulfilled, (state) => {
-        state.loading = false
-      })
-      .addCase(followAsyncThunk.pending, (state) => {
-        state.loading = true
-      })
-      .addCase(followAsyncThunk.fulfilled, (state) => {
-        state.loading = false
-      })
   },
 });
 
-export const { follow, unFollow, setUsers, setTotalCount, setCurrentPage, togglefollowindProgress } = usersReducer.actions
+export const { follow, unFollow, setUsers, setTotalCount, setCurrentPage } = usersReducer.actions
 export default usersReducer.reducer

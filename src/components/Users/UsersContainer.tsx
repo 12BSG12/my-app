@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 const UsersContainer = () => {
-  const {usersData, pageSize, totalCount, currentPage, isFetching, loading, followindInProgress} = useAppSelector(state => state.usersPage);
+  const {usersData, pageSize, totalCount, currentPage, isFetching} = useAppSelector(state => state.usersPage);
 
   let dispatch = useAppDispatch();
 
@@ -28,7 +28,7 @@ const UsersContainer = () => {
       unFollow={unFollow}
       pagesCount={pagesCount}
       changePage={changePage}
-      {...{usersData, currentPage, loading, followindInProgress}}
+      {...{usersData, currentPage}}
       />}
     </>
   );

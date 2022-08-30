@@ -1,14 +1,23 @@
 import style from './Users.module.css';
 import { NavLink } from "react-router-dom";
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { IUser } from './IUser';
 
-//disabled={followindInProgress.some(item => item.id === id)}
-
-const User: FC<IUser> = ({followed, loading, followindInProgress, id, photos, unFollow, follow, name, status}) => {
+const User: FC<IUser> = ({followed, id, photos, unFollow, follow, name, status}) => {
+  const[isDisabled, setIsDisabled] = useState(false)
+  const uFlw = async (id: number) => {
+    setIsDisabled(true)
+    await unFollow(id)
+    setIsDisabled(false)
+  }
+  const flw = async (id: number) => {
+    setIsDisabled(true)
+    await follow(id)
+    setIsDisabled(false)
+  }
   const btn = followed 
-  ? <button className={style.btn} disabled={loading} onClick={()=> unFollow(id)}>UnFollow</button>
-  : <button className={style.btn} disabled={loading} onClick={()=> follow(id)}>Follow</button>;
+  ? <button className={style.btn} disabled={isDisabled} onClick={()=> uFlw(id)}>UnFollow</button>
+  : <button className={style.btn} disabled={isDisabled} onClick={()=> flw(id)}>Follow</button>;
   return (
     <div className={style.item}>
         <div className={style.left}>          

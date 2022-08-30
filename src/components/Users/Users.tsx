@@ -6,7 +6,7 @@ import Stack from '@mui/material/Stack';
 import { FC } from 'react';
 import { _IUsers } from './IUsers';
 
-const Users: FC<_IUsers> = ({usersData, follow, unFollow,followindInProgress, loading, pagesCount, changePage, currentPage}) => {
+const Users: FC<_IUsers> = ({usersData, follow, unFollow, pagesCount, changePage, currentPage}) => {
   const getUsers = usersData.map(user => <User 
     id={user.id}
     photos={user.photos.small??defaultAvatar}
@@ -16,8 +16,6 @@ const Users: FC<_IUsers> = ({usersData, follow, unFollow,followindInProgress, lo
     followed ={user.followed}
     follow={follow}
     unFollow={unFollow}
-    loading={loading}
-    followindInProgress={followindInProgress}
   />);
   return(
     <div className={style.body}>

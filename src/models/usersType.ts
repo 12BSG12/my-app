@@ -10,16 +10,11 @@ export interface IUsers {
   followed: boolean
 }
 
-export type followindInProgressType  = {
-  id: number
-}
-
 export type usersType = {
   usersData: IUsers[],
   pageSize: number,
   totalCount: number,
   currentPage: number,
-  followindInProgress: followindInProgressType[],
   isFetching: boolean
   loading: boolean
 }
