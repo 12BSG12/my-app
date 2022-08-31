@@ -7,16 +7,13 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 const ProfileContainer = () => {
-  let userProfileData = useAppSelector(state => state.profilePage.userProfileData);
-  let isFetching = useAppSelector(state =>  state.profilePage.isFetching);
-  let postData = useAppSelector(state => state.profilePage.postData);
-  let defualutID = useAppSelector(state => state.auth.id);
-  let profileStatus = useAppSelector(state =>  state.profilePage.profileStatus);
+  let {userProfileData, isFetching, postData, profileStatus} = useAppSelector(state => state.profilePage);
+  let defaultID = useAppSelector(state => state.auth.id);
   
   let dispatch = useAppDispatch();
 
   let userID = Number(useParams().userId);
-  if (!userID) (userID as number | null) = defualutID;
+  if (!userID) (userID as number | null) = defaultID;
 
   useEffect(() =>{
     dispatch(setUserProfileAsyncThunk(userID));

@@ -1,5 +1,5 @@
 import Post from './Post/Post';
-import style from './Mypost.module.css';
+import style from './MyPost.module.css';
 import MyPostForm from './MyPostForm';
 import { FC } from "react";
 import { IMyPost } from './IMyPost';

@@ -5,12 +5,12 @@ import { updateProfileStatusAsyncThunk } from '../../../redux/reducers/profile';
 import { useAppDispatch } from '../../../hooks/hooks';
 
 const UserStatus:FC<{status: string}> = ({status}) => {
-  const [editeMode, setEditeMode] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [sts, setStatus] = useState(status);
   let dispatch = useAppDispatch();
   let isOwner = useParams().userId;
-  const disableEditeMode = () =>{
-    setEditeMode(false);
+  const disableEditMode = () =>{
+    setEditMode(false);
     dispatch(updateProfileStatusAsyncThunk(sts));
   }
 
@@ -20,9 +20,9 @@ const UserStatus:FC<{status: string}> = ({status}) => {
   
   return (
     <div>
-      {!editeMode 
-      ? <div onDoubleClick={() => !isOwner && setEditeMode(true)}>Status: {status || '...'}</div> 
-      : <div><input autoFocus={true} onBlur={disableEditeMode} className={style.input} value={sts} onChange={(e) => setStatus(e.target.value)}/></div>}
+      {!editMode 
+      ? <div onDoubleClick={() => !isOwner && setEditMode(true)}>Status: {status || '...'}</div> 
+      : <div><input autoFocus={true} onBlur={disableEditMode} className={style.input} value={sts} onChange={(e) => setStatus(e.target.value)}/></div>}
     </div>
   )
 }

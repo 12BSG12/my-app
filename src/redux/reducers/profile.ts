@@ -73,17 +73,12 @@ export const setProfileEditAsyncThunk = createAsyncThunk<undefined, IUser, {reje
   }
 )
 
-interface status {
-  status: string,
-  resultCode: number
-}
-
 export const setProfileStatusAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'profilePage/setProfileStatusAsyncThunk',
   async (userID, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.profile.getProfileStatus(userID) as status;
-      dispatch(setUserProfileStatus(data.status));
+      let status = await usersAPI.profile.getProfileStatus(userID) as string;
+      dispatch(setUserProfileStatus(status));
     } catch (error) {
       return rejectWithValue('Server Error!')
     }
@@ -94,7 +89,7 @@ export const updateProfileStatusAsyncThunk = createAsyncThunk<undefined, string,
   'profilePage/updateProfileStatusAsyncThunk',
   async (status, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.profile.putProfileStatus(status) as status;
+      let data = await usersAPI.profile.putProfileStatus(status) as {resultCode: number};
       if(data.resultCode === 0){
         dispatch(setUserProfileStatus(status));
       }
@@ -107,7 +102,7 @@ export const updateProfileStatusAsyncThunk = createAsyncThunk<undefined, string,
 const initialState: profileType = {
   userProfileData: null,
   postData: [
-    {id: 1, message:'Hey, why nobdy love me?', likesCount: 12},
+    {id: 1, message:'Hey, why nobody love me?', likesCount: 12},
     {id: 2, message:'It`s our new program! Hey!', likesCount: 24},
   ],
   isFetching: false,

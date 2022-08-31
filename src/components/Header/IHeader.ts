@@ -1,5 +1,5 @@
 export interface IHeader {
-  login: string | null,
+  fullName: string | null,
   isAuth: boolean | null,
   photo: string | null,
   onClickLogOut(): void

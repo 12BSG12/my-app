@@ -3,8 +3,7 @@ import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 import { useAppSelector } from '../../hooks/hooks';
 
 const DialogsContainer = () => {
-  let dialogsData = useAppSelector(state => state.dialogsPage.dialogsData);
-  let messagesData = useAppSelector(state => state.dialogsPage.messagesData);
+  let {dialogsData, messagesData} = useAppSelector(state => state.dialogsPage);
   
   return <Dialogs {...{dialogsData, messagesData}}/>;
 }

@@ -13,7 +13,7 @@ import {FC, useState} from 'react'
 import { NavLink } from "react-router-dom";
 import { IHeader } from './IHeader';
 
-const Header: FC<IHeader> = ({isAuth, login, photo, onClickLogOut}) => {
+const Header: FC<IHeader> = ({isAuth, fullName, photo, onClickLogOut}) => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   
   const handleCloseUserMenu = () => setAnchorElUser(null);
@@ -41,7 +41,7 @@ const Header: FC<IHeader> = ({isAuth, login, photo, onClickLogOut}) => {
           <Box sx={{ flexGrow: 0}}>
             {
               isAuth ? <>
-                <Tooltip title={login??''} >
+                <Tooltip title={fullName??''} >
                   <IconButton onClick={(e) => setAnchorElUser(e.currentTarget)} sx={{ p: 0 }} >
                     <Avatar alt="" src={photo??''} />
                   </IconButton>
@@ -68,7 +68,7 @@ const Header: FC<IHeader> = ({isAuth, login, photo, onClickLogOut}) => {
                 </Menu>
               </>
               : (<MenuItem onClick={handleCloseUserMenu}>
-                <NavLink to="/login">Login</NavLink>
+                <NavLink to="/fullName">fullName</NavLink>
               </MenuItem>)
             }
           </Box>

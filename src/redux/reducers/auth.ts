@@ -5,7 +5,7 @@ import { authType } from '../../models/authType';
 import { IUser } from '../../models/profileType';
 
 
-interface IAtuh {
+interface IAuth {
   data:{
     id: number,
     email: number,
@@ -19,7 +19,7 @@ export const getUserDataAsyncThunk = createAsyncThunk<undefined, void, {rejectVa
   'auth/getUserDataAsyncThunk',
   async (_, {rejectWithValue, dispatch}) => {
     try {
-      let dataAuth = await usersAPI.auth.getAuth() as IAtuh
+      let dataAuth = await usersAPI.auth.getAuth() as IAuth
       if(dataAuth.resultCode === 0){
         let {id} = dataAuth.data;
         let dataProfile = await usersAPI.profile.getProfile(id) as IUser;

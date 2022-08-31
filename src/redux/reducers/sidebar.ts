@@ -9,7 +9,7 @@ export const getFriendsAsyncThunk = createAsyncThunk<undefined, number, {rejectV
     try {
       let count = await usersAPI.users.getFriends() as {totalCount: number};
       dispatch(getCount(count.totalCount));
-      let data = await usersAPI.users.getFriends(totalCount) as {items: IFriends}
+      let data = await usersAPI.users.getFriends(totalCount) as {items: IFriends[]}
       dispatch(getFriends(data.items));
     } catch (error) {
       return rejectWithValue('Server Error!')
@@ -28,7 +28,7 @@ const sidebarReducer = createSlice({
   name: 'sidebar',
   initialState,
   reducers: {
-    getFriends (state, action) {
+    getFriends (state, action: PayloadAction<IFriends[]>) {
       state.friendsData = action.payload;
     },
     getCount (state, action: PayloadAction<number>) {

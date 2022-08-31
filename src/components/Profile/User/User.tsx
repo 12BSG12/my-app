@@ -33,7 +33,6 @@ const User: FC<IProfileInfo> = ({profileStatus, userProfileData}) => {
           !isOwner &&
           <input 
             name="photo"
-            // component='input'
             type="file"
             hidden
             onChange={(e) => onChange(e)}

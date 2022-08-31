@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { delFriends, addFriends } from './sidebar'
 import { IUsers, usersType } from '../../models/usersType';
 
-const updataObjectInArray = (item: IUsers[], objPropName: keyof IUsers, actionProp: number, newObjProps: any) => item.map(user => (user[objPropName] === actionProp) ? {...user, ...newObjProps}: user);
+const updateObjectInArray = (item: IUsers[], objPropName: keyof IUsers, actionProp: number, newObjProps: any) => item.map(user => (user[objPropName] === actionProp) ? {...user, ...newObjProps}: user);
 const followed = async (id: number, dispatch: any, api: any, actionCr: (id: number) => {}) => {
   let data = await api(id);
   if(data.resultCode === 0){
@@ -76,12 +76,12 @@ const usersReducer = createSlice({
   initialState,
   reducers: {
     follow (state, action: PayloadAction<number>) {
-      state.usersData = updataObjectInArray(state.usersData, "id", action.payload, {followed: true})
+      state.usersData = updateObjectInArray(state.usersData, "id", action.payload, {followed: true})
     },
     unFollow (state, action: PayloadAction<number>) {
-      state.usersData = updataObjectInArray(state.usersData, "id", action.payload, {followed: false})
+      state.usersData = updateObjectInArray(state.usersData, "id", action.payload, {followed: false})
     },
-    setUsers (state, action) {
+    setUsers (state, action: PayloadAction<IUsers[]>) {
       state.usersData = action.payload
     },
     setTotalCount (state, action: PayloadAction<number>) {
