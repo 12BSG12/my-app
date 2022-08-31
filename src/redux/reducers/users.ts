@@ -1,22 +1,22 @@
 import { usersAPI } from '../../api/api';
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction, AnyAction, ThunkDispatch } from '@reduxjs/toolkit'
 import { delFriends, addFriends } from './sidebar'
-import { IUsers, usersType } from '../../models/usersType';
+import {IFollowed, IUsers, usersType } from '../../models/usersType';
+import { ResultCodeEnum } from '../../models/resultCodeEnum';
 
 const updateObjectInArray = (item: IUsers[], objPropName: keyof IUsers, actionProp: number, newObjProps: any) => item.map(user => (user[objPropName] === actionProp) ? {...user, ...newObjProps}: user);
-const followed = async (id: number, dispatch: any, api: any, actionCr: (id: number) => {}) => {
+const followed = async (id: number, dispatch: ThunkDispatch<unknown, unknown, AnyAction>, api: (id: number) => Promise<IFollowed>, actionCr: (id: number) => AnyAction) => {
   let data = await api(id);
-  if(data.resultCode === 0){
+  if(data.resultCode === ResultCodeEnum.Success){
     dispatch(actionCr(id))
   }
-} 
-
+}
 
 export const getUsersAsyncThunk = createAsyncThunk<undefined, {currentPage: number, pageSize: number}, {rejectValue: string}>(
   'usersPage/getUsersAsyncThunk',
   async ({currentPage, pageSize}, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.users.getUsers(currentPage, pageSize) as {items: IUsers[], totalCount: number};
+      let data = await usersAPI.users.getUsers(currentPage, pageSize)
       dispatch(setUsers(data.items))
       dispatch(setTotalCount(data.totalCount))
     } catch(error) {
@@ -30,7 +30,7 @@ export const changePageAsyncThunk = createAsyncThunk<undefined, {currentPage: nu
   async ({currentPage, pageSize}, {rejectWithValue, dispatch}) => {
     try {
       dispatch(setCurrentPage(currentPage));
-      let data = await usersAPI.users.getUsers(currentPage, pageSize) as {items: IUsers[]};
+      let data = await usersAPI.users.getUsers(currentPage, pageSize);
       dispatch(setUsers(data.items))
     } catch(error) {
       return rejectWithValue('Server Error!')

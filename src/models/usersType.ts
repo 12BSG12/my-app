@@ -1,3 +1,5 @@
+import { ResultCodeEnum } from "./resultCodeEnum"
+
 export interface IUsers {
   name: string
   id: number
@@ -18,3 +20,14 @@ export type usersType = {
   isFetching: boolean
   loading: boolean
 }
+
+export interface IGetUsers {
+  items: IUsers[]
+  totalCount: number
+}
+
+export interface IFollowed {
+  resultCode: ResultCodeEnum
+  messages: string[],
+}
+

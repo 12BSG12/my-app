@@ -2,27 +2,16 @@ import { usersAPI } from '../../api/api';
 import defaultAvatar from '../../assets/images/default_avatar.webp';
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { authType } from '../../models/authType';
-import { IUser } from '../../models/profileType';
-
-
-interface IAuth {
-  data:{
-    id: number,
-    email: number,
-    login: number
-  }
-  resultCode: number
-  message: string
-}
+import { ResultCodeEnum, ResultCodeForCaptcha } from '../../models/resultCodeEnum';
 
 export const getUserDataAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: string}>(
   'auth/getUserDataAsyncThunk',
   async (_, {rejectWithValue, dispatch}) => {
     try {
-      let dataAuth = await usersAPI.auth.getAuth() as IAuth
+      let dataAuth = await usersAPI.auth.getAuth()
       if(dataAuth.resultCode === 0){
         let {id} = dataAuth.data;
-        let dataProfile = await usersAPI.profile.getProfile(id) as IUser;
+        let dataProfile = await usersAPI.profile.getProfile(id);
         let photo = dataProfile.photos?.small??defaultAvatar;
         dispatch(setUserData({id, fullName: dataProfile.fullName, isAuth: true, photo}));
       }
@@ -32,29 +21,20 @@ export const getUserDataAsyncThunk = createAsyncThunk<undefined, void, {rejectVa
   }
 )
 
-interface ILogin {
-  email: string,
-  password: string,
-  rememberMe: boolean
-  captcha: string
-  resultCode?: number
-  messages?: string
-}
-
-export const loginAsyncThunk = createAsyncThunk<void, ILogin, {rejectValue: string}>(
+export const loginAsyncThunk = createAsyncThunk<void, {email: string, password: string, rememberMe: boolean, captcha: string}, {rejectValue: string}>(
   'auth/loginAsyncThunk',
   async ({email, password, rememberMe, captcha}, {rejectWithValue, dispatch}) => {
     try {
-      let data =  await usersAPI.auth.postLogin(email, password, rememberMe, captcha) as ILogin;
+      let data =  await usersAPI.auth.postLogin(email, password, rememberMe, captcha)
       switch (data.resultCode) {
-        case 0:
+        case ResultCodeEnum.Success:
           dispatch(getUserDataAsyncThunk());
           break;
-        case 1:
+        case ResultCodeEnum.Error:
           let error = data.messages && data.messages.length > 0 ? data.messages[0] : 'Some error'
           dispatch(stopSubmit(error))
           break;
-        case 10:
+        case ResultCodeForCaptcha.ErrorCaptcha:
           dispatch(getCaptchaAsyncThunk())
         break;
         default:
@@ -70,8 +50,8 @@ export const logOutAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: 
   'auth/logOutAsyncThunk',
   async (_, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.auth.deleteLogOut() as {resultCode: number};
-      if(data.resultCode === 0){
+      let data = await usersAPI.auth.deleteLogOut();
+      if(data.resultCode === ResultCodeEnum.Success){
         dispatch(setUserData({id: null, fullName: null, isAuth: false, photo: null}));
         dispatch(setCaptcha(null));
         dispatch(stopSubmit(null));
@@ -86,7 +66,7 @@ const getCaptchaAsyncThunk = createAsyncThunk<undefined, void, {rejectValue: str
   'auth/getCaptchaAsyncThunk',
   async (_, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.security.getCaptcha() as {url: string};
+      let data = await usersAPI.security.getCaptcha();
       dispatch(setCaptcha(data.url));
     } catch (error) {
       return rejectWithValue('Server Error!')

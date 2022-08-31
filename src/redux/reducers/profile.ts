@@ -2,12 +2,13 @@ import { usersAPI } from '../../api/api';
 import { setUserPhoto, setUserFullName } from './auth';
 import { createSlice, createAsyncThunk, PayloadAction} from '@reduxjs/toolkit'
 import { IUser, profileType } from '../../models/profileType';
+import { ResultCodeEnum } from '../../models/resultCodeEnum';
 
 export const setUserProfileAsyncThunk = createAsyncThunk<undefined, number, {rejectValue: string}>(
   'profilePage/setUserProfileAsyncThunk',
   async (userID, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.profile.getProfile(userID) as IUser;
+      let data = await usersAPI.profile.getProfile(userID)
       dispatch(setUserProfile(data));
     } catch (error) {
       return rejectWithValue('Server Error!')
@@ -15,15 +16,6 @@ export const setUserProfileAsyncThunk = createAsyncThunk<undefined, number, {rej
   }
 )
 
-interface photo {
-  data: {
-    photos: {
-      small: string,
-      large: string
-    }
-  }
-  resultCode: number
-}
 
 export const setProfilePhotoAsyncThunk = createAsyncThunk<undefined, any, {rejectValue: string}>(
   'profilePage/setProfilePhotoAsyncThunk',
@@ -31,8 +23,8 @@ export const setProfilePhotoAsyncThunk = createAsyncThunk<undefined, any, {rejec
     try {
       let formData = new FormData()
       formData.append('image', file)
-      let data = await usersAPI.profile.putProfilePhoto(formData) as photo;
-      if(data.resultCode === 0){
+      let data = await usersAPI.profile.putProfilePhoto(formData)
+      if(data.resultCode === ResultCodeEnum.Success){
         dispatch(setUserProfilePhoto(data.data.photos));
         dispatch(setUserPhoto(data.data.photos.small))
       }
@@ -46,7 +38,7 @@ export const setProfileEditAsyncThunk = createAsyncThunk<undefined, IUser, {reje
   'profilePage/setProfileEditAsyncThunk',
   async (formData, {rejectWithValue, dispatch}) => {  
     try {
-      let obj = {
+      let obj: IUser = {
         aboutMe: formData.aboutMe,
         contacts: {
           facebook: formData.contacts?.facebook || null,
@@ -63,7 +55,7 @@ export const setProfileEditAsyncThunk = createAsyncThunk<undefined, IUser, {reje
         fullName: formData.fullName,
       }
       let data = await usersAPI.profile.putProfileEdit(obj);
-      if(data.resultCode === 0){
+      if(data.resultCode === ResultCodeEnum.Success){
         dispatch(setUserProfileEdit(obj))
         dispatch(setUserFullName(obj.fullName));
       }
@@ -77,7 +69,7 @@ export const setProfileStatusAsyncThunk = createAsyncThunk<undefined, number, {r
   'profilePage/setProfileStatusAsyncThunk',
   async (userID, {rejectWithValue, dispatch}) => {
     try {
-      let status = await usersAPI.profile.getProfileStatus(userID) as string;
+      let status = await usersAPI.profile.getProfileStatus(userID);
       dispatch(setUserProfileStatus(status));
     } catch (error) {
       return rejectWithValue('Server Error!')
@@ -89,8 +81,8 @@ export const updateProfileStatusAsyncThunk = createAsyncThunk<undefined, string,
   'profilePage/updateProfileStatusAsyncThunk',
   async (status, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.profile.putProfileStatus(status) as {resultCode: number};
-      if(data.resultCode === 0){
+      let data = await usersAPI.profile.putProfileStatus(status);
+      if(data.resultCode === ResultCodeEnum.Success){
         dispatch(setUserProfileStatus(status));
       }
     } catch (error) {

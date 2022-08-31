@@ -15,3 +15,8 @@ export type sidebarType = {
   isLoading: boolean,
   error: string | null |undefined
 }
+
+export interface IGetFriends {
+  items: IFriends[],
+  totalCount: number
+}

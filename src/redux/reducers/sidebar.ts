@@ -7,9 +7,9 @@ export const getFriendsAsyncThunk = createAsyncThunk<undefined, number, {rejectV
   'sidebar/getFriendsAsyncThunk',
   async (totalCount, {rejectWithValue, dispatch}) => {
     try {
-      let count = await usersAPI.users.getFriends() as {totalCount: number};
+      let count = await usersAPI.users.getFriends();
       dispatch(getCount(count.totalCount));
-      let data = await usersAPI.users.getFriends(totalCount) as {items: IFriends[]}
+      let data = await usersAPI.users.getFriends(totalCount)
       dispatch(getFriends(data.items));
     } catch (error) {
       return rejectWithValue('Server Error!')
