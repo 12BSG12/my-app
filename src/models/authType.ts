@@ -1,5 +1,3 @@
-import { ResultCodeEnum, ResultCodeForCaptcha } from "./resultCodeEnum"
-
 export type authType = {
   id: number | null,
   fullName: string | null,
@@ -10,18 +8,9 @@ export type authType = {
 }
 
 export interface IAuth {
-  data:{
-    id: number,
-    email: number,
-    login: number
-  }
-  resultCode: ResultCodeEnum
-  message: string
-}
-
-export interface ILogin {
-  resultCode?: ResultCodeEnum | ResultCodeForCaptcha
-  messages?: string[]
+  id: number,
+  email: number,
+  login: number
 }
 
 export interface ICaptcha {

@@ -1,6 +1,7 @@
+import { ResultCodeForCaptcha, ResultCodeEnum } from './../models/resultCodeEnum';
 import axios from 'axios';
-import { IAuth, ICaptcha, ILogin } from '../models/authType';
-import { IEditProfile, IPhoto, IProfileStatus, IUser } from '../models/profileType';
+import { IAuth, ICaptcha } from '../models/authType';
+import { IPhoto, IUser } from '../models/profileType';
 import { IGetFriends } from '../models/sidebarType';
 import { IFollowed, IGetUsers } from '../models/usersType';
 import key from './api-key';
@@ -19,14 +20,14 @@ export const usersAPI = {
   profile: {
     getProfile(id: number) {return instance.get<IUser>(`profile/${id}`).then(response => response.data)},
     getProfileStatus(id: number) {return instance.get<string>(`profile/status/${id}`).then(response => response.data)},
-    putProfileStatus(status: string) {return instance.put<IProfileStatus>('profile/status', {status: status}).then(response => response.data)},
-    putProfilePhoto(formData: FormData) {return instance.put<IPhoto>('profile/photo', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => response.data)},
-    putProfileEdit(formData: IUser) {return instance.put<IEditProfile>('profile', {...formData}).then(response => response.data)},
+    putProfileStatus(status: string) {return instance.put<ResultResponse<{}, ResultCodeEnum>>('profile/status', {status: status}).then(response => response.data)},
+    putProfilePhoto(formData: FormData) {return instance.put<ResultResponse<IPhoto, ResultCodeEnum>>('profile/photo', formData, {headers: {'Content-Type': 'multipart/form-data'}}).then(response => response.data)},
+    putProfileEdit(formData: IUser) {return instance.put<ResultResponse<IUser, ResultCodeEnum>>('profile', {...formData}).then(response => response.data)},
   },
   auth: {
-    getAuth() {return instance.get<IAuth>('auth/me').then(response => response.data)},
-    postLogin(email: string, password: string, rememberMe:boolean = false, captcha:string) {return instance.post<ILogin>('auth/login', {email, password, rememberMe, captcha}).then(response => response.data)},
-    deleteLogOut() {return instance.delete<ILogin>('auth/login').then(response => response.data)},
+    getAuth() {return instance.get<ResultResponse<IAuth, ResultCodeEnum>>('auth/me').then(response => response.data)},
+    postLogin(email: string, password: string, rememberMe:boolean = false, captcha:string) {return instance.post<ResultResponse<{}>>('auth/login', {email, password, rememberMe, captcha}).then(response => response.data)},
+    deleteLogOut() {return instance.delete<ResultResponse<{}, ResultCodeEnum>>('auth/login').then(response => response.data)},
   },
   users: {
     getUsers(currentPage: number, pageSize: number) {return instance.get<IGetUsers>(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data)},
@@ -35,4 +36,10 @@ export const usersAPI = {
   security: {
     getCaptcha() {return instance.get<ICaptcha>('security/get-captcha-url').then(response => response.data)},
   }
+}
+
+interface ResultResponse<D={}, RC=ResultCodeEnum | ResultCodeForCaptcha> {
+  data: D,
+  messages: string[]
+  resultCode: RC
 }

@@ -1,5 +1,3 @@
-import { ResultCodeEnum } from "./resultCodeEnum"
-
 export interface IUser {
   aboutMe: string | null | undefined
   contacts?: {
@@ -35,22 +33,8 @@ export type profileType = {
   profileStatus: string
 }
 export interface IPhoto {
-  data: {
-    photos: {
-      small: string,
-      large: string
-    }
+  photos: {
+    small: string,
+    large: string
   }
-  resultCode: ResultCodeEnum
-}
-
-export interface IEditProfile {
-  resultCode: ResultCodeEnum
-  messages: string[],
-  data: IUser
-}
-
-export interface IProfileStatus {
-  resultCode: ResultCodeEnum
-  messages: string[]
 }
