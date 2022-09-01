@@ -12,11 +12,11 @@ const followed = async (id: number, dispatch: ThunkDispatch<unknown, unknown, An
   }
 }
 
-export const getUsersAsyncThunk = createAsyncThunk<undefined, {currentPage: number, pageSize: number}, {rejectValue: string}>(
+export const getUsersAsyncThunk = createAsyncThunk<undefined, {currentPage: number, pageSize: number, isFriends?: boolean | null, search?: string}, {rejectValue: string}>(
   'usersPage/getUsersAsyncThunk',
-  async ({currentPage, pageSize}, {rejectWithValue, dispatch}) => {
+  async ({currentPage, pageSize, isFriends, search}, {rejectWithValue, dispatch}) => {
     try {
-      let data = await usersAPI.users.getUsers(currentPage, pageSize)
+      let data = await usersAPI.users.getUsers(currentPage, pageSize, isFriends, search)
       dispatch(setUsers(data.items))
       dispatch(setTotalCount(data.totalCount))
     } catch(error) {
@@ -68,7 +68,9 @@ const initialState: usersType = {
   totalCount: 0,
   currentPage: 1,
   isFetching: false,
-  loading: false
+  loading: false,
+  isFriends: null,
+  search: ''
 }
 
 const usersReducer = createSlice({
@@ -90,6 +92,12 @@ const usersReducer = createSlice({
     setCurrentPage (state, action: PayloadAction<number>) {
       state.currentPage = action.payload
     },
+    setIsFriends (state, action: PayloadAction<boolean | null>) {
+      state.isFriends = action.payload
+    },
+    setSearch (state, action: PayloadAction<string>) {
+      state.search = action.payload
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -108,5 +116,5 @@ const usersReducer = createSlice({
   },
 });
 
-export const { follow, unFollow, setUsers, setTotalCount, setCurrentPage } = usersReducer.actions
+export const { follow, unFollow, setUsers, setTotalCount, setCurrentPage, setIsFriends, setSearch } = usersReducer.actions
 export default usersReducer.reducer

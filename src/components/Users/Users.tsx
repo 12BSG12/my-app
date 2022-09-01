@@ -5,6 +5,7 @@ import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
 import { FC } from 'react';
 import { _IUsers } from './IUsers';
+import SearchForm from './SearchForm';
 
 const Users: FC<_IUsers> = ({usersData, follow, unFollow, pagesCount, changePage, currentPage}) => {
   const getUsers = usersData.map(user => <User 
@@ -18,15 +19,17 @@ const Users: FC<_IUsers> = ({usersData, follow, unFollow, pagesCount, changePage
     unFollow={unFollow}
   />);
   return(
-    <div className={style.body}>
-      <div className={style.title}>Users</div>
-      <Stack spacing={2}>
-        <Pagination count={pagesCount} color="primary" showFirstButton showLastButton page={currentPage} onChange={(_, num) => changePage(num)} />
-      </Stack>
-      <div className={style.users}>
-        {getUsers}
+    <div className={style.container}>
+      <div className={style.body}>
+        <div className={style.title}>Users</div>
+        <SearchForm />
+        <div className={style.users}>
+          {getUsers}
+        </div>
+        <Stack spacing={2}>
+          <Pagination count={pagesCount} color="primary" showFirstButton showLastButton page={currentPage} onChange={(_, num) => changePage(num)} />
+        </Stack>
       </div>
-      <button className={style.bigbtn}>Show more</button>
     </div>
   )
 } 

@@ -19,6 +19,8 @@ export type usersType = {
   currentPage: number,
   isFetching: boolean
   loading: boolean
+  isFriends: boolean | null
+  search: string
 }
 
 export interface IGetUsers {

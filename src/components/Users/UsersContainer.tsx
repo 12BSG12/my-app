@@ -6,15 +6,17 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 
 const UsersContainer = () => {
-  const {usersData, pageSize, totalCount, currentPage, isFetching} = useAppSelector(state => state.usersPage);
+  const {usersData, pageSize, totalCount, currentPage, isFetching, isFriends, search} = useAppSelector(state => state.usersPage);
 
   let dispatch = useAppDispatch();
 
   useEffect(() =>{
-    dispatch(getUsersAsyncThunk({currentPage, pageSize}))
-  }, [dispatch, currentPage, pageSize]);
+    dispatch(getUsersAsyncThunk({currentPage, pageSize, isFriends, search}))
+  }, [dispatch, currentPage, pageSize, isFriends, search]);
 
-  const changePage = (currentPage: number) => dispatch(changePageAsyncThunk({currentPage, pageSize}));
+  const changePage = (currentPage: number) => {
+    dispatch(changePageAsyncThunk({currentPage, pageSize}))
+  };
 
   const unFollow = (id: number) => dispatch(unFollowAsyncThunk(id));
 
