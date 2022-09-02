@@ -5,5 +5,5 @@ export interface _IUsers {
   unFollow(id: number): void, 
   pagesCount: number, 
   changePage(num: number): void, 
-  currentPage: number
+  usersPageQuery: string
 }

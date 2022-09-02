@@ -64,7 +64,7 @@ export const followAsyncThunk = createAsyncThunk<undefined, number, {rejectValue
 
 const initialState: usersType = {
   usersData: [],
-  pageSize: 4,
+  pageSize: 10,
   totalCount: 0,
   currentPage: 1,
   isFetching: false,

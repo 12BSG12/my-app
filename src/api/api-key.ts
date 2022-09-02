@@ -1,2 +1,2 @@
-const key = {"API-KEY": "3aa7ae61-c969-4bf4-8200-c7905b27efdc"};
+const key = {"API-KEY": "75f9e435-b6c5-4aaa-b450-bd3b074a2609"};
 export default key;

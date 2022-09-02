@@ -7,7 +7,7 @@ import { FC } from 'react';
 import { _IUsers } from './IUsers';
 import SearchForm from './SearchForm';
 
-const Users: FC<_IUsers> = ({usersData, follow, unFollow, pagesCount, changePage, currentPage}) => {
+const Users: FC<_IUsers> = ({usersData, follow, unFollow, changePage, pagesCount, usersPageQuery}) => {
   const getUsers = usersData.map(user => <User 
     id={user.id}
     photos={user.photos.small??defaultAvatar}
@@ -18,6 +18,7 @@ const Users: FC<_IUsers> = ({usersData, follow, unFollow, pagesCount, changePage
     follow={follow}
     unFollow={unFollow}
   />);
+
   return(
     <div className={style.container}>
       <div className={style.body}>
@@ -27,7 +28,7 @@ const Users: FC<_IUsers> = ({usersData, follow, unFollow, pagesCount, changePage
           {getUsers}
         </div>
         <Stack spacing={2}>
-          <Pagination count={pagesCount} color="primary" showFirstButton showLastButton page={currentPage} onChange={(_, num) => changePage(num)} />
+          <Pagination count={pagesCount} color="primary" showFirstButton showLastButton page={Number(usersPageQuery)} onChange={(_, num) => changePage(num)} />
         </Stack>
       </div>
     </div>

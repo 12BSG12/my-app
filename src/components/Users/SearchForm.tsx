@@ -1,7 +1,7 @@
 import style from './Users.module.css'
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { setIsFriends, setSearch } from '../../redux/reducers/users';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import ButtonGroup from '@mui/material/ButtonGroup';
 
@@ -11,11 +11,13 @@ const SearchForm = () => {
   const[checked, setChecked] = useState(isFriends);
   const[searchText, setSearchText] = useState<string>(search)
   const dispatch = useAppDispatch()
-  dispatch(setIsFriends(checked))
-  dispatch(setSearch(searchText))
+  useEffect(() => {
+    dispatch(setIsFriends(checked))
+    dispatch(setSearch(searchText))
+  },[dispatch, checked, searchText])
   return(
     <div className={style.formSearch}>
-      <input className={style.search} type="text" placeholder="search" value={search} onChange={(e) => setSearchText(e.target.value)}/>
+      <input className={style.search} type="text" placeholder="search" value={searchText} onChange={(e) => setSearchText(e.target.value)}/>
       <ButtonGroup variant="contained" aria-label="outlined primary button group">
         <Button onClick={() => setChecked(null)}>All</Button>
         <Button onClick={() => setChecked(true)}>Friends</Button>
