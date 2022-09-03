@@ -7,7 +7,7 @@ import { FC } from 'react';
 import { _IUsers } from './IUsers';
 import SearchForm from './SearchForm';
 
-const Users: FC<_IUsers> = ({usersData, follow, unFollow, changePage, pagesCount, usersPageQuery}) => {
+const Users: FC<_IUsers> = ({usersData, follow, unFollow, changePage, pagesCount, usersPageQuery, usersSearchQuery, setSearchParams, usersIsFriendQuery}) => {
   const getUsers = usersData.map(user => <User 
     id={user.id}
     photos={user.photos.small??defaultAvatar}
@@ -23,7 +23,7 @@ const Users: FC<_IUsers> = ({usersData, follow, unFollow, changePage, pagesCount
     <div className={style.container}>
       <div className={style.body}>
         <div className={style.title}>Users</div>
-        <SearchForm />
+        <SearchForm usersSearchQuery={usersSearchQuery} setSearchParams={setSearchParams} usersIsFriendQuery={usersIsFriendQuery}/>
         <div className={style.users}>
           {getUsers}
         </div>

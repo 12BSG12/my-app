@@ -1,28 +1,44 @@
 import style from './Users.module.css'
-import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
-import { setIsFriends, setSearch } from '../../redux/reducers/users';
-import { useEffect, useState } from 'react';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { FC, useState } from 'react';
+import { ISearchForm } from '../../models/usersType';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-const SearchForm = () => {  
-  const isFriends = useAppSelector(state => state.usersPage.isFriends)
-  const search = useAppSelector(state => state.usersPage.search)
-  const[checked, setChecked] = useState(isFriends);
-  const[searchText, setSearchText] = useState<string>(search)
-  const dispatch = useAppDispatch()
-  useEffect(() => {
-    dispatch(setIsFriends(checked))
-    dispatch(setSearch(searchText))
-  },[dispatch, checked, searchText])
+
+const SearchForm: FC<ISearchForm> = ({usersSearchQuery, setSearchParams, usersIsFriendQuery}) => { 
+  const[checked, setChecked] = useState(usersIsFriendQuery);
+  const[searchText, setSearchText] = useState<string>(usersSearchQuery)
+    
+  const handleOnChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value)
+    setSearchParams({term: e.target.value})
+  }
+
+  const handleOnClick = (e: SelectChangeEvent) => {
+    setChecked(e.target.value)
+    setSearchParams({friend: e.target.value})
+  }
+
   return(
     <div className={style.formSearch}>
-      <input className={style.search} type="text" placeholder="search" value={searchText} onChange={(e) => setSearchText(e.target.value)}/>
-      <ButtonGroup variant="contained" aria-label="outlined primary button group">
-        <Button onClick={() => setChecked(null)}>All</Button>
-        <Button onClick={() => setChecked(true)}>Friends</Button>
-        <Button onClick={() => setChecked(false)}>Not friends</Button>
-      </ButtonGroup>
+      <input className={style.search} type="text" placeholder="search" value={searchText} onChange={handleOnChangeInput}/>
+      <FormControl sx={{ m: 1, minWidth: 120 }}>
+        <InputLabel id="demo-simple-select-autowidth-label">Select</InputLabel>
+        <Select
+          labelId="demo-simple-select-autowidth-label"
+          id="demo-simple-select-autowidth"
+          value={checked}
+          onChange={handleOnClick}
+          autoWidth
+          label="Select"
+        >
+          <MenuItem value="null">All</MenuItem>
+          <MenuItem value="true">Friends</MenuItem>
+          <MenuItem value="false">Not Friends</MenuItem>
+        </Select>
+      </FormControl>
     </div>
   );
 }

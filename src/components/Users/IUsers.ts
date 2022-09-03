@@ -6,4 +6,7 @@ export interface _IUsers {
   pagesCount: number, 
   changePage(num: number): void, 
   usersPageQuery: string
+  usersSearchQuery: string
+  usersIsFriendQuery: string
+  setSearchParams({term, friend}:{term?:string, friend?: string}): void
 }

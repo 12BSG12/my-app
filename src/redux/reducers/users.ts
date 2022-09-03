@@ -29,7 +29,6 @@ export const changePageAsyncThunk = createAsyncThunk<undefined, {currentPage: nu
   'usersPage/changePageAsyncThunk',
   async ({currentPage, pageSize}, {rejectWithValue, dispatch}) => {
     try {
-      dispatch(setCurrentPage(currentPage));
       let data = await usersAPI.users.getUsers(currentPage, pageSize);
       dispatch(setUsers(data.items))
     } catch(error) {
@@ -66,11 +65,8 @@ const initialState: usersType = {
   usersData: [],
   pageSize: 10,
   totalCount: 0,
-  currentPage: 1,
   isFetching: false,
-  loading: false,
-  isFriends: null,
-  search: ''
+  loading: false
 }
 
 const usersReducer = createSlice({
@@ -88,16 +84,7 @@ const usersReducer = createSlice({
     },
     setTotalCount (state, action: PayloadAction<number>) {
       state.totalCount = action.payload
-    },
-    setCurrentPage (state, action: PayloadAction<number>) {
-      state.currentPage = action.payload
-    },
-    setIsFriends (state, action: PayloadAction<boolean | null>) {
-      state.isFriends = action.payload
-    },
-    setSearch (state, action: PayloadAction<string>) {
-      state.search = action.payload
-    },
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -116,5 +103,5 @@ const usersReducer = createSlice({
   },
 });
 
-export const { follow, unFollow, setUsers, setTotalCount, setCurrentPage, setIsFriends, setSearch } = usersReducer.actions
+export const { follow, unFollow, setUsers, setTotalCount } = usersReducer.actions
 export default usersReducer.reducer

@@ -30,7 +30,7 @@ export const usersAPI = {
     deleteLogOut() {return instance.delete<ResultResponse<{}, ResultCodeEnum>>('auth/login').then(response => response.data)},
   },
   users: {
-    getUsers(currentPage: number, pageSize: number, isFriends?: boolean | null, search?: string) {return instance.get<IGetUsers>(`users?page=${currentPage}&count=${pageSize}&friend=${isFriends}&term=${search??''}`).then(response => response.data)},
+    getUsers(currentPage: number, pageSize: number, isFriends?: boolean | null, search?: string) {return instance.get<IGetUsers>(`users?page=${currentPage??'1'}&count=${pageSize}&friend=${isFriends??''}&term=${search??''}`).then(response => response.data)},
     getFriends(totalCount?: number) {return instance.get<IGetFriends>(`users?friend=true&count=${totalCount}`).then(response => response.data)},
   },
   security: {

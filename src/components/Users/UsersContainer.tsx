@@ -5,36 +5,42 @@ import { withAuthNavigate } from '../../hoc/withAuthNavigate';
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/hooks';
 import { useSearchParams } from 'react-router-dom';
-
-interface IParams {
-  friend?: 'true' | 'false',
-  term?: string,
-  page?: string
-}
+import { IParams } from '../../models/usersType';
 
 const UsersContainer = () => {
-  const {usersData, pageSize, totalCount, isFetching, isFriends, search} = useAppSelector(state => state.usersPage);
+  const {usersData, pageSize, totalCount, isFetching} = useAppSelector(state => state.usersPage);
 
   const dispatch = useAppDispatch();
 
   const [searchParams, setSearchParams] = useSearchParams();
   const usersPageQuery = searchParams.get('page') || '1';
+  const usersSearchQuery = searchParams.get('term') || '';
+  const usersIsFriendQuery = searchParams.get('friend') || 'null';
   
   const currentPage = Number(usersPageQuery)
-
+  
   useEffect(() =>{
-    getQuery(currentPage, isFriends, search)
-    dispatch(getUsersAsyncThunk({currentPage, pageSize, isFriends, search}))
-  }, [dispatch, pageSize, currentPage, isFriends, search]);
+    dispatch(getUsersAsyncThunk({
+        currentPage, 
+        pageSize, 
+        isFriends: (usersIsFriendQuery === 'null' ? null : usersIsFriendQuery === 'true' ? true : false), 
+        search: usersSearchQuery}))
+  }, [dispatch, pageSize, currentPage, usersIsFriendQuery, usersSearchQuery]);
 
   const changePage = (currentPage: number) => {
-    getQuery(currentPage)
+    getQuery(currentPage, usersIsFriendQuery, usersSearchQuery)
     dispatch(changePageAsyncThunk({currentPage, pageSize}))
   };
-
-  const getQuery = (currentPage: number, isFriends?: boolean | null, search?: string) => {
+  
+  const getQuery = (currentPage: number, isFriends?: string, search?: string) => {
     const params: IParams & Record<string, string | string[]> = {}
-    if(isFriends !== null) params.friend = (isFriends ? 'true' : 'false')
+    if(isFriends !== 'null') {
+      if(isFriends === 'true'){
+        params.friend = 'true'
+      } else {
+        params.friend = 'false'
+      }
+    } 
     if(search !== '') params.term = search
     if(currentPage) params.page = String(currentPage)
     return setSearchParams(params)
@@ -52,6 +58,9 @@ const UsersContainer = () => {
       pagesCount={pagesCount}
       changePage={changePage}
       usersPageQuery={usersPageQuery}
+      usersSearchQuery={usersSearchQuery}
+      usersIsFriendQuery={usersIsFriendQuery}
+      setSearchParams={setSearchParams}
       {...{usersData}}
       />}
     </>

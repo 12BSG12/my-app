@@ -16,11 +16,8 @@ export type usersType = {
   usersData: IUsers[],
   pageSize: number,
   totalCount: number,
-  currentPage: number,
   isFetching: boolean
   loading: boolean
-  isFriends: boolean | null
-  search: string
 }
 
 export interface IGetUsers {
@@ -33,3 +30,14 @@ export interface IFollowed {
   messages: string[],
 }
 
+export interface IParams {
+  friend?: 'true' | 'false' | 'null',
+  term?: string,
+  page?: string
+}
+
+export interface ISearchForm {
+  usersSearchQuery: string
+  usersIsFriendQuery: string
+  setSearchParams({term, friend}:{term?:string, friend?: string}): void
+}
