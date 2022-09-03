@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { dialogsType } from '../../models/dialogsType'
+import { chatType, dialogsType } from '../../models/dialogsType'
 
 const initialState: dialogsType = {
   dialogsData: [
@@ -8,7 +8,8 @@ const initialState: dialogsType = {
   ],
   messagesData: [
     {id:1, message:'shhhsgh shh'},
-  ]
+  ],
+  chat: []
 }
 
 const dialogsReducer = createSlice({
@@ -17,9 +18,12 @@ const dialogsReducer = createSlice({
   reducers: {
     sendMessage (state, action: PayloadAction<string>) {
       state.messagesData.push({id: 3, message: action.payload})
+    },
+    getChat (state, action: PayloadAction<chatType[]>) {
+      state.chat = action.payload
     }
   }
 })
 
-export const { sendMessage } = dialogsReducer.actions
+export const { sendMessage, getChat } = dialogsReducer.actions
 export default dialogsReducer.reducer

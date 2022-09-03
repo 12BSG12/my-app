@@ -29,6 +29,9 @@ const Sidebar: FC<ISidebar> = ({friendsData, isLoading}) => {
         <li className={style.item}>
           <NavLink className={setActive} to="/settings">Settings</NavLink>
         </li>
+        <li className={style.item}>
+          <NavLink className={setActive} to="/chat">chat</NavLink>
+        </li>
       </ul>
       
       <div className={style.title}>Friends</div>

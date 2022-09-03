@@ -11,4 +11,12 @@ export interface IMessage {
 export type dialogsType = {
   dialogsData: IDialogs[] 
   messagesData: IMessage[]
+  chat?: chatType[]
+}
+
+export type chatType = {
+  message: string,
+  photo: string
+  userId: number
+  userName: string
 }

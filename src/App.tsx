@@ -16,6 +16,7 @@ const Music = lazy(() => import('./components/Music/Music'));
 const Settings = lazy(() => import('./components/Settings/Settings'));
 const UsersContainer = lazy(() => import('./components/Users/UsersContainer'));
 const Login = lazy(() => import('./components/auth/login'));
+const Chat = lazy(() => import('./pages/Chat/Chat'));
 
 const App = () => {
   let initialized = useAppSelector(state => state.app.initialized);
@@ -45,6 +46,8 @@ const App = () => {
               <Route path='/users' element={<UsersContainer />}/>
               <Route path='/settings' element={<Settings />}/>
               <Route path='/login' element={<Login />}/>
+              <Route path='/chat' element={<Chat />}/>
+              <Route path='*' element={<div>404 NOT FOUND</div>}/>
             </Routes>
         </div>
       </Suspense>
