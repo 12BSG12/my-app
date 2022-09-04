@@ -35,7 +35,7 @@ export const usersAPI = {
   },
   security: {
     getCaptcha() {return instance.get<ICaptcha>('security/get-captcha-url').then(response => response.data)},
-  }
+  },
 }
 
 interface ResultResponse<D={}, RC=ResultCodeEnum | ResultCodeForCaptcha> {
