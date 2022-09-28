@@ -4,12 +4,11 @@ import { IAuth, ICaptcha } from '../models/authType';
 import { IPhoto, IUser } from '../models/profileType';
 import { IGetFriends } from '../models/sidebarType';
 import { IFollowed, IGetUsers } from '../models/usersType';
-import key from './api-key';
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
   withCredentials: true,
-  headers: key
+  headers: {"API-KEY": process.env.REACT_APP_API_KEY as string}
 });
 
 export const usersAPI = {
