@@ -8,7 +8,7 @@ import { IFollowed, IGetUsers } from '../models/usersType';
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.0/',
   withCredentials: true,
-  headers: {"API-KEY": process.env.REACT_APP_API_KEY as string}
+  headers: {"API-KEY": "cbb467ca-7f72-4636-980b-67b9d32fe3c7c"}
 });
 
 export const usersAPI = {
