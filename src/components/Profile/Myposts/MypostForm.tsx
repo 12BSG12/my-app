@@ -1,4 +1,4 @@
-import style from './MyPost.module.css';
+import style from './Mypost.module.css';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from "react-redux";
 import { addPost } from '../../../redux/reducers/profile'
